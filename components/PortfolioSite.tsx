@@ -34,8 +34,9 @@ import { CountUp } from "@/components/ui/CountUp";
 import { CustomCursor } from "@/components/ui/CustomCursor";
 import { IntroSplash } from "@/components/ui/IntroSplash";
 import { Magnetic } from "@/components/ui/Magnetic";
+import { Marquee } from "@/components/ui/Marquee";
 import { SectionDivider } from "@/components/ui/SectionDivider";
-import { ProjectCard } from "@/components/sections/ProjectCard";
+import { ProjectShowcase } from "@/components/sections/ProjectShowcase";
 
 const orbitChips = ["Local AI", "Vision", "Research", "Web"] as const;
 
@@ -366,60 +367,62 @@ export function PortfolioSite() {
 
           <SectionDivider id="about-journey" />
 
-          {/* ============ Timeline ============ */}
-          <section className="section journey-section" id="journey">
-            <div className="section-heading">
+          {/* ============ Journey — sticky-split editorial layout ============ */}
+          <section className="section journey-sticky" id="journey">
+            <m.aside
+              className="journey-sticky-left"
+              initial={{ opacity: 0, y: reducedMotion ? 0 : 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.4 }}
+              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            >
               <p className="eyebrow">02 / Journey</p>
               <h2>A public build history.</h2>
               <p>
-                Five years of public commits across local AI, computer vision,
-                applied research, and front-end. Each milestone maps to a
+                Five years of commits across local AI, computer vision,
+                applied research and front-end. Each milestone maps to a
                 repository that is still online.
               </p>
-            </div>
-            <div className="timeline">
-              <m.svg
-                className="timeline-line"
-                viewBox="0 0 4 800"
-                preserveAspectRatio="none"
-                aria-hidden="true"
-              >
-                <defs>
-                  <linearGradient id="timelineGradient" x1="0" x2="0" y1="0" y2="1">
-                    <stop offset="0%" stopColor="#FF8A3D" stopOpacity="0.85" />
-                    <stop offset="55%" stopColor="#4A90FF" stopOpacity="0.95" />
-                    <stop offset="100%" stopColor="#4A90FF" stopOpacity="0.2" />
-                  </linearGradient>
-                </defs>
-                <m.path
-                  d="M2 0V800"
-                  initial={{ pathLength: 0 }}
-                  whileInView={{ pathLength: 1 }}
-                  viewport={{ once: true, amount: 0.2 }}
-                  transition={{ duration: reducedMotion ? 0 : 1.8, ease: "easeOut" }}
-                />
-              </m.svg>
+              <div className="journey-meter" aria-hidden="true">
+                <span className="journey-meter-label">Years public</span>
+                <span className="journey-meter-value">2022 → 2026</span>
+              </div>
+            </m.aside>
+
+            <m.ol
+              className="journey-sticky-right"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.1 }}
+              variants={stagger}
+            >
               {portfolio.timeline.map((item, index) => (
-                <m.article
+                <m.li
                   key={`${item.year}-${item.title}`}
-                  className="timeline-item"
-                  initial={{
-                    opacity: 0,
-                    x: reducedMotion ? 0 : index % 2 ? 24 : -24,
-                  }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, amount: 0.4 }}
-                  transition={{ duration: 0.6 }}
+                  className="journey-row"
+                  variants={reveal}
+                  whileHover={reducedMotion ? undefined : { y: -4 }}
+                  transition={{ type: "spring", stiffness: 280, damping: 26 }}
                 >
-                  <span className="timeline-year">{item.year}</span>
-                  <div className="timeline-card">
+                  <div className="journey-row-mark" aria-hidden="true">
+                    <span className="journey-row-index">
+                      {(index + 1).toString().padStart(2, "0")}
+                    </span>
+                    <span className="journey-row-tick" />
+                  </div>
+                  <div className="journey-row-body">
+                    <div className="journey-row-top">
+                      <span className="journey-year">{item.year}</span>
+                      {item.meta && (
+                        <span className="timeline-meta">{item.meta}</span>
+                      )}
+                    </div>
                     <h3>{item.title}</h3>
                     <p>{item.detail}</p>
-                    {item.meta && <span className="timeline-meta">{item.meta}</span>}
                   </div>
-                </m.article>
+                </m.li>
               ))}
-            </div>
+            </m.ol>
           </section>
 
           <SectionDivider id="journey-skills" />
@@ -463,9 +466,28 @@ export function PortfolioSite() {
             </m.div>
           </section>
 
+          {/* Marquee — ambient skill ticker between skills and projects */}
+          <Marquee
+            items={[
+              "Local-first AI",
+              "PySide6",
+              "Ollama",
+              "Whisper",
+              "Next.js",
+              "TypeScript",
+              "Computer vision",
+              "Static export",
+              "Applied research",
+              "Open source",
+              "Framer Motion",
+              "Lenis",
+            ]}
+            speed={42}
+          />
+
           <SectionDivider id="skills-projects" />
 
-          {/* ============ Projects Bento ============ */}
+          {/* ============ Projects — editorial hover-preview showcase ============ */}
           <section className="section projects-section" id="projects">
             <div className="section-heading project-heading">
               <div>
@@ -474,26 +496,14 @@ export function PortfolioSite() {
               </div>
               <p>
                 All {portfolio.projects.length} public repositories currently on
-                GitHub, ordered by significance and recency. Click any card for
-                the full story.
+                GitHub. Hover a row for the full story; click to open the case
+                study.
               </p>
             </div>
-            <m.div
-              className="projects-grid"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.08 }}
-              variants={stagger}
-            >
-              {portfolio.projects.map((project, index) => (
-                <ProjectCard
-                  key={project.repository}
-                  project={project}
-                  index={index}
-                  onOpen={setSelectedProject}
-                />
-              ))}
-            </m.div>
+            <ProjectShowcase
+              projects={portfolio.projects}
+              onOpen={setSelectedProject}
+            />
             <Magnetic strength={0.1}>
               <a
                 className="all-repos-link"
