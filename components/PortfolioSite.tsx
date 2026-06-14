@@ -219,14 +219,22 @@ export function PortfolioSite() {
               <m.div
                 className="identity-ring ring-one"
                 aria-hidden="true"
-                animate={reducedMotion ? undefined : { rotate: 360 }}
-                transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+                animate={{ rotate: 360 }}
+                transition={{
+                  duration: reducedMotion ? 140 : 60,
+                  repeat: Infinity,
+                  ease: "linear",
+                }}
               />
               <m.div
                 className="identity-ring ring-two"
                 aria-hidden="true"
-                animate={reducedMotion ? undefined : { rotate: -360 }}
-                transition={{ duration: 90, repeat: Infinity, ease: "linear" }}
+                animate={{ rotate: -360 }}
+                transition={{
+                  duration: reducedMotion ? 200 : 90,
+                  repeat: Infinity,
+                  ease: "linear",
+                }}
               />
               <m.div
                 className="identity-card"
@@ -261,13 +269,11 @@ export function PortfolioSite() {
                 >
                   <m.span
                     style={{ display: "inline-flex", alignItems: "center" }}
-                    animate={
-                      reducedMotion
-                        ? undefined
-                        : { y: [0, index % 2 ? -8 : 8, 0] }
-                    }
+                    animate={{
+                      y: [0, index % 2 ? -(reducedMotion ? 4 : 8) : (reducedMotion ? 4 : 8), 0],
+                    }}
                     transition={{
-                      duration: 4 + index * 0.4,
+                      duration: (reducedMotion ? 7 : 4) + index * 0.4,
                       repeat: Infinity,
                       ease: "easeInOut",
                     }}
@@ -285,7 +291,7 @@ export function PortfolioSite() {
             className="stats-strip"
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
+            viewport={{ once: true, amount: 0.1 }}
             variants={staggerTight}
             aria-label="Portfolio statistics"
           >
@@ -310,7 +316,7 @@ export function PortfolioSite() {
               className="section-heading split-heading"
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, amount: 0.3 }}
+              viewport={{ once: true, amount: 0.1 }}
               variants={stagger}
             >
               <m.p className="eyebrow" variants={reveal}>
@@ -326,7 +332,7 @@ export function PortfolioSite() {
               className="principles"
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, amount: 0.25 }}
+              viewport={{ once: true, amount: 0.1 }}
               variants={stagger}
             >
               {[
@@ -373,7 +379,7 @@ export function PortfolioSite() {
               className="journey-sticky-left"
               initial={{ opacity: 0, y: reducedMotion ? 0 : 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.4 }}
+              viewport={{ once: true, amount: 0.1 }}
               transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             >
               <p className="eyebrow">02 / Journey</p>
@@ -393,7 +399,7 @@ export function PortfolioSite() {
               className="journey-sticky-right"
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, amount: 0.1 }}
+              viewport={{ once: true, amount: 0.05 }}
               variants={stagger}
             >
               {portfolio.timeline.map((item, index) => (
@@ -441,7 +447,7 @@ export function PortfolioSite() {
               className="skill-groups"
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, amount: 0.25 }}
+              viewport={{ once: true, amount: 0.1 }}
               variants={stagger}
             >
               {portfolio.skills.map((group) => (
@@ -533,7 +539,7 @@ export function PortfolioSite() {
               className="experiments-rail"
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
+              viewport={{ once: true, amount: 0.1 }}
               variants={staggerTight}
             >
               {portfolio.experiments.map((experiment) => (
@@ -560,7 +566,7 @@ export function PortfolioSite() {
             <m.div
               initial={{ opacity: 0, y: reducedMotion ? 0 : 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.35 }}
+              viewport={{ once: true, amount: 0.1 }}
               className="contact-inner"
             >
               <p className="eyebrow">06 / Contact</p>

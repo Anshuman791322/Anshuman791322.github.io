@@ -3,6 +3,7 @@
 import {
   AnimatePresence,
   m,
+  useInView,
   useMotionValue,
   useReducedMotion,
   useSpring,
@@ -27,6 +28,9 @@ export function ProjectShowcase({ projects, onOpen }: Props) {
   const [active, setActive] = useState<Project | null>(null);
   const [isHovering, setIsHovering] = useState(false);
   const listRef = useRef<HTMLOListElement>(null);
+  // Single scroll-trigger for the whole list — drives stagger reveal without
+  // conflicting with the per-row hover animate object.
+  const inView = useInView(listRef, { once: true, amount: 0.05 });
 
   // Cursor-anchored preview position with spring damping.
   const mx = useMotionValue(-1000);
@@ -88,11 +92,17 @@ export function ProjectShowcase({ projects, onOpen }: Props) {
                   onOpen(project);
                 }
               }}
+              initial={{ opacity: 0, y: 28 }}
               animate={{
-                opacity: isDimmed ? 0.32 : 1,
+                opacity: inView ? (isDimmed ? 0.32 : 1) : 0,
+                y: inView ? 0 : 28,
                 x: isActive && !reducedMotion ? 16 : 0,
               }}
-              transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+              transition={{
+                duration: 0.5,
+                ease: [0.16, 1, 0.3, 1],
+                delay: inView ? index * 0.08 : 0,
+              }}
               role="button"
               tabIndex={0}
               aria-label={`Open details for ${project.title}`}

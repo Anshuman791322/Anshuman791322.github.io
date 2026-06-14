@@ -10,18 +10,22 @@ type Props = {
   reverse?: boolean;
 };
 
-/** Infinite-loop horizontal ticker. Transform-only animation, no layout thrash. */
+/** Infinite-loop horizontal ticker. Transform-only animation, no layout thrash.
+ *  Under reduced motion the loop continues at half speed — a gentle drift that
+ *  doesn't trigger vestibular issues but keeps the page feeling alive on phones
+ *  with Reduce Motion / Low Power enabled. */
 export function Marquee({ items, speed = 38, reverse = false }: Props) {
   const reducedMotion = useReducedMotion();
   const loop = reverse ? ["-50%", "0%"] : ["0%", "-50%"];
+  const duration = reducedMotion ? speed * 2.4 : speed;
 
   return (
     <div className="marquee-band" aria-hidden="true">
       <m.div
         className="marquee-track"
-        animate={reducedMotion ? undefined : { x: loop }}
+        animate={{ x: loop }}
         transition={{
-          duration: speed,
+          duration,
           repeat: Infinity,
           ease: "linear",
         }}
