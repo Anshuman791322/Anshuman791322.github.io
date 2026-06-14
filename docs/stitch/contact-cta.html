@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Contact — Anshuman Singh</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&amp;family=Manrope:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            800: "#0F172A",
+                            900: "#0B1220",
+                            950: "#070C17"
+                        },
+                        cobalt: {
+                            DEFAULT: "#4A90FF",
+                            soft: "#7DB7FF",
+                            deep: "#245DFF"
+                        },
+                        orange: {
+                            DEFAULT: "#FF8A3D",
+                            soft: "#FFB36A"
+                        },
+                        slate: {
+                            100: "#F8FAFC",
+                            300: "#C7D2E0",
+                            400: "#8A99B1"
+                        }
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.125rem", // 18px
+                        "button": "0.75rem", // 12px
+                        "full": "9999px"
+                    },
+                    fontFamily: {
+                        headline: ["Space Grotesk", "sans-serif"],
+                        display: ["Space Grotesk", "sans-serif"],
+                        body: ["Manrope", "sans-serif"],
+                        label: ["Space Grotesk", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(15, 23, 42, 0.56);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(125, 183, 255, 0.22);
+            box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+        }
+        .text-gradient-primary {
+            background: linear-gradient(to right, #FF8A3D, #FFB36A, #7DB7FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .btn-orange-glow {
+            box-shadow: 0 8px 24px -4px rgba(255, 138, 61, 0.4);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .ambient-glow {
+            filter: blur(120px);
+            pointer-events: none;
+            z-index: 0;
+        }
+    </style>
+</head>
+<body class="bg-navy-900 font-body text-slate-100 selection:bg-cobalt selection:text-white">
+<!-- Contact CTA Section -->
+<section class="relative overflow-hidden border-y border-cobalt/20 py-[140px]">
+<!-- Ambient Radial Glows -->
+<div class="ambient-glow absolute top-[20%] left-[20%] h-[50%] w-[20%] rounded-full bg-cobalt/18"></div>
+<div class="ambient-glow absolute top-[70%] left-[90%] h-[70%] w-[30%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-orange/12"></div>
+<div class="relative z-10 mx-auto max-w-[1180px] px-6">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-end">
+<div class="lg:col-span-8 space-y-8">
+<!-- Eyebrow -->
+<p class="font-label text-sm font-bold uppercase tracking-[0.18em] text-cobalt-soft">
+                        06 / CONTACT
+                    </p>
+<!-- Headline -->
+<h2 class="font-headline text-[clamp(2.5rem,6vw+1rem,5rem)] font-semibold leading-[1.02] tracking-tight">
+                        Have a hard problem <br/>
+<span class="text-gradient-primary">worth building?</span>
+</h2>
+<!-- Body -->
+<p class="max-w-2xl text-lg md:text-xl leading-relaxed text-slate-300 font-medium">
+                        I'm open to software roles, research collaborations, and product engineering work — especially anything that puts local-first AI, computer vision, or considered front-end in front of a real user.
+                    </p>
+<!-- Buttons -->
+<div class="flex flex-wrap gap-4 pt-4">
+<a class="btn-orange-glow group flex items-center gap-3 rounded-button bg-gradient-to-r from-orange to-orange-soft px-8 py-4 text-navy-950 font-bold transition-all hover:scale-[1.02] active:scale-95" href="mailto:facelessteam.ai@gmail.com">
+<span class="material-symbols-outlined text-[20px]">mail</span>
+                            Email me
+                        </a>
+<a class="glass-card group flex items-center gap-3 rounded-button px-8 py-4 text-slate-100 font-bold transition-all hover:bg-white/5 active:scale-95" href="https://github.com/Anshuman791322" target="_blank">
+<span class="material-symbols-outlined text-[20px]">code</span>
+                            GitHub
+                        </a>
+</div>
+</div>
+<!-- Contact Meta -->
+<div class="lg:col-span-4 lg:text-right">
+<div class="flex flex-col gap-4 text-sm font-medium text-slate-400">
+<p>
+                            Email · <span class="text-slate-100 border-b border-cobalt/40 hover:border-cobalt transition-colors cursor-pointer">facelessteam.ai@gmail.com</span>
+</p>
+<p>
+                            GitHub · <span class="text-slate-100 border-b border-cobalt/40 hover:border-cobalt transition-colors cursor-pointer">@Anshuman791322</span>
+</p>
+<p>
+                            Based · <span class="text-slate-100 border-b border-cobalt/40 hover:border-cobalt transition-colors cursor-pointer">India</span>
+</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-navy-950 border-t border-cobalt/10">
+<div class="mx-auto flex h-[110px] max-w-[1180px] flex-col items-center justify-between px-6 md:flex-row gap-4">
+<!-- Left -->
+<div class="text-sm font-medium text-slate-400">
+                © 2026 Anshuman Singh
+            </div>
+<!-- Center -->
+<nav class="flex items-center gap-6 text-sm font-medium text-slate-400">
+<a class="transition-colors hover:text-cobalt" href="#">GitHub</a>
+<span class="opacity-20">·</span>
+<a class="transition-colors hover:text-cobalt" href="#">Email</a>
+<span class="opacity-20">·</span>
+<a class="group flex items-center gap-1 transition-colors hover:text-cobalt" href="#">
+                    Back to top
+                    <span class="material-symbols-outlined text-[16px] transition-transform group-hover:-translate-y-0.5">north</span>
+</a>
+</nav>
+<!-- Right -->
+<div class="text-sm italic text-slate-400 opacity-60">
+                Designed and built with intent.
+            </div>
+</div>
+</footer>
+<script>
+        // Simple micro-interaction for hover states
+        document.querySelectorAll('a, button').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                // Subtle cursor feedback could be added here
+            });
+        });
+
+        // Smooth scroll for "Back to top"
+        document.querySelector('a[href="#"]').addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body></html>

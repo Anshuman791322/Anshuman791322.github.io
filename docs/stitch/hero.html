@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Anshuman Singh | Developer Portfolio</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&amp;family=Space+Grotesk:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        midnight: "#0B1220",
+                        backdrop: "#070C17",
+                        "primary-cobalt": "#4A90FF",
+                        "soft-cobalt": "#7DB7FF",
+                        "deep-cobalt": "#245DFF",
+                        "burnt-orange": "#FF8A3D",
+                        "soft-orange": "#FFB36A",
+                        text: "#F8FAFC",
+                        muted: "#C7D2E0",
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.5rem",
+                        lg: "1rem",
+                        xl: "1.5rem",
+                        "2xl": "18px",
+                        full: "9999px",
+                    },
+                    fontFamily: {
+                        headline: ["Space Grotesk", "sans-serif"],
+                        display: ["Space Grotesk", "sans-serif"],
+                        body: ["Manrope", "sans-serif"],
+                        label: ["Space Grotesk", "sans-serif"],
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #0B1220;
+            color: #F8FAFC;
+            overflow-x: hidden;
+            font-family: 'Manrope', sans-serif;
+        }
+
+        .glass-surface {
+            background: rgba(15, 23, 42, 0.56);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(125, 183, 255, 0.22);
+            box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+        }
+
+        .glass-surface-strong {
+            background: rgba(17, 24, 39, 0.72);
+            backdrop-filter: blur(18px);
+            border: 1px solid rgba(125, 183, 255, 0.22);
+            box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+        }
+
+        .grid-mask {
+            background-image: linear-gradient(to right, rgba(74, 144, 255, 0.08) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(74, 144, 255, 0.08) 1px, transparent 1px);
+            background-size: 80px 80px;
+            mask-image: radial-gradient(circle at 50% 50%, black 22%, transparent 78%);
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, #FF8A3D, #FFB36A, #7DB7FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .ambient-orb-cobalt {
+            background: radial-gradient(circle at center, rgba(36, 93, 255, 0.15) 0%, transparent 70%);
+            filter: blur(60px);
+        }
+
+        .ambient-orb-orange {
+            background: radial-gradient(circle at center, rgba(255, 138, 61, 0.1) 0%, transparent 70%);
+            filter: blur(60px);
+        }
+
+        @keyframes rotate-slow {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .animate-rotate {
+            animation: rotate-slow 20s linear infinite;
+        }
+
+        .animate-rotate-reverse {
+            animation: rotate-slow 25s linear infinite reverse;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="selection:bg-primary-cobalt/30 selection:text-white">
+<!-- Background Elements -->
+<div class="fixed inset-0 z-[-1] pointer-events-none overflow-hidden">
+<div class="grid-mask absolute inset-0"></div>
+<div class="ambient-orb-cobalt absolute -top-40 -right-40 w-[800px] h-[800px]"></div>
+<div class="ambient-orb-orange absolute -bottom-40 -left-40 w-[800px] h-[800px]"></div>
+</div>
+<!-- Navigation -->
+<header class="fixed top-6 left-1/2 -translate-x-1/2 w-[calc(100%-3rem)] max-w-[1180px] z-[100]">
+<nav class="glass-surface rounded-2xl flex items-center justify-between px-6 py-3 h-20 shadow-[0_8px_32px_0_rgba(7,12,23,0.37)]">
+<!-- Brand -->
+<div class="flex items-center gap-4">
+<div class="w-[38px] h-[38px] bg-primary-cobalt rounded-lg flex items-center justify-center text-midnight font-headline font-bold text-sm shadow-[0_0_20px_rgba(74,144,255,0.4)]">
+                    AS
+                </div>
+<div class="flex flex-col">
+<span class="font-headline font-semibold text-lg tracking-tight text-white leading-tight">Anshuman Singh</span>
+<span class="text-[10px] uppercase font-label tracking-[0.12em] text-muted leading-tight">Computer-science engineer &amp; product builder</span>
+</div>
+</div>
+<!-- Links -->
+<div class="hidden md:flex items-center gap-1">
+<a class="px-4 py-2 rounded-full glass-surface-strong border-primary-cobalt/20 text-primary-cobalt font-medium text-sm transition-all duration-300" href="#">about</a>
+<a class="px-4 py-2 text-muted hover:text-primary-cobalt font-medium text-sm transition-all duration-300" href="#">journey</a>
+<a class="px-4 py-2 text-muted hover:text-primary-cobalt font-medium text-sm transition-all duration-300" href="#">skills</a>
+<a class="px-4 py-2 text-muted hover:text-primary-cobalt font-medium text-sm transition-all duration-300" href="#">projects</a>
+<a class="px-4 py-2 text-muted hover:text-primary-cobalt font-medium text-sm transition-all duration-300" href="#">experiments</a>
+<a class="px-4 py-2 text-muted hover:text-primary-cobalt font-medium text-sm transition-all duration-300" href="#">contact</a>
+</div>
+<!-- CTA -->
+<a class="flex items-center gap-2 px-6 py-2.5 rounded-full border border-soft-orange/50 bg-burnt-orange/10 text-soft-orange font-medium text-sm transition-all duration-300 hover:bg-burnt-orange/20 active:scale-95 group" href="#">
+                Let's talk <span class="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5">↗</span>
+</a>
+</nav>
+</header>
+<main class="relative pt-[170px] max-w-[1180px] mx-auto px-6 pb-24">
+<!-- Hero Section -->
+<div class="grid grid-cols-1 lg:grid-cols-[1.04fr_0.96fr] gap-12 items-center">
+<!-- Left Content -->
+<div class="flex flex-col gap-8">
+<!-- Status -->
+<div class="flex items-center gap-3">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+</span>
+<span class="font-label font-bold text-[11px] uppercase tracking-[0.18em] text-soft-cobalt">Open to roles and collaborations</span>
+</div>
+<!-- Headline -->
+<h1 class="font-headline font-semibold text-5xl md:text-7xl lg:text-[84px] leading-[1.06] tracking-tight">
+                    I turn technical ideas into <span class="gradient-text">working products.</span>
+</h1>
+<!-- Body -->
+<p class="text-muted text-lg md:text-xl max-w-[580px] leading-relaxed font-body">
+                    Specializing in high-performance engineering at the intersection of AI, computer vision, and modern web architectures. Building tools that feel like magic and work like clockwork.
+                </p>
+<!-- Actions -->
+<div class="flex flex-wrap items-center gap-6 pt-4">
+<button class="px-8 py-4 bg-gradient-to-r from-burnt-orange to-soft-orange text-midnight font-bold rounded-xl shadow-[0_10px_40px_-10px_rgba(255,138,61,0.5)] hover:shadow-[0_15px_50px_-10px_rgba(255,138,61,0.6)] hover:-translate-y-0.5 transition-all duration-300 active:scale-95 flex items-center gap-3">
+                        Explore work 
+                        <span class="material-symbols-outlined text-[20px]">arrow_downward</span>
+</button>
+<button class="px-8 py-4 glass-surface text-white font-semibold rounded-xl hover:bg-white/5 transition-all flex items-center gap-3">
+<span class="material-symbols-outlined text-[20px]">terminal</span>
+                        GitHub
+                    </button>
+</div>
+<!-- Metadata Footer -->
+<div class="pt-8 border-t border-soft-cobalt/10 flex flex-wrap gap-x-8 gap-y-4">
+<div class="flex flex-col gap-1">
+<span class="text-[10px] font-label font-bold text-soft-cobalt uppercase tracking-[0.15em]">Based</span>
+<span class="text-sm font-medium text-white/80 uppercase">India</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="text-[10px] font-label font-bold text-soft-cobalt uppercase tracking-[0.15em]">Stack</span>
+<span class="text-sm font-medium text-white/80 uppercase">Python · TS · React</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="text-[10px] font-label font-bold text-soft-cobalt uppercase tracking-[0.15em]">Focus</span>
+<span class="text-sm font-medium text-white/80 uppercase">Local AI · Vision · Web</span>
+</div>
+</div>
+</div>
+<!-- Right Content (Visual Stage) -->
+<div class="relative flex items-center justify-center min-h-[580px] select-none">
+<!-- SVG Rings -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[580px] h-[580px] border border-burnt-orange/10 rounded-full animate-rotate pointer-events-none">
+<div class="absolute top-0 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-burnt-orange shadow-[0_0_15px_#FF8A3D]"></div>
+</div>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[480px] h-[480px] border border-primary-cobalt/10 rounded-full animate-rotate-reverse pointer-events-none">
+<div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-primary-cobalt shadow-[0_0_15px_#4A90FF]"></div>
+</div>
+<!-- Identity Card -->
+<div class="relative w-[340px] aspect-[4/5] glass-surface-strong rounded-[2rem] overflow-hidden p-3 shadow-2xl z-10 group">
+<div class="absolute inset-0 bg-gradient-to-b from-primary-cobalt/5 to-transparent"></div>
+<img alt="Anshuman Singh Portrait" class="w-full h-full object-cover rounded-[1.6rem] filter grayscale brightness-90 contrast-125 opacity-80 group-hover:opacity-100 transition-opacity duration-700" data-alt="A professional studio portrait of a young computer science engineer with a thoughtful expression, set against a dark blue and indigo gradient background. The lighting is dramatic and cinematic, with soft cobalt blue rim light highlighting the silhouette. The overall aesthetic is premium, clean, and technologically focused, maintaining the brand's navy and cobalt color palette with sophisticated depth." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC49PCamqHgZdi5Ts01Mi-43bZYKtz0TNd0aX6TVcimSfKV4d1yz28_nNMTREXIgjT2O-xxur-smy0prKDfBXs7hLCnpLE7J7Cff_cMV7ZcAKjWI057wF7fROJ2pF7nzMK_yxvjet3O7yAx5_r5WKWkoZKhdroTPCEXLLLnML_l9-Ny-etA6044av_ekSZCvn29bccBCoTlg6DiXSRkaRKuBOIUD-YnOkmQZrCgBxqAz8HyA1FxgiYpZjpnt2u49N33Vl7owft6gyTv"/>
+<!-- Floating Data Chips -->
+<div class="absolute top-12 -left-6 px-4 py-2 glass-surface-strong rounded-full flex items-center gap-2 animate-bounce transition-all duration-[3000ms]">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-cobalt"></span>
+<span class="text-xs font-bold font-label uppercase tracking-wider text-white">Local AI</span>
+</div>
+<div class="absolute top-32 -right-8 px-4 py-2 glass-surface-strong rounded-full flex items-center gap-2 animate-bounce [animation-delay:0.5s] transition-all duration-[3000ms]">
+<span class="w-1.5 h-1.5 rounded-full bg-burnt-orange"></span>
+<span class="text-xs font-bold font-label uppercase tracking-wider text-white">Vision</span>
+</div>
+<div class="absolute bottom-32 -left-10 px-4 py-2 glass-surface-strong rounded-full flex items-center gap-2 animate-bounce [animation-delay:1s] transition-all duration-[3000ms]">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-cobalt"></span>
+<span class="text-xs font-bold font-label uppercase tracking-wider text-white">Research</span>
+</div>
+<div class="absolute bottom-12 -right-4 px-4 py-2 glass-surface-strong rounded-full flex items-center gap-2 animate-bounce [animation-delay:1.5s] transition-all duration-[3000ms]">
+<span class="w-1.5 h-1.5 rounded-full bg-burnt-orange"></span>
+<span class="text-xs font-bold font-label uppercase tracking-wider text-white">Web</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Stats Strip Overlay -->
+<div class="relative z-20 -mt-16 max-w-[1180px] mx-auto">
+<div class="glass-surface-strong rounded-2xl grid grid-cols-2 md:grid-cols-4 p-8 md:p-10 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.4)]">
+<!-- Stat 1 -->
+<div class="flex flex-col items-center md:items-start gap-1 px-4 border-r border-soft-cobalt/10">
+<div class="flex items-end gap-1">
+<span class="font-headline font-semibold text-4xl md:text-[2.2rem] text-white">5</span>
+</div>
+<span class="text-xs font-label font-bold text-muted uppercase tracking-[0.2em] relative">
+                        Public repositories
+                        <span class="absolute -bottom-1 left-0 w-full h-[1px] bg-primary-cobalt/40"></span>
+</span>
+</div>
+<!-- Stat 2 -->
+<div class="flex flex-col items-center md:items-start gap-1 px-4 md:border-r border-soft-cobalt/10">
+<div class="flex items-end gap-1">
+<span class="font-headline font-semibold text-4xl md:text-[2.2rem] text-white">4</span>
+</div>
+<span class="text-xs font-label font-bold text-muted uppercase tracking-[0.2em] relative">
+                        Build domains
+                        <span class="absolute -bottom-1 left-0 w-full h-[1px] bg-burnt-orange/40"></span>
+</span>
+</div>
+<!-- Stat 3 -->
+<div class="flex flex-col items-center md:items-start gap-1 px-4 border-r border-soft-cobalt/10 max-md:mt-8">
+<div class="flex items-end gap-1">
+<span class="font-headline font-semibold text-4xl md:text-[2.2rem] text-white">2022</span>
+</div>
+<span class="text-xs font-label font-bold text-muted uppercase tracking-[0.2em] relative">
+                        Building since
+                        <span class="absolute -bottom-1 left-0 w-full h-[1px] bg-soft-cobalt/40"></span>
+</span>
+</div>
+<!-- Stat 4 -->
+<div class="flex flex-col items-center md:items-start gap-1 px-4 max-md:mt-8">
+<div class="flex items-end gap-1">
+<span class="font-headline font-semibold text-4xl md:text-[2.2rem] text-white">100%</span>
+</div>
+<span class="text-xs font-label font-bold text-muted uppercase tracking-[0.2em] relative">
+                        Open source
+                        <span class="absolute -bottom-1 left-0 w-full h-[1px] bg-soft-orange/40"></span>
+</span>
+</div>
+</div>
+</div>
+</main>
+<footer class="w-full py-12 border-t border-soft-cobalt/10 bg-backdrop mt-20">
+<div class="max-w-[1180px] mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+<span class="font-body text-sm text-muted">© 2024 Anshuman Singh. Built with cobalt &amp; orange.</span>
+<div class="flex gap-8">
+<a class="text-muted hover:text-soft-orange transition-colors duration-300 font-label font-bold uppercase text-[11px] tracking-widest" href="#">github</a>
+<a class="text-muted hover:text-soft-orange transition-colors duration-300 font-label font-bold uppercase text-[11px] tracking-widest" href="#">linkedin</a>
+<a class="text-muted hover:text-soft-orange transition-colors duration-300 font-label font-bold uppercase text-[11px] tracking-widest" href="#">layers</a>
+<a class="text-muted hover:text-soft-orange transition-colors duration-300 font-label font-bold uppercase text-[11px] tracking-widest" href="#">resume</a>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interaction: Smooth hover for identity stage
+        const card = document.querySelector('.group');
+        const container = card?.parentElement;
+        
+        if (container && card) {
+            container.addEventListener('mousemove', (e) => {
+                const { left, top, width, height } = container.getBoundingClientRect();
+                const x = (e.clientX - left - width / 2) / 25;
+                const y = (e.clientY - top - height / 2) / 25;
+                card.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
+            });
+
+            container.addEventListener('mouseleave', () => {
+                card.style.transform = 'rotateY(0deg) rotateX(0deg)';
+                card.style.transition = 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
+            });
+            
+            container.addEventListener('mouseenter', () => {
+                card.style.transition = 'none';
+            });
+        }
+    </script>
+</body></html>
