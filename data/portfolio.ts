@@ -48,7 +48,7 @@ export const portfolio = {
       "I am a B.Tech Computer Science Engineering student building across local AI, computer vision, applied research and the web. My public work focuses on local-first inference, driver-safety tooling, astronomical classification, and front-end experiments — shipped end-to-end on GitHub.",
     location: "India",
     availability: "Open to roles and collaborations",
-    email: "facelessteam.ai@gmail.com",
+    email: "anshuman6062@gmail.com",
     github: "https://github.com/Anshuman791322",
     githubHandle: "Anshuman791322",
   },
@@ -208,7 +208,7 @@ export const portfolio = {
 
   socials: [
     { label: "GitHub", href: "https://github.com/Anshuman791322" },
-    { label: "Email", href: "mailto:facelessteam.ai@gmail.com" },
+    { label: "Email", href: "mailto:anshuman6062@gmail.com" },
   ],
 } as const;
 
