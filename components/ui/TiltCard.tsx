@@ -59,7 +59,7 @@ export function TiltCard({
       if (glareEl) {
         const px = (offsetX + 0.5) * 100;
         const py = (offsetY + 0.5) * 100;
-        glareEl.style.background = `radial-gradient(420px circle at ${px}% ${py}%, rgba(255, 179, 106, ${glare}), transparent 60%)`;
+        glareEl.style.background = `radial-gradient(420px circle at ${px}% ${py}%, rgba(167, 243, 208, ${glare}), transparent 60%)`;
         glareEl.style.opacity = "1";
       }
     }

@@ -40,7 +40,7 @@ export function Hero() {
             <span className="hero-line-inner">that feels considered,</span>
           </span>
           <span className="hero-line">
-            <span className="hero-line-inner">shipped, and </span>
+            <span className="hero-line-inner">shipped, and</span>{" "}
             <span className="accent-orange">alive.</span>
           </span>
         </h1>
