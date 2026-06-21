@@ -42,8 +42,6 @@ export function Hero() {
           </span>
           <span className="hero-line">
             <SplitText text="shipped, and " immediate delay={26} startDelay={760} />
-          </span>
-          <span className="hero-line">
             <span className="accent-orange">
               <SplitText text="alive." immediate delay={32} startDelay={1080} />
             </span>
