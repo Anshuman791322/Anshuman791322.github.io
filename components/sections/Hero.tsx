@@ -34,16 +34,14 @@ export function Hero() {
 
         <h1 id="hero-title" className="hero-headline">
           <span className="hero-line">
-            I build software
+            <span className="hero-line-inner">I build software</span>
           </span>
           <span className="hero-line">
-            that feels considered,
+            <span className="hero-line-inner">that feels considered,</span>
           </span>
           <span className="hero-line">
-            shipped, and{" "}
-            <span className="accent-orange">
-              alive.
-            </span>
+            <span className="hero-line-inner">shipped, and </span>
+            <span className="accent-orange">alive.</span>
           </span>
         </h1>
 
