@@ -8,28 +8,23 @@ import { prefersReducedMotion } from "@/lib/anime";
 type Props = {
   children: ReactNode;
   className?: string;
-  /** Stroke-draw inner SVG paths on intersect. */
+  /** Stroke-draw inner SVG paths on intersect. Default OFF — most Iconsax
+   *  variants (Bulk/Bold) are fill-based, where dasharray tricks make icons
+   *  look broken. Opt in only on stroke-only Linear/Outline icons. */
   draw?: boolean;
-  /** Continuous gentle spin on the SVG (decorative, opt-in). */
+  /** Continuous gentle CSS spin (decorative, opt-in). */
   spin?: boolean;
   /** Hover micro-motion on the SVG. */
   hover?: "rotate" | "translate" | "scale" | "none";
 };
 
-/**
- * Wraps any SVG (typically an iconsax-react icon rendered as a child by the
- * server) and applies Anime.js animations. By taking children instead of an
- * icon component prop, this stays safe across the RSC/Client boundary.
- *
- * Animations applied:
- *  - draw: stroke-dashoffset reveal via getTotalLength()
- *  - hover: small rotate/translate/scale on enter, elastic settle on leave
- *  - spin: gentle continuous rotation (CSS-driven; opt-in)
- */
+/** Wraps any SVG (typically an Iconsax-React icon rendered as a child by the
+ *  server) and applies Anime.js micro-motion. Taking children (not an icon
+ *  component) keeps this safe across the RSC/Client boundary. */
 export function AnimatedIcon({
   children,
   className = "",
-  draw = true,
+  draw = false,
   spin = false,
   hover = "rotate",
 }: Props) {
@@ -49,38 +44,52 @@ export function AnimatedIcon({
         svg.querySelectorAll<SVGGeometryElement>(
           "path, line, rect, polyline, polygon, circle",
         ),
-      );
-      paths.forEach((p) => {
-        try {
-          const len = p.getTotalLength?.();
-          if (len && len > 0) {
-            p.style.strokeDasharray = `${len}`;
-            p.style.strokeDashoffset = `${len}`;
-          }
-        } catch {
-          /* element doesn't support getTotalLength */
-        }
+      ).filter((p) => {
+        // Only animate paths that actually have a stroke (skip fill-only).
+        const stroke = window.getComputedStyle(p).stroke;
+        return stroke && stroke !== "none";
       });
 
-      let played = false;
-      const observer = new IntersectionObserver(
-        (entries) => {
-          if (entries.some((e) => e.isIntersecting) && !played) {
-            played = true;
-            anime({
-              targets: paths,
-              strokeDashoffset: [anime.setDashoffset, 0],
-              duration: 900,
-              delay: anime.stagger(40),
-              easing: "easeOutCubic",
-            });
-            observer.disconnect();
+      if (paths.length > 0) {
+        paths.forEach((p) => {
+          try {
+            const len = p.getTotalLength?.();
+            if (len && len > 0) {
+              p.style.strokeDasharray = `${len}`;
+              p.style.strokeDashoffset = `${len}`;
+            }
+          } catch {
+            /* element doesn't support getTotalLength */
           }
-        },
-        { threshold: 0.4 },
-      );
-      observer.observe(wrapper);
-      cleanupFns.push(() => observer.disconnect());
+        });
+
+        let played = false;
+        const observer = new IntersectionObserver(
+          (entries) => {
+            if (entries.some((e) => e.isIntersecting) && !played) {
+              played = true;
+              anime({
+                targets: paths,
+                strokeDashoffset: [anime.setDashoffset, 0],
+                duration: 900,
+                delay: anime.stagger(40),
+                easing: "easeOutCubic",
+                complete: () => {
+                  // Remove dasharray once done so the icon stays clean.
+                  paths.forEach((p) => {
+                    p.style.strokeDasharray = "";
+                    p.style.strokeDashoffset = "";
+                  });
+                },
+              });
+              observer.disconnect();
+            }
+          },
+          { threshold: 0.4 },
+        );
+        observer.observe(wrapper);
+        cleanupFns.push(() => observer.disconnect());
+      }
     }
 
     if (hover !== "none" && !reduced) {
@@ -121,7 +130,6 @@ export function AnimatedIcon({
     <span
       ref={wrapperRef}
       className={`animated-icon ${spin ? "spin" : ""} ${className}`}
-      style={{ display: "inline-flex" }}
       aria-hidden="true"
     >
       {children}

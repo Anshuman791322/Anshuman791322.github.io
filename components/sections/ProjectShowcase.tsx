@@ -17,7 +17,6 @@ import type { Project } from "@/data/portfolio";
 import { prefersReducedMotion } from "@/lib/anime";
 import { SpotlightCard } from "@/components/ui/SpotlightCard";
 import { TiltCard } from "@/components/ui/TiltCard";
-import { AnimatedIcon } from "@/components/ui/AnimatedIcon";
 import { GithubIcon } from "@/components/ui/GithubIcon";
 
 type Props = {
@@ -25,11 +24,11 @@ type Props = {
 };
 
 const SPOTLIGHT_COLOR: Record<string, string> = {
-  blue: "rgba(74, 144, 255, 0.18)",
-  orange: "rgba(255, 138, 61, 0.20)",
-  violet: "rgba(178, 155, 255, 0.18)",
-  cyan: "rgba(140, 229, 255, 0.18)",
-  green: "rgba(141, 239, 176, 0.16)",
+  blue: "rgba(74, 144, 255, 0.22)",
+  orange: "rgba(255, 138, 61, 0.26)",
+  violet: "rgba(178, 155, 255, 0.22)",
+  cyan: "rgba(140, 229, 255, 0.22)",
+  green: "rgba(141, 239, 176, 0.20)",
 };
 
 const PROJECT_ICONS: Record<string, typeof Folder2> = {
@@ -39,6 +38,10 @@ const PROJECT_ICONS: Record<string, typeof Folder2> = {
   cyan: Folder2,
   green: Folder2,
 };
+
+/** Predictable bento spans — picked so the 5 projects always tile cleanly.
+ *  Tile 1: full-width hero (4 cols), rows 2 & 3: two pairs of half-tiles. */
+const SPAN_CLASS = ["hero", "half", "half", "half", "half"] as const;
 
 export function ProjectShowcase({ projects }: Props) {
   const [selected, setSelected] = useState<Project | null>(null);
@@ -58,7 +61,7 @@ export function ProjectShowcase({ projects }: Props) {
     if (reduced) return;
 
     cards.forEach((c) => {
-      c.style.transform = "translateY(36px)";
+      c.style.transform = "translateY(40px)";
     });
 
     let played = false;
@@ -69,9 +72,9 @@ export function ProjectShowcase({ projects }: Props) {
           anime({
             targets: cards,
             opacity: [0, 1],
-            translateY: [36, 0],
-            duration: 720,
-            delay: anime.stagger(110),
+            translateY: [40, 0],
+            duration: 760,
+            delay: anime.stagger(120),
             easing: "cubicBezier(0.16, 1, 0.3, 1)",
           });
           observer.disconnect();
@@ -101,21 +104,18 @@ export function ProjectShowcase({ projects }: Props) {
     <div className="work-grid" ref={gridRef}>
       {projects.map((project, index) => {
         const Icon = PROJECT_ICONS[project.accent] ?? Folder2;
-        const span =
-          project.featured && index === 0
-            ? "wide tall"
-            : project.featured
-              ? "wide"
-              : project.archived
-                ? "tiny"
-                : "";
+        const span = SPAN_CLASS[index] ?? "half";
         return (
-          <div key={project.title} className={`work-tile-wrap ${span}`}>
-            <TiltCard amplitude={8} scaleOnHover={1.02} glare={0.14}>
+          <div
+            key={project.title}
+            className={`work-tile-wrap ${span}`}
+            style={{ animationDelay: `${index * 80}ms` }}
+          >
+            <TiltCard amplitude={6} scaleOnHover={1.015} glare={0.16}>
               <SpotlightCard
                 className={`work-tile project-${project.accent} ${
                   project.featured ? "featured" : ""
-                } ${project.archived ? "archived" : ""}`}
+                } ${project.archived ? "archived" : ""} ${span === "hero" ? "is-hero" : ""}`}
                 spotlightColor={
                   SPOTLIGHT_COLOR[project.accent] ?? SPOTLIGHT_COLOR.blue
                 }
@@ -125,7 +125,8 @@ export function ProjectShowcase({ projects }: Props) {
               >
                 <div className="work-tile-top">
                   <span className="work-tile-index">
-                    {(index + 1).toString().padStart(2, "0")} / 0{projects.length}
+                    {(index + 1).toString().padStart(2, "0")} /{" "}
+                    {projects.length.toString().padStart(2, "0")}
                   </span>
                   <span className="work-status">
                     <span className="dot" />
@@ -137,29 +138,34 @@ export function ProjectShowcase({ projects }: Props) {
                   </span>
                 </div>
 
-                <span className="work-tile-icon" aria-hidden="true">
-                  <AnimatedIcon><Icon size={project.featured ? 26 : 22} variant="Bulk" /></AnimatedIcon>
-                </span>
-
-                <div className="work-tile-body">
-                  <h3 className="work-tile-title">{project.title}</h3>
-                  <p className="work-tile-desc">{project.description}</p>
-                  <div className="work-tile-tags">
-                    {project.tags
-                      .slice(0, project.featured ? 5 : 3)
-                      .map((tag) => (
-                        <span key={tag}>{tag}</span>
-                      ))}
+                <div className="work-tile-mid">
+                  <span className="work-tile-icon" aria-hidden="true">
+                    <Icon
+                      size={span === "hero" ? 28 : 22}
+                      variant="Bulk"
+                      color="currentColor"
+                    />
+                  </span>
+                  <div className="work-tile-body">
+                    <h3 className="work-tile-title">{project.title}</h3>
+                    <p className="work-tile-desc">{project.description}</p>
+                    <div className="work-tile-tags">
+                      {project.tags
+                        .slice(0, span === "hero" ? 6 : 4)
+                        .map((tag) => (
+                          <span key={tag}>{tag}</span>
+                        ))}
+                    </div>
+                    {(span === "hero" || project.featured) && (
+                      <p className="work-tile-impact">{project.impact}</p>
+                    )}
                   </div>
-                  {project.featured && (
-                    <p className="work-tile-impact">{project.impact}</p>
-                  )}
                 </div>
 
                 <div className="work-tile-footer">
                   <span className="work-tile-year">{project.year}</span>
                   <span className="work-tile-arrow">
-                    <ArrowSquareRight size={20} variant="Linear" />
+                    <ArrowSquareRight size={20} variant="Linear" color="currentColor" />
                   </span>
                 </div>
               </SpotlightCard>
@@ -187,7 +193,7 @@ export function ProjectShowcase({ projects }: Props) {
               onClick={() => setSelected(null)}
               aria-label="Close"
             >
-              <CloseCircle size={20} variant="Linear" />
+              <CloseCircle size={20} variant="Linear" color="currentColor" />
             </button>
             <p className="eyebrow">
               <span className="num">{selected.year}</span>
@@ -211,7 +217,7 @@ export function ProjectShowcase({ projects }: Props) {
               >
                 <GithubIcon size={16} />
                 Open source
-                <ArrowRight size={14} variant="Linear" />
+                <ArrowRight size={14} variant="Linear" color="currentColor" />
               </a>
               {selected.liveUrl && (
                 <a
@@ -220,7 +226,8 @@ export function ProjectShowcase({ projects }: Props) {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  Live <ExportSquare size={14} variant="Linear" />
+                  Live{" "}
+                  <ExportSquare size={14} variant="Linear" color="currentColor" />
                 </a>
               )}
             </div>

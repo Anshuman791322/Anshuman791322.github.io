@@ -9,6 +9,7 @@ import { Stats } from "@/components/sections/Stats";
 import { TrackRecord } from "@/components/sections/TrackRecord";
 import { Workbench } from "@/components/sections/Workbench";
 import { Nav } from "@/components/Nav";
+import { Ambient } from "@/components/ui/Ambient";
 
 // Server component. Above-the-fold HTML is fully static; small client islands
 // (Nav, CountUp, Reveal, ProjectShowcase, MagneticCTA) hydrate on demand.
@@ -16,6 +17,7 @@ import { Nav } from "@/components/Nav";
 export default function Home() {
   return (
     <div className="shell">
+      <Ambient />
       <Nav />
       <main>
         <Hero />

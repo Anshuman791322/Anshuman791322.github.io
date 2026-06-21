@@ -8,42 +8,38 @@ import { prefersReducedMotion } from "@/lib/anime";
 type Props = {
   text: string;
   className?: string;
-  /** Visual element tag — h1, h2, span, p, etc. */
   as?: "h1" | "h2" | "h3" | "p" | "span";
   /** Stagger delay between chars in ms. */
   delay?: number;
   /** Animation duration in ms. */
   duration?: number;
-  /** Trigger immediately on mount (true) or via IntersectionObserver (false). */
+  /** Trigger immediately on mount; otherwise via IntersectionObserver. */
   immediate?: boolean;
-  /** Threshold for IntersectionObserver (0-1). */
   threshold?: number;
   /** Initial delay before first char (ms). */
   startDelay?: number;
-  /** Highlight word as accent (renders inside <span class="accent-orange">). */
-  accent?: string;
 };
 
-/** Free recreation of the React Bits SplitText pattern (which uses GSAP SplitText).
- *  Splits text into per-character spans and reveals them via anime.js stagger.
- *  Preserves semantic text (still readable + selectable in DOM). */
+/** Free recreation of the React Bits SplitText pattern.
+ *  Word-safe: each WORD is an inline-block container with white-space: nowrap,
+ *  so the browser only breaks BETWEEN words, never inside them. Characters
+ *  within each word are inline-block spans that anime.js can animate
+ *  independently. Preserves semantic text (still selectable + accessible). */
 export function SplitText({
   text,
   className = "",
   as: As = "span",
-  delay = 28,
+  delay = 26,
   duration = 720,
   immediate = false,
   threshold = 0.1,
   startDelay = 0,
-  accent,
 }: Props) {
   const ref = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     const node = ref.current;
     if (!node) return;
-
     const chars = Array.from(
       node.querySelectorAll<HTMLElement>(".split-char"),
     );
@@ -60,18 +56,15 @@ export function SplitText({
 
     chars.forEach((c) => {
       c.style.opacity = "0";
-      c.style.transform = "translateY(40%)";
+      c.style.transform = "translateY(50%) rotate(4deg)";
       c.style.willChange = "transform, opacity";
     });
 
-    let played = false;
-
     function play() {
-      if (played) return;
-      played = true;
       anime({
         targets: chars,
-        translateY: ["40%", "0%"],
+        translateY: ["50%", "0%"],
+        rotate: [4, 0],
         opacity: [0, 1],
         duration,
         delay: anime.stagger(delay, { start: startDelay }),
@@ -80,18 +73,21 @@ export function SplitText({
     }
 
     if (immediate) {
-      // Wait for fonts so we don't get layout jump on play.
       if (document.fonts?.status === "loaded") {
         play();
+      } else if (document.fonts?.ready) {
+        document.fonts.ready.then(play);
       } else {
-        document.fonts?.ready.then(play);
+        play();
       }
       return;
     }
 
+    let played = false;
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries.some((e) => e.isIntersecting)) {
+        if (entries.some((e) => e.isIntersecting) && !played) {
+          played = true;
           play();
           observer.disconnect();
         }
@@ -100,55 +96,46 @@ export function SplitText({
     );
     observer.observe(node);
     return () => observer.disconnect();
-  }, [text, accent, delay, duration, immediate, threshold, startDelay]);
+  }, [text, delay, duration, immediate, threshold, startDelay]);
 
-  // Split into chars preserving spaces. The accent word, if present and found,
-  // gets wrapped in a span so the accent style applies — chars still individual.
-  function renderChars(input: string, accentWord?: string) {
-    if (accentWord) {
-      const lc = input.toLowerCase();
-      const idx = lc.indexOf(accentWord.toLowerCase());
-      if (idx >= 0) {
-        const before = input.slice(0, idx);
-        const accentText = input.slice(idx, idx + accentWord.length);
-        const after = input.slice(idx + accentWord.length);
-        return (
-          <>
-            {renderCharsRaw(before)}
-            <span className="accent-orange">{renderCharsRaw(accentText)}</span>
-            {renderCharsRaw(after)}
-          </>
-        );
-      }
-    }
-    return renderCharsRaw(input);
-  }
-
-  function renderCharsRaw(input: string) {
-    return Array.from(input).map((ch, i) => (
-      <span
-        className="split-char"
-        key={`${ch}-${i}`}
-        style={{ display: "inline-block", whiteSpace: "pre" }}
-      >
-        {ch}
-      </span>
-    ));
-  }
-
-  // Reflow each line by splitting on \n.
-  const lines = text.split("\n");
+  // Word-safe splitting. Each word stays together; chars inside animate
+  // individually. Whitespace tokens are preserved as text nodes between words.
+  const tokens = text.split(/(\s+)/);
 
   return (
     <As
       ref={ref as React.Ref<HTMLHeadingElement & HTMLParagraphElement & HTMLSpanElement>}
       className={`split-parent ${className}`}
     >
-      {lines.map((line, i) => (
-        <span className="split-line" key={i} style={{ display: "block", overflow: "hidden" }}>
-          {renderChars(line, accent)}
-        </span>
-      ))}
+      {tokens.map((token, ti) => {
+        if (/^\s+$/.test(token)) {
+          // Preserve whitespace as a regular text node so the browser
+          // can break between words naturally.
+          return <span key={`s${ti}`}>{token}</span>;
+        }
+        return (
+          <span
+            key={`w${ti}`}
+            className="split-word"
+            style={{
+              display: "inline-block",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              verticalAlign: "top",
+            }}
+          >
+            {Array.from(token).map((ch, ci) => (
+              <span
+                key={`c${ti}-${ci}`}
+                className="split-char"
+                style={{ display: "inline-block" }}
+              >
+                {ch}
+              </span>
+            ))}
+          </span>
+        );
+      })}
     </As>
   );
 }

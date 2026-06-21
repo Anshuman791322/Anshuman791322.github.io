@@ -9,7 +9,7 @@ import { ProjectShowcase } from "@/components/sections/ProjectShowcase";
 export function SelectedWork() {
   return (
     <section
-      className="section section-band selected-work"
+      className="selected-work"
       id="selected-work"
       aria-labelledby="work-title"
     >

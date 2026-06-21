@@ -11,23 +11,21 @@ type Props = {
   as?: "h1" | "h2" | "h3" | "p" | "span";
   delay?: number;
   duration?: number;
-  /** Split by words (default) or chars. */
-  by?: "words" | "chars";
   threshold?: number;
   accent?: string;
   id?: string;
 };
 
-/** Free recreation of the React Bits BlurText pattern (which uses motion/react).
- *  Each word eases from filter: blur(10px) to blur(0). Triggered on intersect.
- *  Preserves semantic text and respects reduced motion. */
+/** Free recreation of the React Bits BlurText pattern (original uses motion/react).
+ *  Each word eases from filter: blur(10px) to blur(0). Preserves whitespace
+ *  with non-breaking spaces between words so the flex container doesn't
+ *  collapse spacing. */
 export function BlurText({
   text,
   className = "",
   as: As = "span",
   delay = 90,
   duration = 720,
-  by = "words",
   threshold = 0.1,
   accent,
   id,
@@ -47,7 +45,6 @@ export function BlurText({
       item.style.transform = reduced ? "none" : "translateY(20px)";
       item.style.willChange = "transform, opacity, filter";
     });
-
     if (reduced) return;
 
     let played = false;
@@ -71,32 +68,31 @@ export function BlurText({
     );
     observer.observe(node);
     return () => observer.disconnect();
-  }, [text, by, delay, duration, threshold]);
+  }, [text, delay, duration, threshold]);
 
-  function renderTokens(input: string, mode: "words" | "chars") {
-    const tokens = mode === "words" ? input.split(/(\s+)/) : Array.from(input);
-    return tokens.map((token, i) => {
-      if (mode === "words" && /^\s+$/.test(token)) return token;
-      const isAccent = accent && token.toLowerCase() === accent.toLowerCase();
-      return (
-        <span
-          key={`${token}-${i}`}
-          className={`blur-item ${isAccent ? "accent-orange" : ""}`}
-          style={{ display: "inline-block" }}
-        >
-          {token}
-        </span>
-      );
-    });
-  }
+  // Split on whitespace, keep words. Append non-breaking space after each
+  // non-last word so the inline-block words don't collapse together.
+  const words = text.split(/\s+/).filter(Boolean);
 
   return (
     <As
       ref={ref as React.Ref<HTMLHeadingElement & HTMLParagraphElement & HTMLSpanElement>}
-      className={className}
+      className={`blur-parent ${className}`}
       id={id}
     >
-      {renderTokens(text, by)}
+      {words.map((word, i) => {
+        const isAccent = accent && word.toLowerCase() === accent.toLowerCase();
+        return (
+          <span
+            key={`${word}-${i}`}
+            className={`blur-item ${isAccent ? "accent-orange" : ""}`}
+            style={{ display: "inline-block", whiteSpace: "nowrap" }}
+          >
+            {word}
+            {i < words.length - 1 ? " " : ""}
+          </span>
+        );
+      })}
     </As>
   );
 }
