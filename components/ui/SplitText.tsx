@@ -55,8 +55,8 @@ export function SplitText({
     }
 
     chars.forEach((c) => {
-      c.style.opacity = "0";
-      c.style.transform = "translateY(50%) rotate(4deg)";
+      c.style.opacity = immediate ? "1" : "0";
+      c.style.transform = immediate ? "none" : "translateY(50%) rotate(4deg)";
       c.style.willChange = "transform, opacity";
     });
 
@@ -67,7 +67,7 @@ export function SplitText({
       animate(chars, {
         translateY: ["50%", "0%"],
         rotate: [4, 0],
-        opacity: [0, 1],
+        opacity: immediate ? [1, 1] : [0, 1],
         duration,
         delay: stagger(delay, { start: startDelay }),
         ease: SMOOTH_EASE,

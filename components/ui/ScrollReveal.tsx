@@ -15,6 +15,7 @@ type Props = {
   stagger?: number;
   from?: "up" | "down" | "left" | "right";
   distance?: number;
+  preserveInitial?: boolean;
 };
 
 /** Free port of the React Bits AnimatedContent / ScrollReveal pattern.
@@ -28,6 +29,7 @@ export function ScrollReveal({
   stagger = 80,
   from = "up",
   distance = 32,
+  preserveInitial = false,
 }: Props) {
   const ref = useRef<HTMLDivElement | null>(null);
 
@@ -41,7 +43,7 @@ export function ScrollReveal({
 
     const reduced = prefersReducedMotion();
     targets.forEach((t) => {
-      t.style.opacity = reduced ? "1" : "0";
+      t.style.opacity = reduced || preserveInitial ? "1" : "0";
       t.style.willChange = "transform, opacity";
     });
 
@@ -49,9 +51,11 @@ export function ScrollReveal({
 
     const xOff = from === "left" ? distance : from === "right" ? -distance : 0;
     const yOff = from === "up" ? distance : from === "down" ? -distance : 0;
-    targets.forEach((t) => {
-      t.style.transform = `translate3d(${xOff}px, ${yOff}px, 0)`;
-    });
+    if (!preserveInitial) {
+      targets.forEach((t) => {
+        t.style.transform = `translate3d(${xOff}px, ${yOff}px, 0)`;
+      });
+    }
 
     const scrollObserver = onScroll({
       target: node,
@@ -60,7 +64,7 @@ export function ScrollReveal({
       repeat: false,
       onEnter: () => {
         animate(targets, {
-          opacity: [0, 1],
+          opacity: preserveInitial ? [1, 1] : [0, 1],
           translateX: from === "left" || from === "right" ? [xOff, 0] : 0,
           translateY: from === "up" || from === "down" ? [yOff, 0] : 0,
           duration,
@@ -79,7 +83,7 @@ export function ScrollReveal({
       window.clearTimeout(fallback);
       scrollObserver.revert();
     };
-  }, [delay, duration, threshold, stagger, from, distance]);
+  }, [delay, duration, threshold, stagger, from, distance, preserveInitial]);
 
   return (
     <div ref={ref} className={className}>

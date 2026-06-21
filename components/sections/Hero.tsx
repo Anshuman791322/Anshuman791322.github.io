@@ -50,7 +50,7 @@ export function Hero() {
 
         <div className="hero-bottom">
           <div className="hero-bottom-left">
-            <ScrollReveal from="up" stagger={90} threshold={0.04}>
+            <ScrollReveal from="up" stagger={90} threshold={0.04} preserveInitial>
               <p className="hero-lede">{portfolio.person.bio}</p>
 
               <div className="hero-actions">
@@ -106,7 +106,13 @@ export function Hero() {
             </ScrollReveal>
           </div>
 
-          <ScrollReveal from="left" className="hero-bottom-right" stagger={0} threshold={0.05}>
+          <ScrollReveal
+            from="left"
+            className="hero-bottom-right"
+            stagger={0}
+            threshold={0.05}
+            preserveInitial
+          >
             <div className="identity">
               <div className="identity-sheet s2" aria-hidden="true" />
               <div className="identity-sheet" aria-hidden="true" />
