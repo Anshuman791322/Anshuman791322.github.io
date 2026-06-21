@@ -15,8 +15,6 @@ export type Project = {
   featured: boolean;
   archived?: boolean;
   accent: ProjectAccent;
-  // Bento span (1-12 column grid). featured cards typically span 7-8.
-  span: { col: number; row?: number };
 };
 
 export type SkillGroup = {
@@ -34,7 +32,15 @@ export type TimelineEntry = {
 export type Stat = {
   value: number;
   suffix?: string;
-  prefix?: string;
+  label: string;
+};
+
+export type NavItem = {
+  /** URL fragment without the # */
+  id: string;
+  /** Editorial two-digit numbering */
+  index: string;
+  /** Long-form descriptive label */
   label: string;
 };
 
@@ -43,16 +49,25 @@ export const portfolio = {
     name: "Anshuman Singh",
     handle: "Anshuman791322",
     role: "Computer-science engineer & product builder",
-    tagline: "I turn technical ideas into working products.",
+    tagline:
+      "Considered software, shipped end-to-end. Local-first AI, computer vision, and front-end systems.",
     bio:
-      "I am a B.Tech Computer Science Engineering student building across local AI, computer vision, applied research and the web. My public work focuses on local-first inference, driver-safety tooling, astronomical classification, and front-end experiments — shipped end-to-end on GitHub.",
+      "I'm a B.Tech Computer Science student building five public products on GitHub — a Windows-first AI assistant, a driver-safety Android release, an applied-research classifier and front-end work. Every line is open source.",
     location: "India",
-    availability: "Open to roles and collaborations",
+    availability: "Open to roles · Available June 2026",
     email: "anshuman6062@gmail.com",
     github: "https://github.com/Anshuman791322",
     githubHandle: "Anshuman791322",
   },
-  nav: ["about", "journey", "skills", "projects", "experiments", "contact"] as const,
+  nav: [
+    { id: "about", index: "01", label: "About" },
+    { id: "track-record", index: "02", label: "Track Record" },
+    { id: "stack", index: "03", label: "Stack" },
+    { id: "selected-work", index: "04", label: "Selected Work" },
+    { id: "workbench", index: "05", label: "Workbench" },
+    { id: "contact", index: "06", label: "Contact" },
+  ] satisfies NavItem[],
+  // Stats — real values surfaced clearly. No placeholder zeros in rendered HTML.
   stats: [
     { value: 5, label: "Public repositories" },
     { value: 4, label: "Build domains" },
@@ -70,7 +85,7 @@ export const portfolio = {
     },
     {
       label: "App & Web",
-      items: ["PySide6", "Next.js", "React", "Tailwind CSS", "Framer Motion"],
+      items: ["PySide6", "Next.js", "React", "Tailwind CSS", "Anime.js"],
     },
     {
       label: "Delivery",
@@ -115,7 +130,6 @@ export const portfolio = {
     },
   ] satisfies TimelineEntry[],
 
-  // Featured projects render in the Bento grid. Order matters: card 1 is the hero card.
   projects: [
     {
       title: "AI Agent",
@@ -128,7 +142,6 @@ export const portfolio = {
       year: "2026",
       featured: true,
       accent: "blue",
-      span: { col: 7 },
     },
     {
       title: "Smart Driver Monitoring",
@@ -142,7 +155,6 @@ export const portfolio = {
       year: "2026",
       featured: true,
       accent: "orange",
-      span: { col: 5 },
     },
     {
       title: "Periodically Variable Stars",
@@ -156,7 +168,6 @@ export const portfolio = {
       year: "2025",
       featured: true,
       accent: "violet",
-      span: { col: 5 },
     },
     {
       title: "HTML Portfolio",
@@ -169,7 +180,6 @@ export const portfolio = {
       year: "2024",
       featured: false,
       accent: "cyan",
-      span: { col: 4 },
     },
     {
       title: "Anshuman-07",
@@ -183,7 +193,6 @@ export const portfolio = {
       featured: false,
       archived: true,
       accent: "green",
-      span: { col: 3 },
     },
   ] satisfies Project[],
 
@@ -198,12 +207,28 @@ export const portfolio = {
     },
     {
       label: "Static-first motion",
-      detail: "Building this portfolio with Framer Motion + Lenis on GitHub Pages.",
+      detail: "Building this portfolio with Anime.js on GitHub Pages.",
     },
     {
       label: "Release pipelines",
       detail: "APK distribution as a product surface, not an afterthought.",
     },
+  ],
+
+  // Marquee band — capability lexicon. Pure CSS @keyframes ticker.
+  marquee: [
+    "Local-first AI",
+    "PySide6",
+    "Ollama",
+    "Whisper",
+    "Next.js",
+    "TypeScript",
+    "Computer vision",
+    "Static export",
+    "Applied research",
+    "Open source",
+    "Anime.js",
+    "GitHub Actions",
   ],
 
   socials: [

@@ -1,13 +1,9 @@
 "use client";
 
-import {
-  animate,
-  useInView,
-  useMotionValue,
-  useReducedMotion,
-  useTransform,
-} from "framer-motion";
+import anime from "animejs";
 import { useEffect, useRef } from "react";
+
+import { DURATIONS, prefersReducedMotion } from "@/lib/anime";
 
 type Props = {
   to: number;
@@ -15,39 +11,53 @@ type Props = {
   format?: (value: number) => string;
 };
 
-export function CountUp({ to, duration = 1.6, format }: Props) {
-  const reducedMotion = useReducedMotion();
-  const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.4 });
-  const value = useMotionValue(0);
-  const rounded = useTransform(value, (latest) =>
-    format ? format(latest) : Math.round(latest).toString(),
-  );
+/**
+ * Animates a number from 0 → `to` once the element scrolls into view.
+ * Anime.js drives the scalar; we write the formatted output into a ref-bound
+ * span so React does not re-render every frame.
+ */
+export function CountUp({ to, duration = DURATIONS.slow, format }: Props) {
+  const ref = useRef<HTMLSpanElement | null>(null);
 
   useEffect(() => {
-    if (!inView) return;
-    if (reducedMotion) {
-      value.set(to);
+    const node = ref.current;
+    if (!node) return;
+
+    const fmt = format ?? ((v: number) => Math.round(v).toString());
+
+    if (prefersReducedMotion()) {
+      node.textContent = fmt(to);
       return;
     }
-    const controls = animate(value, to, {
-      duration,
-      ease: [0.16, 1, 0.3, 1],
-    });
-    return controls.stop;
-  }, [inView, to, duration, value, reducedMotion]);
 
-  // Write the formatted string into the span via onChange.
-  useEffect(() => {
-    const unsubscribe = rounded.on("change", (latest) => {
-      if (ref.current) ref.current.textContent = latest;
-    });
-    return unsubscribe;
-  }, [rounded]);
+    node.textContent = fmt(0);
+    let played = false;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting && !played) {
+            played = true;
+            const obj = { value: 0 };
+            anime({
+              targets: obj,
+              value: to,
+              round: 1,
+              duration,
+              easing: "cubicBezier(0.16, 1, 0.3, 1)",
+              update: () => {
+                node.textContent = fmt(obj.value);
+              },
+            });
+            observer.disconnect();
+            return;
+          }
+        }
+      },
+      { threshold: 0.3 },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [to, duration, format]);
 
-  return (
-    <span ref={ref}>
-      {format ? format(0) : "0"}
-    </span>
-  );
+  return <span ref={ref}>0</span>;
 }
