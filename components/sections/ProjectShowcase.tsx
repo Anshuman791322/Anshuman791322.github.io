@@ -1,16 +1,21 @@
 "use client";
 
-import anime from "animejs";
+import { animate, onScroll, stagger } from "animejs";
 import {
   ArrowRight,
   ArrowSquareRight,
-  Box,
   CloseCircle,
-  Code,
   ExportSquare,
-  Eye,
-  Folder2,
 } from "iconsax-react";
+import {
+  Archive,
+  Bot,
+  CarFront,
+  FileCode2,
+  Github,
+  Telescope,
+  type LucideIcon,
+} from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import type { Project } from "@/data/portfolio";
@@ -18,6 +23,7 @@ import { prefersReducedMotion } from "@/lib/anime";
 import { SpotlightCard } from "@/components/ui/SpotlightCard";
 import { TiltCard } from "@/components/ui/TiltCard";
 import { GithubIcon } from "@/components/ui/GithubIcon";
+import { AnimatedIcon } from "@/components/ui/AnimatedIcon";
 
 type Props = {
   projects: readonly Project[];
@@ -31,12 +37,12 @@ const SPOTLIGHT_COLOR: Record<string, string> = {
   green: "rgba(141, 239, 176, 0.20)",
 };
 
-const PROJECT_ICONS: Record<string, typeof Folder2> = {
-  blue: Code,
-  orange: Box,
-  violet: Eye,
-  cyan: Folder2,
-  green: Folder2,
+const PROJECT_ICONS: Record<string, LucideIcon> = {
+  "AI Agent": Bot,
+  "Smart Driver Monitoring": CarFront,
+  "Periodically Variable Stars": Telescope,
+  "HTML Portfolio": FileCode2,
+  "Anshuman-07": Github,
 };
 
 /** Predictable bento spans — picked so the 5 projects always tile cleanly.
@@ -64,26 +70,24 @@ export function ProjectShowcase({ projects }: Props) {
       c.style.transform = "translateY(40px)";
     });
 
-    let played = false;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((e) => e.isIntersecting) && !played) {
-          played = true;
-          anime({
-            targets: cards,
-            opacity: [0, 1],
-            translateY: [40, 0],
-            duration: 760,
-            delay: anime.stagger(120),
-            easing: "cubicBezier(0.16, 1, 0.3, 1)",
-          });
-          observer.disconnect();
-        }
+    const scrollObserver = onScroll({
+      target: root,
+      enter: "5% bottom",
+      leave: "bottom top",
+      repeat: false,
+      onEnter: () => {
+        animate(cards, {
+          opacity: [0, 1],
+          translateY: [40, 0],
+          duration: 760,
+          delay: stagger(120),
+          ease: "cubicBezier(0.16, 1, 0.3, 1)",
+        });
       },
-      { threshold: 0.05 },
-    );
-    observer.observe(root);
-    return () => observer.disconnect();
+    });
+    return () => {
+      scrollObserver.revert();
+    };
   }, []);
 
   // Modal handling
@@ -103,7 +107,7 @@ export function ProjectShowcase({ projects }: Props) {
   return (
     <div className="work-grid" ref={gridRef}>
       {projects.map((project, index) => {
-        const Icon = PROJECT_ICONS[project.accent] ?? Folder2;
+        const Icon = PROJECT_ICONS[project.title] ?? Archive;
         const span = SPAN_CLASS[index] ?? "half";
         return (
           <div
@@ -140,11 +144,13 @@ export function ProjectShowcase({ projects }: Props) {
 
                 <div className="work-tile-mid">
                   <span className="work-tile-icon" aria-hidden="true">
-                    <Icon
-                      size={span === "hero" ? 28 : 22}
-                      variant="Bulk"
-                      color="currentColor"
-                    />
+                    <AnimatedIcon draw hover="scale">
+                      <Icon
+                        size={span === "hero" ? 30 : 24}
+                        strokeWidth={1.8}
+                        aria-hidden="true"
+                      />
+                    </AnimatedIcon>
                   </span>
                   <div className="work-tile-body">
                     <h3 className="work-tile-title">{project.title}</h3>

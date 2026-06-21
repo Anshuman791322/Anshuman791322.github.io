@@ -1,6 +1,6 @@
 "use client";
 
-import anime from "animejs";
+import { animate, onScroll, stagger as staggerDelay } from "animejs";
 import { type ReactNode, useEffect, useRef } from "react";
 
 import { prefersReducedMotion } from "@/lib/anime";
@@ -53,27 +53,25 @@ export function ScrollReveal({
       t.style.transform = `translate3d(${xOff}px, ${yOff}px, 0)`;
     });
 
-    let played = false;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((e) => e.isIntersecting) && !played) {
-          played = true;
-          anime({
-            targets,
-            opacity: [0, 1],
-            translateX: from === "left" || from === "right" ? [xOff, 0] : 0,
-            translateY: from === "up" || from === "down" ? [yOff, 0] : 0,
-            duration,
-            delay: anime.stagger(stagger, { start: delay }),
-            easing: "cubicBezier(0.16, 1, 0.3, 1)",
-          });
-          observer.disconnect();
-        }
+    const scrollObserver = onScroll({
+      target: node,
+      enter: `${Math.round(threshold * 100)}% bottom`,
+      leave: "bottom top",
+      repeat: false,
+      onEnter: () => {
+        animate(targets, {
+          opacity: [0, 1],
+          translateX: from === "left" || from === "right" ? [xOff, 0] : 0,
+          translateY: from === "up" || from === "down" ? [yOff, 0] : 0,
+          duration,
+          delay: staggerDelay(stagger, { start: delay }),
+          ease: "cubicBezier(0.16, 1, 0.3, 1)",
+        });
       },
-      { threshold },
-    );
-    observer.observe(node);
-    return () => observer.disconnect();
+    });
+    return () => {
+      scrollObserver.revert();
+    };
   }, [delay, duration, threshold, stagger, from, distance]);
 
   return (

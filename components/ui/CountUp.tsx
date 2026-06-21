@@ -1,6 +1,6 @@
 "use client";
 
-import anime from "animejs";
+import { animate } from "animejs";
 import { useEffect, useRef } from "react";
 
 import { DURATIONS, prefersReducedMotion } from "@/lib/anime";
@@ -38,13 +38,12 @@ export function CountUp({ to, duration = DURATIONS.slow, format }: Props) {
           if (entry.isIntersecting && !played) {
             played = true;
             const obj = { value: 0 };
-            anime({
-              targets: obj,
+            animate(obj, {
               value: to,
               round: 1,
               duration,
-              easing: "cubicBezier(0.16, 1, 0.3, 1)",
-              update: () => {
+              ease: "cubicBezier(0.16, 1, 0.3, 1)",
+              onUpdate: () => {
                 node.textContent = fmt(obj.value);
               },
             });

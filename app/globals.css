@@ -195,7 +195,7 @@ html.has-cursor-glow .cursor-glow { opacity: 1; }
 h1,
 h2,
 h3 {
-  font-family: var(--font-display), Georgia, serif;
+  font-family: var(--font-display), var(--font-body), ui-sans-serif, system-ui, sans-serif;
   font-weight: 500;
   letter-spacing: -0.012em;
   margin: 0;
@@ -222,7 +222,7 @@ p {
   font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
 }
 
-.serif { font-family: var(--font-display), Georgia, serif; }
+.serif { font-family: var(--font-display), var(--font-body), ui-sans-serif, system-ui, sans-serif; }
 
 .lede {
   max-width: var(--measure);
@@ -369,7 +369,7 @@ p {
   display: flex;
   align-items: center;
   gap: 12px;
-  font-family: var(--font-display), Georgia, serif;
+  font-family: var(--font-display), var(--font-body), ui-sans-serif, system-ui, sans-serif;
   font-size: 0.98rem;
   font-weight: 600;
   letter-spacing: -0.01em;
@@ -675,7 +675,7 @@ p {
 .hero-headline {
   margin: 0 0 56px;
   max-width: 1180px;
-  font-family: var(--font-display), Georgia, serif;
+  font-family: var(--font-display), var(--font-body), ui-sans-serif, system-ui, sans-serif;
   font-weight: 500;
   letter-spacing: -0.018em;
   line-height: 0.98;
@@ -852,7 +852,7 @@ p {
 
 .identity-meta strong {
   display: block;
-  font-family: var(--font-display), Georgia, serif;
+  font-family: var(--font-display), var(--font-body), ui-sans-serif, system-ui, sans-serif;
   font-size: 1.08rem;
   font-weight: 600;
 }
@@ -954,7 +954,7 @@ p {
   align-items: baseline;
   gap: 4px;
   margin-bottom: 6px;
-  font-family: var(--font-display), Georgia, serif;
+  font-family: var(--font-display), var(--font-body), ui-sans-serif, system-ui, sans-serif;
   font-size: 2.6rem;
   font-weight: 600;
   letter-spacing: -0.02em;
@@ -1095,7 +1095,7 @@ p {
 
 .track-meter-value {
   color: var(--orange-soft);
-  font-family: var(--font-display), Georgia, serif;
+  font-family: var(--font-display), var(--font-body), ui-sans-serif, system-ui, sans-serif;
   font-weight: 600;
   font-size: 0.9rem;
 }
@@ -1178,7 +1178,7 @@ p {
 
 .track-year {
   color: var(--orange-soft);
-  font-family: var(--font-display), Georgia, serif;
+  font-family: var(--font-display), var(--font-body), ui-sans-serif, system-ui, sans-serif;
   font-weight: 600;
   font-size: 1rem;
 }
@@ -1336,7 +1336,7 @@ p {
   align-items: center;
   gap: 14px;
   flex-shrink: 0;
-  font-family: var(--font-display), Georgia, serif;
+  font-family: var(--font-display), var(--font-body), ui-sans-serif, system-ui, sans-serif;
   font-size: clamp(1.4rem, 2.2vw, 1.9rem);
   font-weight: 500;
   letter-spacing: -0.01em;
@@ -1586,7 +1586,7 @@ p {
 
 .work-tile-title {
   margin: 0;
-  font-family: var(--font-display), Georgia, serif;
+  font-family: var(--font-display), var(--font-body), ui-sans-serif, system-ui, sans-serif;
   font-size: clamp(1.45rem, 2vw, 1.95rem);
   font-weight: 500;
   letter-spacing: -0.01em;
@@ -1643,7 +1643,7 @@ p {
 
 .work-tile-year {
   color: var(--muted-2);
-  font-family: var(--font-display), Georgia, serif;
+  font-family: var(--font-display), var(--font-body), ui-sans-serif, system-ui, sans-serif;
   font-size: 0.92rem;
   font-feature-settings: "tnum";
 }
@@ -1774,7 +1774,7 @@ p {
 
 .bench-row-body strong {
   display: block;
-  font-family: var(--font-display), Georgia, serif;
+  font-family: var(--font-display), var(--font-body), ui-sans-serif, system-ui, sans-serif;
   font-size: 1.06rem;
   font-weight: 600;
   color: var(--text);

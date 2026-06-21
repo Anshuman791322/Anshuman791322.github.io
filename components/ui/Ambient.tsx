@@ -1,6 +1,6 @@
 "use client";
 
-import anime from "animejs";
+import { animate, type JSAnimation } from "animejs";
 import { useEffect, useRef } from "react";
 
 import { prefersReducedMotion } from "@/lib/anime";
@@ -21,23 +21,22 @@ export function Ambient() {
       layer.querySelectorAll<HTMLElement>(".ambient-orb"),
     );
 
-    const tweens: ReturnType<typeof anime>[] = [];
+    const tweens: JSAnimation[] = [];
     if (!reduced && orbs.length > 0) {
       orbs.forEach((orb, i) => {
         const ampX = 60 + i * 14;
         const ampY = 40 + i * 10;
         const duration = 14000 + i * 5000;
-        const tween = anime({
-          targets: orb,
+        const tween = animate(orb, {
           translateX: [
-            { value: ampX, duration, easing: "easeInOutSine" },
-            { value: -ampX * 0.7, duration: duration + 2000, easing: "easeInOutSine" },
-            { value: 0, duration, easing: "easeInOutSine" },
+            { to: ampX, duration, ease: "inOutSine" },
+            { to: -ampX * 0.7, duration: duration + 2000, ease: "inOutSine" },
+            { to: 0, duration, ease: "inOutSine" },
           ],
           translateY: [
-            { value: -ampY, duration, easing: "easeInOutSine" },
-            { value: ampY * 0.8, duration: duration + 2000, easing: "easeInOutSine" },
-            { value: 0, duration, easing: "easeInOutSine" },
+            { to: -ampY, duration, ease: "inOutSine" },
+            { to: ampY * 0.8, duration: duration + 2000, ease: "inOutSine" },
+            { to: 0, duration, ease: "inOutSine" },
           ],
           loop: true,
           delay: i * 800,

@@ -1,6 +1,6 @@
 "use client";
 
-import anime from "animejs";
+import { animate, stagger, utils } from "animejs";
 import {
   ArrowUp,
   Briefcase,
@@ -69,8 +69,11 @@ export function Nav() {
       if (!rail || !indicator || !itemEl) return;
       const railRect = rail.getBoundingClientRect();
       const itemRect = itemEl.getBoundingClientRect();
-      const x = itemRect.left - railRect.left;
-      const w = itemRect.width;
+      const w = Math.min(itemRect.width, rail.clientWidth);
+      const x = Math.max(
+        0,
+        Math.min(itemRect.left - railRect.left, rail.clientWidth - w),
+      );
       const reduced = prefersReducedMotion();
       if (instant || reduced) {
         indicator.style.transform = `translate3d(${x}px, 0, 0)`;
@@ -78,14 +81,13 @@ export function Nav() {
         indicator.style.opacity = "1";
         return;
       }
-      anime.remove(indicator);
-      anime({
-        targets: indicator,
+      utils.remove(indicator);
+      animate(indicator, {
         translateX: x,
-        width: w,
+        width: `${w}px`,
         opacity: 1,
         duration: 460,
-        easing: "cubicBezier(0.16, 1, 0.3, 1)",
+        ease: "cubicBezier(0.16, 1, 0.3, 1)",
       });
     },
     [active],
@@ -118,23 +120,21 @@ export function Nav() {
         menu.style.opacity = "1";
         items.forEach((i) => (i.style.opacity = "1"));
       } else {
-        anime({
-          targets: menu,
+        animate(menu, {
           opacity: [0, 1],
           translateY: [-10, 0],
           duration: 280,
-          easing: "cubicBezier(0.16, 1, 0.3, 1)",
+          ease: "cubicBezier(0.16, 1, 0.3, 1)",
         });
-        anime({
-          targets: items,
+        animate(items, {
           opacity: [0, 1],
           translateX: [-20, 0],
           duration: 360,
-          delay: anime.stagger(60, { start: 120 }),
-          easing: "cubicBezier(0.16, 1, 0.3, 1)",
+          delay: stagger(60, { start: 120 }),
+          ease: "cubicBezier(0.16, 1, 0.3, 1)",
         });
-        anime({ targets: lines[0], rotate: 45, translateY: 4, duration: 240, easing: "easeOutQuad" });
-        anime({ targets: lines[1], rotate: -45, translateY: -4, duration: 240, easing: "easeOutQuad" });
+        animate(lines[0], { rotate: 45, translateY: 4, duration: 240, ease: "outQuad" });
+        animate(lines[1], { rotate: -45, translateY: -4, duration: 240, ease: "outQuad" });
       }
     } else {
       if (reduced) {
@@ -142,18 +142,17 @@ export function Nav() {
         menu.style.visibility = "hidden";
         items.forEach((i) => (i.style.opacity = "0"));
       } else {
-        anime({
-          targets: menu,
+        animate(menu, {
           opacity: [1, 0],
           translateY: [0, -10],
           duration: 200,
-          easing: "easeInQuad",
-          complete: () => {
+          ease: "inQuad",
+          onComplete: () => {
             menu.style.visibility = "hidden";
           },
         });
-        anime({ targets: lines[0], rotate: 0, translateY: 0, duration: 200, easing: "easeOutQuad" });
-        anime({ targets: lines[1], rotate: 0, translateY: 0, duration: 200, easing: "easeOutQuad" });
+        animate(lines[0], { rotate: 0, translateY: 0, duration: 200, ease: "outQuad" });
+        animate(lines[1], { rotate: 0, translateY: 0, duration: 200, ease: "outQuad" });
       }
     }
   }, [open]);
@@ -163,13 +162,12 @@ export function Nav() {
     if (prefersReducedMotion()) return;
     const circle = event.currentTarget.querySelector<HTMLSpanElement>(".pill-bloom");
     if (!circle) return;
-    anime.remove(circle);
-    anime({
-      targets: circle,
+    utils.remove(circle);
+    animate(circle, {
       scale: [0, 1.4],
       opacity: [0.35, 0],
       duration: 600,
-      easing: "easeOutQuad",
+      ease: "outQuad",
     });
   }
 

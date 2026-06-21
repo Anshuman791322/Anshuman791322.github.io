@@ -1,6 +1,6 @@
 "use client";
 
-import anime from "animejs";
+import { animate, utils } from "animejs";
 import { type ReactNode, useEffect, useRef } from "react";
 
 import { prefersReducedMotion } from "@/lib/anime";
@@ -38,6 +38,11 @@ export function TiltCard({
     const el = ref.current;
     const glareEl = glareRef.current;
     if (!el) return;
+    const state = { rotateX: 0, rotateY: 0, scale: 1 };
+
+    function writeTransform(node: HTMLElement) {
+      node.style.transform = `perspective(900px) rotateX(${state.rotateX}deg) rotateY(${state.rotateY}deg) scale(${state.scale})`;
+    }
 
     function handleMove(event: MouseEvent) {
       const node = ref.current;
@@ -47,7 +52,10 @@ export function TiltCard({
       const offsetY = (event.clientY - rect.top) / rect.height - 0.5;
       const rotX = -offsetY * amplitude;
       const rotY = offsetX * amplitude;
-      node.style.transform = `perspective(900px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale(${scaleOnHover})`;
+      state.rotateX = rotX;
+      state.rotateY = rotY;
+      state.scale = scaleOnHover;
+      writeTransform(node);
       if (glareEl) {
         const px = (offsetX + 0.5) * 100;
         const py = (offsetY + 0.5) * 100;
@@ -59,33 +67,26 @@ export function TiltCard({
     function handleEnter() {
       const node = ref.current;
       if (!node) return;
-      anime.remove(node);
-      anime({
-        targets: node,
+      utils.remove(state);
+      animate(state, {
         duration: 200,
-        easing: "easeOutQuad",
+        ease: "outQuad",
         scale: scaleOnHover,
+        onUpdate: () => writeTransform(node),
       });
     }
 
     function handleLeave() {
       const node = ref.current;
       if (!node) return;
-      anime.remove(node);
-      anime({
-        targets: node,
+      utils.remove(state);
+      animate(state, {
         duration: 600,
-        easing: "easeOutElastic(1, 0.6)",
+        ease: "outElastic(1, .6)",
         rotateX: 0,
         rotateY: 0,
         scale: 1,
-        update(anim) {
-          // anime.js manages the transform; we still want perspective preserved.
-          const rx = anim.animations.find((a) => a.property === "rotateX")?.currentValue ?? 0;
-          const ry = anim.animations.find((a) => a.property === "rotateY")?.currentValue ?? 0;
-          const sc = anim.animations.find((a) => a.property === "scale")?.currentValue ?? 1;
-          node.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) scale(${sc})`;
-        },
+        onUpdate: () => writeTransform(node),
       });
       if (glareEl) {
         glareEl.style.opacity = "0";
@@ -99,7 +100,7 @@ export function TiltCard({
       el.removeEventListener("mousemove", handleMove);
       el.removeEventListener("mouseenter", handleEnter);
       el.removeEventListener("mouseleave", handleLeave);
-      anime.remove(el);
+      utils.remove(state);
     };
   }, [amplitude, scaleOnHover, glare]);
 

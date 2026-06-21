@@ -1,6 +1,6 @@
 "use client";
 
-import anime from "animejs";
+import { animate, stagger } from "animejs";
 import { useEffect, useRef } from "react";
 
 import { prefersReducedMotion } from "@/lib/anime";
@@ -61,14 +61,13 @@ export function SplitText({
     });
 
     function play() {
-      anime({
-        targets: chars,
+      animate(chars, {
         translateY: ["50%", "0%"],
         rotate: [4, 0],
         opacity: [0, 1],
         duration,
-        delay: anime.stagger(delay, { start: startDelay }),
-        easing: "cubicBezier(0.16, 1, 0.3, 1)",
+        delay: stagger(delay, { start: startDelay }),
+        ease: "cubicBezier(0.16, 1, 0.3, 1)",
       });
     }
 

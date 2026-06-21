@@ -1,6 +1,6 @@
 "use client";
 
-import anime from "animejs";
+import { animate, stagger } from "animejs";
 import { useEffect, useRef } from "react";
 
 import { prefersReducedMotion } from "@/lib/anime";
@@ -52,14 +52,13 @@ export function BlurText({
       (entries) => {
         if (entries.some((e) => e.isIntersecting) && !played) {
           played = true;
-          anime({
-            targets: items,
+          animate(items, {
             opacity: [0, 1],
             translateY: [20, 0],
             filter: ["blur(10px)", "blur(0px)"],
             duration,
-            delay: anime.stagger(delay),
-            easing: "cubicBezier(0.16, 1, 0.3, 1)",
+            delay: stagger(delay),
+            ease: "cubicBezier(0.16, 1, 0.3, 1)",
           });
           observer.disconnect();
         }

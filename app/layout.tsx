@@ -3,26 +3,26 @@ import localFont from "next/font/local";
 
 import "./globals.css";
 
-// Self-hosted Fontshare fonts — Gambetta (display serif) + General Sans (body).
-// Dark Academia voice on the display; modern clarity on the UI.
-const gambetta = localFont({
+// Self-hosted Fontshare pair: Cabinet Grotesk for display, Satoshi for UI/body.
+const cabinetGrotesk = localFont({
   variable: "--font-display",
   display: "swap",
   src: [
-    { path: "../public/fonts/gambetta-400.woff2", weight: "400", style: "normal" },
-    { path: "../public/fonts/gambetta-500.woff2", weight: "500", style: "normal" },
-    { path: "../public/fonts/gambetta-600.woff2", weight: "600", style: "normal" },
+    { path: "../public/fonts/cabinet-grotesk-500.woff2", weight: "500", style: "normal" },
+    { path: "../public/fonts/cabinet-grotesk-700.woff2", weight: "600", style: "normal" },
+    { path: "../public/fonts/cabinet-grotesk-700.woff2", weight: "700", style: "normal" },
+    { path: "../public/fonts/cabinet-grotesk-800.woff2", weight: "800", style: "normal" },
   ],
 });
 
-const generalSans = localFont({
+const satoshi = localFont({
   variable: "--font-body",
   display: "swap",
   src: [
-    { path: "../public/fonts/general-sans-400.woff2", weight: "400", style: "normal" },
-    { path: "../public/fonts/general-sans-500.woff2", weight: "500", style: "normal" },
-    { path: "../public/fonts/general-sans-600.woff2", weight: "600", style: "normal" },
-    { path: "../public/fonts/general-sans-700.woff2", weight: "700", style: "normal" },
+    { path: "../public/fonts/satoshi-400.woff2", weight: "400", style: "normal" },
+    { path: "../public/fonts/satoshi-500.woff2", weight: "500", style: "normal" },
+    { path: "../public/fonts/satoshi-700.woff2", weight: "600", style: "normal" },
+    { path: "../public/fonts/satoshi-700.woff2", weight: "700", style: "normal" },
   ],
 });
 
@@ -44,7 +44,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${generalSans.variable} ${gambetta.variable}`}>
+    <html lang="en" className={`${satoshi.variable} ${cabinetGrotesk.variable}`}>
       <body>{children}</body>
     </html>
   );

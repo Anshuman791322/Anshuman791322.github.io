@@ -1,6 +1,6 @@
 "use client";
 
-import anime from "animejs";
+import { animate, stagger, svg as animeSvg, utils } from "animejs";
 import { type ReactNode, useEffect, useRef } from "react";
 
 import { prefersReducedMotion } from "@/lib/anime";
@@ -51,36 +51,16 @@ export function AnimatedIcon({
       });
 
       if (paths.length > 0) {
-        paths.forEach((p) => {
-          try {
-            const len = p.getTotalLength?.();
-            if (len && len > 0) {
-              p.style.strokeDasharray = `${len}`;
-              p.style.strokeDashoffset = `${len}`;
-            }
-          } catch {
-            /* element doesn't support getTotalLength */
-          }
-        });
-
         let played = false;
         const observer = new IntersectionObserver(
           (entries) => {
             if (entries.some((e) => e.isIntersecting) && !played) {
               played = true;
-              anime({
-                targets: paths,
-                strokeDashoffset: [anime.setDashoffset, 0],
+              animate(animeSvg.createDrawable(paths), {
+                draw: ["0 0", "0 1"],
                 duration: 900,
-                delay: anime.stagger(40),
-                easing: "easeOutCubic",
-                complete: () => {
-                  // Remove dasharray once done so the icon stays clean.
-                  paths.forEach((p) => {
-                    p.style.strokeDasharray = "";
-                    p.style.strokeDashoffset = "";
-                  });
-                },
+                delay: stagger(40),
+                ease: "outCubic",
               });
               observer.disconnect();
             }
@@ -94,21 +74,20 @@ export function AnimatedIcon({
 
     if (hover !== "none" && !reduced) {
       const handleEnter = () => {
-        anime.remove(svg);
+        utils.remove(svg);
         const target =
           hover === "rotate"
             ? { rotate: 12 }
             : hover === "translate"
               ? { translateY: -3 }
               : { scale: 1.12 };
-        anime({ targets: svg, duration: 220, easing: "easeOutQuad", ...target });
+        animate(svg, { duration: 220, ease: "outQuad", ...target });
       };
       const handleLeave = () => {
-        anime.remove(svg);
-        anime({
-          targets: svg,
+        utils.remove(svg);
+        animate(svg, {
           duration: 420,
-          easing: "easeOutElastic(1, 0.6)",
+          ease: "outElastic(1, .6)",
           rotate: 0,
           translateY: 0,
           scale: 1,
@@ -122,7 +101,7 @@ export function AnimatedIcon({
       });
     }
 
-    cleanupFns.push(() => anime.remove(svg));
+    cleanupFns.push(() => utils.remove(svg));
     return () => cleanupFns.forEach((fn) => fn());
   }, [draw, hover]);
 
