@@ -1,41 +1,65 @@
+import {
+  Box,
+  Brush2,
+  Code,
+  Cpu,
+  Game,
+} from "iconsax-react";
+
 import { portfolio } from "@/data/portfolio";
-import { Reveal } from "@/components/ui/Reveal";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { BlurText } from "@/components/ui/BlurText";
+import { AnimatedIcon } from "@/components/ui/AnimatedIcon";
+
+const GROUP_ICONS = [Code, Cpu, Brush2, Box];
 
 export function Stack() {
   return (
     <section className="section" id="stack" aria-labelledby="stack-title">
       <div className="stack">
-        <Reveal from="up">
+        <ScrollReveal from="up">
           <div className="section-head">
             <p className="eyebrow">
-              <span className="num">03</span> Stack
+              <span className="num">03</span>
+              <AnimatedIcon hover="rotate"><Game size={14} /></AnimatedIcon>
+              <span>Stack</span>
             </p>
-            <h2 id="stack-title">
-              Tools selected for the <span className="accent-blue serif">problem.</span>
-            </h2>
+            <BlurText
+              as="h2"
+              id="stack-title"
+              text="Tools selected for the problem."
+              accent="problem."
+            />
             <p className="lede">
               A grouped view of the technology I reach for — picked because it
               shipped, not because it was trending.
             </p>
           </div>
-        </Reveal>
+        </ScrollReveal>
 
-        <Reveal from="up" stagger={70}>
+        <ScrollReveal from="up" stagger={100}>
           <div className="stack-groups">
-            {portfolio.skills.map((group) => (
-              <div key={group.label} className="stack-group">
-                <span className="stack-group-label">{group.label}</span>
-                <div className="stack-chips">
-                  {group.items.map((item) => (
-                    <span key={item} className="chip">
-                      {item}
-                    </span>
-                  ))}
+            {portfolio.skills.map((group, i) => {
+              const Icon = GROUP_ICONS[i] ?? Box;
+              return (
+                <div key={group.label} className="stack-group">
+                  <span className="stack-group-label">
+                    <AnimatedIcon><Icon size={16} variant="Bulk" /></AnimatedIcon>
+                    {group.label}
+                  </span>
+                  <div className="stack-chips">
+                    {group.items.map((item) => (
+                      <span key={item} className="chip">
+                        <span className="chip-dot" />
+                        {item}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
-        </Reveal>
+        </ScrollReveal>
       </div>
     </section>
   );

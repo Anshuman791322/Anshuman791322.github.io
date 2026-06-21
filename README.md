@@ -1,8 +1,64 @@
-# Anshuman Singh — Portfolio (v3 · Dark Academia × Glass)
+# Anshuman Singh — Portfolio (v3.1 · Dark Academia × Glass · React Bits + Anime.js)
 
-A cinematic, server-first single-page portfolio. Self-hosted Fontshare type, Anime.js entrance reveals, CSS pseudo-isometric depth — all on a static export deployed to GitHub Pages.
+A cinematic, server-first single-page portfolio. Self-hosted Fontshare type, **React Bits** UI patterns recreated in **Anime.js**, **Iconsax** icons across the surface, pseudo-isometric depth in the project showcase — all on a static export deployed to GitHub Pages.
 
 Live: <https://anshuman791322.github.io>
+
+## Motion + component sources (v3.1 update)
+
+### React Bits patterns (https://reactbits.dev)
+All free; React Bits' originals use GSAP + motion/react. I recreated each in **Anime.js + plain DOM** to satisfy the brief's Anime.js mandate and keep the bundle small.
+
+| Pattern | Source URL | Where it lives in this repo |
+|---|---|---|
+| Split Text | https://reactbits.dev/text-animations/split-text | `components/ui/SplitText.tsx` — drives the hero headline char-by-char reveal |
+| Blur Text | https://reactbits.dev/text-animations/blur-text | `components/ui/BlurText.tsx` — every section H2 |
+| Scroll Reveal | https://reactbits.dev/text-animations/scroll-reveal | `components/ui/ScrollReveal.tsx` — section copy + lists |
+| Spotlight Card | https://reactbits.dev/components/spotlight-card | `components/ui/SpotlightCard.tsx` — direct CSS-var port; used in About principles + each Project tile |
+| Tilted Card | https://reactbits.dev/components/tilted-card | `components/ui/TiltCard.tsx` — Selected Work tiles |
+| Pill Nav | https://reactbits.dev/components/pill-nav | `components/Nav.tsx` — animated active indicator that springs between items, plus hover bloom |
+| Staggered Menu | https://reactbits.dev/components/staggered-menu | `components/Nav.tsx` (mobile) — anime.js stagger open/close |
+| Magnet | https://reactbits.dev/animations/magnet | `components/ui/Magnet.tsx` — primary CTAs |
+| Animated Content | https://reactbits.dev/animations/animated-content | Subsumed into `ScrollReveal.tsx` |
+| Logo Loop | https://reactbits.dev/animations/logo-loop | `components/sections/MarqueeBand.tsx` (CSS-only port) |
+
+### Iconsax
+- Package: [`iconsax-react`](https://www.npmjs.com/package/iconsax-react) v0.0.8, **MIT**. Confirmed free.
+- The Iconsax animated-icon library at <https://app.iconsax.io/?tab=animated> has Pro-locked Lottie/SVG exports for the *animated* set, so I use the static Iconsax-React React components (free, MIT) and animate them with **Anime.js** stroke-draw + hover micro-motion via `components/ui/AnimatedIcon.tsx` — exactly the brief's documented fallback path.
+- One icon (`GithubIcon`) is hand-rolled in `components/ui/GithubIcon.tsx` because iconsax-react v0.0.8 doesn't export a Git/GitHub mark. The SVG is an Octicons-style stroke mark (MIT-equivalent).
+- Icons used:
+  - Nav/brand: `Element4`, `Send2`, `ArrowUp`, `Briefcase`, `CloseSquare`, `TextalignJustifycenter`
+  - Hero proof + status: `StatusUp`, `Global`, `Code`, `Eye`, `Cpu`, `ArrowDown`, `Send2`
+  - Stats markers: `Hashtag`, `Layer`, `Calendar`, `Star1`
+  - About principles: `Cpu`, `DocumentText1`, `RecoveryConvert`, `MagicStar`, `ArrowSquareRight`
+  - Track Record: `Calendar`, `MagicStar`
+  - Stack categories: `Code`, `Cpu`, `Brush2`, `Box`, `Game`
+  - Selected Work: `Briefcase`, `Bubble`, `Code`, `Box`, `Eye`, `Folder2`, `ArrowSquareRight`, `ArrowRight`, `ExportSquare`, `CloseCircle`, `GithubIcon`
+  - Workbench: `Setting2`, `Code1`, `Microscope`, `Bezier`, `Send2`
+  - Contact: `Sms`, `Location`, `Send2`, `ArrowRight`, `GithubIcon`
+  - Footer: `Sms`, `ArrowUp2`, `GithubIcon`
+
+### Anime.js features actually used
+- `anime.timeline()` + `anime.stagger()` for the hero entrance and every section reveal
+- IntersectionObserver-gated runs so the timelines fire only when sections scroll into view
+- Per-element transforms (`translateX/Y/Z`, `rotate`, `scale`, `filter: blur`) — never animating layout properties
+- Stroke-dashoffset SVG draw on Iconsax icons via `getTotalLength()`
+- Spring-style elastic ease for the Tilt card return + Magnet snap-back
+- Scalar timeline for `CountUp` driving textContent
+- Direct DOM transform writes (no React per-frame state) for the Tilt card mousemove
+
+### Fontshare
+- Pair: **Gambetta + General Sans**. Free, self-hosted via `next/font/local` in `public/fonts/` (~150 KB total).
+- Picked from https://fontshare.com/pairs because Gambetta's transitional serif anchors the Dark Academia voice and General Sans gives modern UI clarity.
+
+### Why each choice is performance-safe
+- React Bits originals would pull GSAP (+SplitText plugin, paid) + motion/react. Recreating in Anime.js keeps the animation runtime at ~7 KB.
+- Iconsax-React is tree-shaken — only the imported icon components are bundled.
+- No WebGL/Three.js, no Lenis, no Framer Motion, no GSAP, no Lottie players.
+- All ambient motion is `transform`/`opacity` only.
+- Pure-CSS marquee + pulse keyframes — zero JS animation cost for the ambient layer.
+
+
 
 ## Stack
 

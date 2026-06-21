@@ -1,20 +1,28 @@
-import { Github, Mail } from "lucide-react";
+import { ArrowRight, Location, Send2, Sms } from "iconsax-react";
 
 import { portfolio } from "@/data/portfolio";
-import { Reveal } from "@/components/ui/Reveal";
-import { MagneticCTA } from "@/components/ui/MagneticCTA";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { BlurText } from "@/components/ui/BlurText";
+import { Magnet } from "@/components/ui/Magnet";
+import { AnimatedIcon } from "@/components/ui/AnimatedIcon";
+import { GithubIcon } from "@/components/ui/GithubIcon";
 
 export function Contact() {
   return (
-    <section className="contact" id="contact" aria-labelledby="contact-title">
+    <section className="contact section-band" id="contact" aria-labelledby="contact-title">
       <div className="contact-inner">
-        <Reveal from="up">
+        <ScrollReveal from="up" stagger={90}>
           <p className="eyebrow">
-            <span className="num">06</span> Contact
+            <span className="num">06</span>
+            <AnimatedIcon hover="rotate"><Send2 size={14} /></AnimatedIcon>
+            <span>Contact</span>
           </p>
-          <h2 id="contact-title">
-            Have a hard problem <span className="accent-orange">worth building?</span>
-          </h2>
+          <BlurText
+            as="h2"
+            id="contact-title"
+            text="Have a hard problem worth building?"
+            accent="building?"
+          />
           <p>
             I&apos;m open to software roles, research collaborations, and
             product engineering work — especially anything that puts
@@ -22,30 +30,36 @@ export function Contact() {
             of a real user.
           </p>
           <div className="hero-actions">
-            <MagneticCTA
+            <Magnet
               href={`mailto:${portfolio.person.email}`}
               external
               className="btn btn-primary"
+              padding={90}
             >
-              <Mail size={16} /> Email me
-            </MagneticCTA>
-            <a
+              <AnimatedIcon hover="rotate" draw={false}><Sms size={16} variant="Bold" /></AnimatedIcon>
+              Email me
+              <ArrowRight size={14} variant="Linear" />
+            </Magnet>
+            <Magnet
               href={portfolio.person.github}
-              target="_blank"
-              rel="noreferrer"
+              external
               className="btn btn-secondary"
+              padding={70}
             >
-              <Github size={16} /> GitHub
-            </a>
+              <GithubIcon size={16} />
+              GitHub
+            </Magnet>
           </div>
           <div className="contact-meta">
             <span>
+              <AnimatedIcon><Sms size={14} /></AnimatedIcon>
               Email ·{" "}
               <a href={`mailto:${portfolio.person.email}`}>
                 {portfolio.person.email}
               </a>
             </span>
             <span>
+              <GithubIcon size={14} />
               GitHub ·{" "}
               <a
                 href={portfolio.person.github}
@@ -55,9 +69,12 @@ export function Contact() {
                 @{portfolio.person.handle}
               </a>
             </span>
-            <span>Based · {portfolio.person.location}</span>
+            <span>
+              <AnimatedIcon><Location size={14} /></AnimatedIcon>
+              Based · {portfolio.person.location}
+            </span>
           </div>
-        </Reveal>
+        </ScrollReveal>
       </div>
     </section>
   );

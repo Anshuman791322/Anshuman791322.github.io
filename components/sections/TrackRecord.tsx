@@ -1,30 +1,41 @@
+import { Calendar, MagicStar } from "iconsax-react";
+
 import { portfolio } from "@/data/portfolio";
-import { Reveal } from "@/components/ui/Reveal";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { BlurText } from "@/components/ui/BlurText";
+import { AnimatedIcon } from "@/components/ui/AnimatedIcon";
 
 export function TrackRecord() {
   return (
     <section className="section" id="track-record" aria-labelledby="track-title">
       <div className="track">
         <aside className="track-left">
-          <Reveal from="up">
+          <ScrollReveal from="up">
             <p className="eyebrow">
-              <span className="num">02</span> Track Record
+              <span className="num">02</span>
+              <AnimatedIcon><Calendar size={14} /></AnimatedIcon>
+              <span>Track Record</span>
             </p>
-            <h2 id="track-title">
-              A public <span className="accent-blue serif">build history.</span>
-            </h2>
+            <BlurText
+              as="h2"
+              id="track-title"
+              text="A public build history."
+              accent="build"
+            />
             <p>
               Five years of commits across local AI, computer vision, applied
               research and front-end. Every milestone maps to a repository
               that is still online.
             </p>
             <p className="track-meter">
-              <span>2022 → 2026</span> · Years public
+              <AnimatedIcon><MagicStar size={14} variant="Bulk" /></AnimatedIcon>
+              <span className="track-meter-value">2022 → 2026</span>
+              <span className="track-meter-label">Years public</span>
             </p>
-          </Reveal>
+          </ScrollReveal>
         </aside>
 
-        <Reveal from="up" stagger={70} threshold={0.05}>
+        <ScrollReveal from="up" stagger={90} threshold={0.05}>
           <ol className="track-list">
             {portfolio.timeline.map((item, index) => (
               <li
@@ -46,7 +57,7 @@ export function TrackRecord() {
               </li>
             ))}
           </ol>
-        </Reveal>
+        </ScrollReveal>
       </div>
     </section>
   );

@@ -1,31 +1,40 @@
-import { ArrowUpRight } from "lucide-react";
+import { ArrowRight, Briefcase, Bubble } from "iconsax-react";
 
 import { portfolio } from "@/data/portfolio";
-import { Reveal } from "@/components/ui/Reveal";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { BlurText } from "@/components/ui/BlurText";
+import { AnimatedIcon } from "@/components/ui/AnimatedIcon";
 import { ProjectShowcase } from "@/components/sections/ProjectShowcase";
-
-// Server shell. Content + headings render statically. ProjectShowcase is a
-// client island that drives the cursor-anchored preview and dim peers.
 
 export function SelectedWork() {
   return (
-    <section className="section" id="selected-work" aria-labelledby="work-title">
-      <Reveal from="up">
+    <section
+      className="section section-band selected-work"
+      id="selected-work"
+      aria-labelledby="work-title"
+    >
+      <ScrollReveal from="up">
         <div className="work-head">
           <div>
             <p className="eyebrow">
-              <span className="num">04</span> Selected Work
+              <span className="num">04</span>
+              <AnimatedIcon hover="rotate"><Briefcase size={14} /></AnimatedIcon>
+              <span>Selected Work</span>
             </p>
-            <h2 id="work-title">
-              Every repository, <span className="accent-blue serif">in one place.</span>
-            </h2>
+            <BlurText
+              as="h2"
+              id="work-title"
+              text="Every repository, in one place."
+              accent="place."
+            />
           </div>
-          <p>
+          <p className="work-head-lede">
             All {portfolio.projects.length} public repositories on GitHub.
-            Hover a row for the case study; click to open the full record.
+            Tilt to feel the depth, hover for the spotlight, click any card
+            for the full record.
           </p>
         </div>
-      </Reveal>
+      </ScrollReveal>
 
       <ProjectShowcase projects={portfolio.projects} />
 
@@ -35,7 +44,9 @@ export function SelectedWork() {
         target="_blank"
         rel="noreferrer"
       >
-        View all repositories on GitHub <ArrowUpRight size={16} />
+        <AnimatedIcon hover="rotate"><Bubble size={16} variant="Bulk" /></AnimatedIcon>
+        View all repositories on GitHub
+        <ArrowRight size={16} variant="Linear" />
       </a>
     </section>
   );
