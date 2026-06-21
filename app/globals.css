@@ -695,7 +695,8 @@ p {
 
 .hero-line {
   display: block;
-  overflow: hidden;
+  overflow-x: visible;
+  overflow-y: hidden;
   padding-bottom: 0.08em;
 }
 
