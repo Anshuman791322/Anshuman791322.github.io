@@ -35,7 +35,7 @@ export function SpotlightCard(props: Props) {
   const {
     children,
     className = "",
-    spotlightColor = "rgba(52, 211, 153, 0.18)",
+    spotlightColor = "rgba(255, 138, 61, 0.18)",
   } = props;
   const refDiv = useRef<HTMLDivElement | null>(null);
   const refBtn = useRef<HTMLButtonElement | null>(null);

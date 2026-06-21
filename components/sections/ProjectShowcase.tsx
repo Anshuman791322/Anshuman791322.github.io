@@ -30,9 +30,9 @@ type Props = {
 };
 
 const SPOTLIGHT_COLOR: Record<string, string> = {
-  blue: "rgba(16, 185, 129, 0.22)",
-  orange: "rgba(52, 211, 153, 0.26)",
-  violet: "rgba(134, 239, 172, 0.22)",
+  blue: "rgba(74, 144, 255, 0.22)",
+  orange: "rgba(255, 138, 61, 0.26)",
+  violet: "rgba(178, 155, 255, 0.22)",
   cyan: "rgba(140, 229, 255, 0.22)",
   green: "rgba(141, 239, 176, 0.20)",
 };

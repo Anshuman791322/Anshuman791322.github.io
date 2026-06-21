@@ -1,4 +1,4 @@
-import type { Metadata, Viewport } from "next";
+import type { Metadata } from "next";
 import localFont from "next/font/local";
 
 import "./globals.css";
@@ -32,13 +32,8 @@ export const metadata: Metadata = {
     "Selected works of Anshuman Singh: local-first AI, computer vision, applied research and considered front-end. Five public products on GitHub.",
   metadataBase: new URL("https://anshuman791322.github.io"),
   icons: {
-    icon: [
-      { url: "/favicon.svg", type: "image/svg+xml" },
-      { url: "/favicon.png", type: "image/png", sizes: "192x192" },
-    ],
-    apple: [{ url: "/apple-touch-icon.png", sizes: "512x512" }],
+    icon: "/favicon.svg",
   },
-  manifest: "/manifest.json",
   openGraph: {
     title: "Anshuman Singh — Selected works",
     description:
@@ -46,10 +41,6 @@ export const metadata: Metadata = {
     url: "https://anshuman791322.github.io",
     type: "website",
   },
-};
-
-export const viewport: Viewport = {
-  themeColor: "#10b981",
 };
 
 export default function RootLayout({

@@ -70,7 +70,7 @@ export function About() {
                 <SpotlightCard
                   key={p.num}
                   className="principle"
-                  spotlightColor="rgba(16, 185, 129, 0.18)"
+                  spotlightColor="rgba(74, 144, 255, 0.18)"
                 >
                   <div className="principle-top">
                     <span className="num">{p.num}</span>
