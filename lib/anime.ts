@@ -1,3 +1,5 @@
+import { cubicBezier } from "animejs";
+
 // Shared motion tokens. Keep this file framework-agnostic so it can be re-used
 // by anime.js, CSS variables, and direct DOM listeners without importing React.
 
@@ -12,6 +14,8 @@ export const DURATIONS = {
   base: 540,
   slow: 900,
 } as const;
+
+export const SMOOTH_EASE = cubicBezier(0.16, 1, 0.3, 1);
 
 /** True when the user has requested reduced motion. SSR-safe (returns false on server). */
 export function prefersReducedMotion(): boolean {

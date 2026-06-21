@@ -3,7 +3,7 @@
 import { animate, stagger } from "animejs";
 import { useEffect, useRef } from "react";
 
-import { prefersReducedMotion } from "@/lib/anime";
+import { prefersReducedMotion, SMOOTH_EASE } from "@/lib/anime";
 
 type Props = {
   text: string;
@@ -60,29 +60,34 @@ export function SplitText({
       c.style.willChange = "transform, opacity";
     });
 
+    let played = false;
     function play() {
+      if (played) return;
+      played = true;
       animate(chars, {
         translateY: ["50%", "0%"],
         rotate: [4, 0],
         opacity: [0, 1],
         duration,
         delay: stagger(delay, { start: startDelay }),
-        ease: "cubicBezier(0.16, 1, 0.3, 1)",
+        ease: SMOOTH_EASE,
       });
     }
 
     if (immediate) {
+      const fallback = window.setTimeout(play, 600);
       if (document.fonts?.status === "loaded") {
+        window.clearTimeout(fallback);
         play();
       } else if (document.fonts?.ready) {
-        document.fonts.ready.then(play);
-      } else {
-        play();
+        document.fonts.ready.then(() => {
+          window.clearTimeout(fallback);
+          play();
+        });
       }
-      return;
+      return () => window.clearTimeout(fallback);
     }
 
-    let played = false;
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries.some((e) => e.isIntersecting) && !played) {

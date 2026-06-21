@@ -3,7 +3,7 @@
 import { animate } from "animejs";
 import { useEffect, useRef } from "react";
 
-import { DURATIONS, prefersReducedMotion } from "@/lib/anime";
+import { DURATIONS, prefersReducedMotion, SMOOTH_EASE } from "@/lib/anime";
 
 type Props = {
   to: number;
@@ -42,7 +42,7 @@ export function CountUp({ to, duration = DURATIONS.slow, format }: Props) {
               value: to,
               round: 1,
               duration,
-              ease: "cubicBezier(0.16, 1, 0.3, 1)",
+              ease: SMOOTH_EASE,
               onUpdate: () => {
                 node.textContent = fmt(obj.value);
               },

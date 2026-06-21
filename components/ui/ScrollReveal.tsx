@@ -3,7 +3,7 @@
 import { animate, onScroll, stagger as staggerDelay } from "animejs";
 import { type ReactNode, useEffect, useRef } from "react";
 
-import { prefersReducedMotion } from "@/lib/anime";
+import { prefersReducedMotion, SMOOTH_EASE } from "@/lib/anime";
 
 type Props = {
   children: ReactNode;
@@ -65,11 +65,18 @@ export function ScrollReveal({
           translateY: from === "up" || from === "down" ? [yOff, 0] : 0,
           duration,
           delay: staggerDelay(stagger, { start: delay }),
-          ease: "cubicBezier(0.16, 1, 0.3, 1)",
+          ease: SMOOTH_EASE,
         });
       },
     });
+    const fallback = window.setTimeout(() => {
+      targets.forEach((t) => {
+        t.style.opacity = "1";
+        t.style.transform = "none";
+      });
+    }, delay + duration + targets.length * stagger + 800);
     return () => {
+      window.clearTimeout(fallback);
       scrollObserver.revert();
     };
   }, [delay, duration, threshold, stagger, from, distance]);

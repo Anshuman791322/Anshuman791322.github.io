@@ -19,7 +19,7 @@ import {
 } from "react";
 
 import { portfolio } from "@/data/portfolio";
-import { prefersReducedMotion } from "@/lib/anime";
+import { prefersReducedMotion, SMOOTH_EASE } from "@/lib/anime";
 
 const NAV = portfolio.nav;
 const ITEM_IDS = NAV.map((n) => n.id);
@@ -87,7 +87,7 @@ export function Nav() {
         width: `${w}px`,
         opacity: 1,
         duration: 460,
-        ease: "cubicBezier(0.16, 1, 0.3, 1)",
+        ease: SMOOTH_EASE,
       });
     },
     [active],
@@ -124,14 +124,14 @@ export function Nav() {
           opacity: [0, 1],
           translateY: [-10, 0],
           duration: 280,
-          ease: "cubicBezier(0.16, 1, 0.3, 1)",
+          ease: SMOOTH_EASE,
         });
         animate(items, {
           opacity: [0, 1],
           translateX: [-20, 0],
           duration: 360,
           delay: stagger(60, { start: 120 }),
-          ease: "cubicBezier(0.16, 1, 0.3, 1)",
+          ease: SMOOTH_EASE,
         });
         animate(lines[0], { rotate: 45, translateY: 4, duration: 240, ease: "outQuad" });
         animate(lines[1], { rotate: -45, translateY: -4, duration: 240, ease: "outQuad" });

@@ -31,6 +31,9 @@ export const metadata: Metadata = {
   description:
     "Selected works of Anshuman Singh: local-first AI, computer vision, applied research and considered front-end. Five public products on GitHub.",
   metadataBase: new URL("https://anshuman791322.github.io"),
+  icons: {
+    icon: "/favicon.svg",
+  },
   openGraph: {
     title: "Anshuman Singh — Selected works",
     description:

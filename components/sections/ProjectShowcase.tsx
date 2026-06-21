@@ -19,7 +19,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 
 import type { Project } from "@/data/portfolio";
-import { prefersReducedMotion } from "@/lib/anime";
+import { prefersReducedMotion, SMOOTH_EASE } from "@/lib/anime";
 import { SpotlightCard } from "@/components/ui/SpotlightCard";
 import { TiltCard } from "@/components/ui/TiltCard";
 import { GithubIcon } from "@/components/ui/GithubIcon";
@@ -81,7 +81,7 @@ export function ProjectShowcase({ projects }: Props) {
           translateY: [40, 0],
           duration: 760,
           delay: stagger(120),
-          ease: "cubicBezier(0.16, 1, 0.3, 1)",
+          ease: SMOOTH_EASE,
         });
       },
     });

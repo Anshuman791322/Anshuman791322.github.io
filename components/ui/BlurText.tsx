@@ -3,7 +3,7 @@
 import { animate, stagger } from "animejs";
 import { useEffect, useRef } from "react";
 
-import { prefersReducedMotion } from "@/lib/anime";
+import { prefersReducedMotion, SMOOTH_EASE } from "@/lib/anime";
 
 type Props = {
   text: string;
@@ -58,7 +58,7 @@ export function BlurText({
             filter: ["blur(10px)", "blur(0px)"],
             duration,
             delay: stagger(delay),
-            ease: "cubicBezier(0.16, 1, 0.3, 1)",
+            ease: SMOOTH_EASE,
           });
           observer.disconnect();
         }
