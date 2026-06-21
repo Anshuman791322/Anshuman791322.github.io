@@ -62,7 +62,7 @@ export function ProjectShowcase({ projects }: Props) {
 
     const reduced = prefersReducedMotion();
     cards.forEach((c) => {
-      c.style.opacity = reduced ? "1" : "0";
+      c.style.opacity = "1";
     });
     if (reduced) return;
 
@@ -77,8 +77,8 @@ export function ProjectShowcase({ projects }: Props) {
       repeat: false,
       onEnter: () => {
         animate(cards, {
-          opacity: [0, 1],
-          translateY: [40, 0],
+          opacity: [1, 1],
+          translateY: [24, 0],
           duration: 760,
           delay: stagger(120),
           ease: SMOOTH_EASE,
