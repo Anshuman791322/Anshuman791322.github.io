@@ -77,7 +77,8 @@ export function Nav() {
     };
   }, []);
 
-  // Position/animate the active pill indicator
+  // Position/animate the active pill indicator. Robust to fonts loading late
+  // (which resizes the items) and to rail/content resizes (responsive).
   const positionIndicator = useCallback(
     (instant = false) => {
       const rail = railRef.current;
@@ -86,6 +87,8 @@ export function Nav() {
       if (!rail || !indicator || !itemEl) return;
       const railRect = rail.getBoundingClientRect();
       const itemRect = itemEl.getBoundingClientRect();
+      // Guard against pre-layout measurement (0-width items before fonts ready).
+      if (itemRect.width <= 0 || rail.clientWidth <= 0) return;
       const w = Math.min(itemRect.width, rail.clientWidth);
       const x = Math.max(
         0,
@@ -93,6 +96,7 @@ export function Nav() {
       );
       const reduced = prefersReducedMotion();
       if (instant || reduced) {
+        utils.remove(indicator);
         indicator.style.transform = `translate3d(${x}px, 0, 0)`;
         indicator.style.width = `${w}px`;
         indicator.style.opacity = "1";
@@ -110,15 +114,51 @@ export function Nav() {
     [active],
   );
 
+  // Mount + active-change: defer one frame so flex layout & ResizeObserver have
+  // settled, then re-run when fonts finish loading (Gambetta + General Sans
+  // can shift item widths after first paint).
   useLayoutEffect(() => {
-    positionIndicator(true);
+    let rafId = 0;
+    let cancelled = false;
+
+    const runInstant = () => {
+      if (cancelled) return;
+      positionIndicator(true);
+    };
+
+    rafId = requestAnimationFrame(runInstant);
+
+    let fontsPromise: Promise<unknown> | null = null;
+    if (typeof document !== "undefined" && document.fonts?.ready) {
+      fontsPromise = document.fonts.ready
+        .then(() => {
+          if (!cancelled) runInstant();
+        })
+        .catch(() => {});
+    }
+
     const onResize = () => positionIndicator(true);
     window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
+
+    let resizeObserver: ResizeObserver | null = null;
+    if (railRef.current && typeof ResizeObserver !== "undefined") {
+      resizeObserver = new ResizeObserver(() => positionIndicator(true));
+      resizeObserver.observe(railRef.current);
+    }
+
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(rafId);
+      window.removeEventListener("resize", onResize);
+      if (resizeObserver) resizeObserver.disconnect();
+      void fontsPromise;
+    };
   }, [positionIndicator]);
 
+  // Animated repositioning on active change (after the layout effect ran instant).
   useEffect(() => {
-    positionIndicator();
+    const id = window.setTimeout(() => positionIndicator(false), 0);
+    return () => window.clearTimeout(id);
   }, [active, positionIndicator]);
 
   // Mobile menu open/close animations

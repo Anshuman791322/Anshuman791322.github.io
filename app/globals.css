@@ -332,9 +332,19 @@ p {
 
 .section-head {
   display: grid;
-  gap: 16px;
+  gap: 20px;
   max-width: 820px;
   margin-bottom: 64px;
+}
+
+/* Outside .section-head, when the eyebrow is followed by a BlurText / heading
+   in a plain block container (Contact, Track Record, Selected Work), give the
+   heading enough top margin so the eyebrow doesn't hug it. */
+.eyebrow + h1,
+.eyebrow + h2,
+.eyebrow + h3,
+.eyebrow + .blur-parent {
+  margin-top: 18px;
 }
 
 @media (max-width: 640px) {
@@ -421,6 +431,8 @@ p {
   top: 4px;
   bottom: 4px;
   left: 0;
+  width: 0;
+  transform: translate3d(0, 0, 0);
   background:
     linear-gradient(180deg, rgba(74, 144, 255, 0.28), rgba(74, 144, 255, 0.08));
   border: 1px solid var(--line-strong);
