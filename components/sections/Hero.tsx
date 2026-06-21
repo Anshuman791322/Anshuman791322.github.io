@@ -9,7 +9,6 @@ import {
 } from "iconsax-react";
 
 import { portfolio } from "@/data/portfolio";
-import { SplitText } from "@/components/ui/SplitText";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { Magnet } from "@/components/ui/Magnet";
 import { AnimatedIcon } from "@/components/ui/AnimatedIcon";
@@ -35,15 +34,15 @@ export function Hero() {
 
         <h1 id="hero-title" className="hero-headline">
           <span className="hero-line">
-            <SplitText text="I build software" immediate delay={26} startDelay={120} />
+            I build software
           </span>
           <span className="hero-line">
-            <SplitText text="that feels considered," immediate delay={26} startDelay={420} />
+            that feels considered,
           </span>
           <span className="hero-line">
-            <SplitText text="shipped, and " immediate delay={26} startDelay={760} />
+            shipped, and{" "}
             <span className="accent-orange">
-              <SplitText text="alive." immediate delay={32} startDelay={1080} />
+              alive.
             </span>
           </span>
         </h1>
