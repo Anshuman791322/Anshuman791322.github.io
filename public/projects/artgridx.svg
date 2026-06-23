@@ -1,0 +1,160 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 800" preserveAspectRatio="xMidYMid slice" role="img" aria-label="ArtGridX — premium masonry portfolio for a drawing artist">
+  <defs>
+    <linearGradient id="agBg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#241a10"/>
+      <stop offset="55%" stop-color="#11091c"/>
+      <stop offset="100%" stop-color="#070c17"/>
+    </linearGradient>
+    <radialGradient id="agGlow" cx="50%" cy="20%" r="55%">
+      <stop offset="0%" stop-color="#ff9f43" stop-opacity="0.36"/>
+      <stop offset="100%" stop-color="#ff9f43" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Per-tile gradients to simulate distinct artworks -->
+    <linearGradient id="agA" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#ff9f43"/>
+      <stop offset="100%" stop-color="#7a3b0d"/>
+    </linearGradient>
+    <linearGradient id="agB" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#ffc188"/>
+      <stop offset="100%" stop-color="#5a2b0a"/>
+    </linearGradient>
+    <linearGradient id="agC" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#b29bff"/>
+      <stop offset="100%" stop-color="#2a1f4a"/>
+    </linearGradient>
+    <linearGradient id="agD" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#74e8a2"/>
+      <stop offset="100%" stop-color="#0e3a22"/>
+    </linearGradient>
+    <linearGradient id="agE" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#8ce5ff"/>
+      <stop offset="100%" stop-color="#0e3550"/>
+    </linearGradient>
+    <linearGradient id="agF" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#ff8a3d"/>
+      <stop offset="100%" stop-color="#3a160a"/>
+    </linearGradient>
+    <linearGradient id="agAccent" x1="0" x2="1">
+      <stop offset="0%" stop-color="#ff9f43"/>
+      <stop offset="100%" stop-color="#ffc188"/>
+    </linearGradient>
+    <pattern id="agGrid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M 48 0 L 0 0 0 48" fill="none" stroke="rgba(255,159,67,0.05)" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1280" height="800" fill="url(#agBg)"/>
+  <rect width="1280" height="800" fill="url(#agGrid)"/>
+  <rect width="1280" height="800" fill="url(#agGlow)"/>
+
+  <!-- Hero header on top of grid -->
+  <g transform="translate(80 100)">
+    <text font-family="Inter, sans-serif" font-size="64" font-weight="900" fill="#ffffff" letter-spacing="-0.04em">artgridx.</text>
+    <text y="34" x="200" font-family="ui-monospace, monospace" font-size="12" letter-spacing="2" fill="#ffc188" font-weight="700">— PORTFOLIO FOR A DRAWING ARTIST</text>
+  </g>
+
+  <!-- Masonry collage -->
+  <g transform="translate(80 200)">
+    <!-- Row 1 -->
+    <!-- Tile A — landscape -->
+    <g transform="translate(0 0)">
+      <rect width="280" height="180" rx="14" fill="url(#agA)"/>
+      <!-- crude artwork hint: brush stroke -->
+      <path d="M 30 130 C 80 60, 140 60, 200 110 S 260 80, 268 60" stroke="#ffffff" stroke-width="2.5" fill="none" opacity="0.4"/>
+      <circle cx="60" cy="60" r="22" fill="#ffe6c2" opacity="0.55"/>
+      <!-- pill -->
+      <rect x="14" y="148" width="98" height="20" rx="10" fill="rgba(7,12,23,0.7)"/>
+      <text x="22" y="162" font-family="ui-monospace, monospace" font-size="10" font-weight="700" letter-spacing="2" fill="#ffc188">SKETCH · 04</text>
+    </g>
+    <!-- Tile B — square -->
+    <g transform="translate(296 0)">
+      <rect width="180" height="180" rx="14" fill="url(#agB)"/>
+      <!-- abstract dots -->
+      <g fill="#ffffff" opacity="0.5">
+        <circle cx="40" cy="40" r="6"/>
+        <circle cx="90" cy="70" r="4"/>
+        <circle cx="60" cy="110" r="8"/>
+        <circle cx="130" cy="90" r="5"/>
+        <circle cx="110" cy="140" r="6"/>
+      </g>
+      <rect x="14" y="148" width="78" height="20" rx="10" fill="rgba(7,12,23,0.7)"/>
+      <text x="22" y="162" font-family="ui-monospace, monospace" font-size="10" font-weight="700" letter-spacing="2" fill="#ffc188">INK · 12</text>
+    </g>
+    <!-- Tile C — tall portrait -->
+    <g transform="translate(492 0)">
+      <rect width="180" height="260" rx="14" fill="url(#agC)"/>
+      <!-- portrait silhouette -->
+      <circle cx="90" cy="80" r="34" fill="#ffffff" opacity="0.18"/>
+      <path d="M 30 220 C 50 170, 130 170, 150 220 L 150 240 L 30 240 Z" fill="#ffffff" opacity="0.2"/>
+      <rect x="14" y="228" width="118" height="20" rx="10" fill="rgba(7,12,23,0.72)"/>
+      <text x="22" y="242" font-family="ui-monospace, monospace" font-size="10" font-weight="700" letter-spacing="2" fill="#cfb8ff">PORTRAIT · 03</text>
+    </g>
+    <!-- Tile D — wide landscape -->
+    <g transform="translate(688 0)">
+      <rect width="432" height="180" rx="14" fill="url(#agD)"/>
+      <!-- horizon line -->
+      <line x1="20" y1="120" x2="412" y2="120" stroke="#ffffff" stroke-width="2" opacity="0.4"/>
+      <path d="M 20 120 Q 80 90 120 110 T 200 100 T 280 105 T 380 95 L 412 120" stroke="#ffffff" stroke-width="2" fill="none" opacity="0.55"/>
+      <circle cx="340" cy="60" r="20" fill="#ffffff" opacity="0.5"/>
+      <rect x="14" y="148" width="118" height="20" rx="10" fill="rgba(7,12,23,0.7)"/>
+      <text x="22" y="162" font-family="ui-monospace, monospace" font-size="10" font-weight="700" letter-spacing="2" fill="#a8f0bd">LANDSCAPE · 07</text>
+    </g>
+
+    <!-- Row 2 -->
+    <!-- Tile E — square -->
+    <g transform="translate(0 196)">
+      <rect width="180" height="180" rx="14" fill="url(#agE)"/>
+      <!-- geometric -->
+      <g fill="none" stroke="#ffffff" stroke-width="2" opacity="0.55">
+        <rect x="32" y="32" width="116" height="116" rx="8"/>
+        <line x1="32" y1="90" x2="148" y2="90"/>
+        <line x1="90" y1="32" x2="90" y2="148"/>
+      </g>
+      <rect x="14" y="148" width="118" height="20" rx="10" fill="rgba(7,12,23,0.7)"/>
+      <text x="22" y="162" font-family="ui-monospace, monospace" font-size="10" font-weight="700" letter-spacing="2" fill="#bdf2ff">GEOMETRIC · 02</text>
+    </g>
+    <!-- Tile F — landscape -->
+    <g transform="translate(196 196)">
+      <rect width="280" height="180" rx="14" fill="url(#agF)"/>
+      <!-- spiral/sun -->
+      <g stroke="#ffffff" stroke-width="2" fill="none" opacity="0.55">
+        <circle cx="140" cy="90" r="10"/>
+        <circle cx="140" cy="90" r="26"/>
+        <circle cx="140" cy="90" r="44"/>
+      </g>
+      <rect x="14" y="148" width="98" height="20" rx="10" fill="rgba(7,12,23,0.7)"/>
+      <text x="22" y="162" font-family="ui-monospace, monospace" font-size="10" font-weight="700" letter-spacing="2" fill="#ffc188">STUDY · 11</text>
+    </g>
+    <!-- Tile G — wide landscape next to portrait C bottom -->
+    <g transform="translate(688 196)">
+      <rect width="432" height="180" rx="14" fill="url(#agA)"/>
+      <path d="M 20 140 L 80 80 L 160 130 L 240 70 L 320 120 L 412 90" stroke="#ffffff" stroke-width="2.5" fill="none" opacity="0.55"/>
+      <rect x="14" y="148" width="138" height="20" rx="10" fill="rgba(7,12,23,0.7)"/>
+      <text x="22" y="162" font-family="ui-monospace, monospace" font-size="10" font-weight="700" letter-spacing="2" fill="#ffc188">PHOTOGRAPH · 18</text>
+    </g>
+  </g>
+
+  <!-- Lightbox card overlay -->
+  <g transform="translate(820 400)">
+    <rect width="380" height="180" rx="18" fill="rgba(7,12,23,0.86)" stroke="rgba(255,159,67,0.42)" stroke-width="1.6"/>
+    <text x="22" y="32" font-family="ui-monospace, monospace" font-size="11" letter-spacing="2" font-weight="700" fill="#ffc188">LIGHTBOX</text>
+    <text x="22" y="62" font-family="Inter, sans-serif" font-size="20" font-weight="800" fill="#ffffff">Sketch · Series 04</text>
+    <text x="22" y="84" font-family="Inter, sans-serif" font-size="13" fill="#cbd5e1">Charcoal on paper · 297 × 420 mm</text>
+    <text x="22" y="104" font-family="Inter, sans-serif" font-size="13" fill="#cbd5e1">Drawn live · Sept 2026</text>
+    <g transform="translate(22 124)">
+      <rect width="120" height="36" rx="10" fill="url(#agAccent)"/>
+      <text x="60" y="23" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" font-weight="800" fill="#1a0f04">View artwork →</text>
+    </g>
+    <g transform="translate(152 124)">
+      <rect width="100" height="36" rx="10" fill="none" stroke="rgba(255,255,255,0.18)"/>
+      <text x="50" y="23" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" font-weight="700" fill="#ffffff">Enquire</text>
+    </g>
+  </g>
+
+  <!-- Floating tags -->
+  <g font-family="ui-monospace, monospace" font-size="11" font-weight="700" letter-spacing="2">
+    <rect x="60" y="60" width="178" height="28" rx="14" fill="rgba(255,159,67,0.16)" stroke="rgba(255,159,67,0.36)"/>
+    <text x="76" y="78" fill="#ffc188">NEXT.JS · SUPABASE</text>
+    <rect x="1042" y="60" width="178" height="28" rx="14" fill="rgba(255,159,67,0.16)" stroke="rgba(255,159,67,0.36)"/>
+    <text x="1058" y="78" fill="#ffc188">MOBILE · ADMIN OK</text>
+  </g>
+</svg>

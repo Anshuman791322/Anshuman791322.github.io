@@ -1,0 +1,160 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 800" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Zinging — Discord assistant bot with NVIDIA NIM workflows">
+  <defs>
+    <linearGradient id="znBg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#1a1633"/>
+      <stop offset="60%" stop-color="#0d0c1f"/>
+      <stop offset="100%" stop-color="#050617"/>
+    </linearGradient>
+    <radialGradient id="znGlow" cx="50%" cy="22%" r="55%">
+      <stop offset="0%" stop-color="#b29bff" stop-opacity="0.34"/>
+      <stop offset="100%" stop-color="#b29bff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="znPanel" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#15102a"/>
+      <stop offset="100%" stop-color="#0a0817"/>
+    </linearGradient>
+    <linearGradient id="znAccent" x1="0" x2="1">
+      <stop offset="0%" stop-color="#b29bff"/>
+      <stop offset="100%" stop-color="#cfb8ff"/>
+    </linearGradient>
+    <pattern id="znGrid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M 48 0 L 0 0 0 48" fill="none" stroke="rgba(178,155,255,0.05)" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1280" height="800" fill="url(#znBg)"/>
+  <rect width="1280" height="800" fill="url(#znGrid)"/>
+  <rect width="1280" height="800" fill="url(#znGlow)"/>
+
+  <!-- Discord-style left rail (servers) -->
+  <g transform="translate(80 110)">
+    <rect width="84" height="600" rx="20" fill="url(#znPanel)" stroke="rgba(178,155,255,0.18)" stroke-width="1.4"/>
+    <g transform="translate(42 50)" fill="#b29bff">
+      <circle r="22"/>
+      <text y="6" text-anchor="middle" font-family="Inter, sans-serif" font-size="14" font-weight="800" fill="#070c17">z</text>
+    </g>
+    <g transform="translate(42 110)">
+      <circle r="20" fill="rgba(255,255,255,0.06)"/>
+      <text y="6" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="700" fill="#cfb8ff">OC</text>
+    </g>
+    <g transform="translate(42 162)">
+      <circle r="20" fill="rgba(255,255,255,0.06)"/>
+      <text y="6" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="700" fill="#cfb8ff">DV</text>
+    </g>
+    <g transform="translate(42 214)">
+      <circle r="20" fill="rgba(255,255,255,0.06)"/>
+      <text y="6" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="700" fill="#cfb8ff">RL</text>
+    </g>
+    <line x1="20" y1="252" x2="64" y2="252" stroke="rgba(178,155,255,0.2)" stroke-width="1.4"/>
+  </g>
+
+  <!-- Channels list -->
+  <g transform="translate(184 110)">
+    <rect width="220" height="600" rx="0" fill="url(#znPanel)"/>
+    <rect width="220" height="42" fill="rgba(178,155,255,0.1)"/>
+    <text x="22" y="27" fill="#cfb8ff" font-family="Inter, sans-serif" font-size="14" font-weight="800">Observant Creativity</text>
+    <g transform="translate(22 70)" font-family="Inter, sans-serif" font-size="13">
+      <text fill="#7a6db8" font-size="11" letter-spacing="2" font-weight="700">TEXT CHANNELS</text>
+      <g transform="translate(0 22)">
+        <rect x="-6" y="-14" width="206" height="26" rx="6" fill="rgba(178,155,255,0.18)"/>
+        <text fill="#ffffff" font-weight="700"># zinging-ask</text>
+      </g>
+      <text y="58" fill="#a8a3c8"># zinging-code</text>
+      <text y="84" fill="#a8a3c8"># zinging-translate</text>
+      <text y="110" fill="#a8a3c8"># zinging-admin</text>
+      <text y="160" fill="#7a6db8" font-size="11" letter-spacing="2" font-weight="700">SYSTEM</text>
+      <text y="186" fill="#a8a3c8"># bot-logs</text>
+      <text y="212" fill="#a8a3c8"># self-update</text>
+      <text y="262" fill="#7a6db8" font-size="11" letter-spacing="2" font-weight="700">PRESETS</text>
+      <text y="288" fill="#cfb8ff">⚡ ask — llama-4-maverick</text>
+      <text y="312" fill="#cfb8ff">⚡ code — qwen3-coder</text>
+      <text y="336" fill="#cfb8ff">⚡ translate — gemma-3n</text>
+    </g>
+    <!-- User pill at bottom -->
+    <g transform="translate(0 540)">
+      <rect width="220" height="60" fill="rgba(178,155,255,0.06)"/>
+      <circle cx="32" cy="30" r="14" fill="#b29bff"/>
+      <text x="32" y="35" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" font-weight="800" fill="#070c17">z</text>
+      <text x="56" y="28" font-family="Inter, sans-serif" font-size="13" font-weight="700" fill="#ffffff">Zinging</text>
+      <text x="56" y="44" font-family="ui-monospace, monospace" font-size="10" letter-spacing="1" fill="#74e8a2">● ONLINE</text>
+    </g>
+  </g>
+
+  <!-- Main chat -->
+  <g transform="translate(404 110)">
+    <rect width="796" height="600" rx="0" fill="rgba(13,12,31,0.85)"/>
+    <!-- Channel header -->
+    <rect width="796" height="48" fill="rgba(178,155,255,0.08)"/>
+    <text x="22" y="30" font-family="Inter, sans-serif" font-size="15" font-weight="800" fill="#ffffff"># zinging-ask</text>
+    <text x="126" y="30" font-family="Inter, sans-serif" font-size="13" fill="#a8a3c8">Cog-based assistant</text>
+
+    <!-- Message 1: user -->
+    <g transform="translate(22 88)">
+      <circle cx="20" cy="20" r="20" fill="#3a86ff"/>
+      <text x="20" y="26" text-anchor="middle" font-family="Inter, sans-serif" font-size="14" font-weight="800" fill="#ffffff">A</text>
+      <text x="52" y="20" font-family="Inter, sans-serif" font-size="14" font-weight="800" fill="#ffffff">anshuman</text>
+      <text x="138" y="20" font-family="ui-monospace, monospace" font-size="11" fill="#7a6db8">14:02</text>
+      <text x="52" y="44" font-family="Inter, sans-serif" font-size="14" fill="#cbd5e1">zask explain the cache invalidation strategy</text>
+    </g>
+
+    <!-- Message 2: bot -->
+    <g transform="translate(22 168)">
+      <circle cx="20" cy="20" r="20" fill="url(#znAccent)"/>
+      <text x="20" y="26" text-anchor="middle" font-family="Inter, sans-serif" font-size="14" font-weight="800" fill="#070c17">Z</text>
+      <text x="52" y="20" font-family="Inter, sans-serif" font-size="14" font-weight="800" fill="#cfb8ff">Zinging</text>
+      <rect x="118" y="6" width="46" height="18" rx="4" fill="rgba(178,155,255,0.18)"/>
+      <text x="124" y="20" font-family="ui-monospace, monospace" font-size="10" font-weight="800" fill="#cfb8ff">BOT</text>
+      <text x="172" y="20" font-family="ui-monospace, monospace" font-size="11" fill="#7a6db8">14:02</text>
+      <g transform="translate(52 36)" font-family="Inter, sans-serif" font-size="14" fill="#ffffff">
+        <text>Lazy-load from DB → write-through on updates → targeted</text>
+        <text y="22">invalidation on destructive ops. Memory bullets cap at 50</text>
+        <text y="44">per user, oldest pruned. Hot lookups never hit Postgres twice.</text>
+      </g>
+      <!-- Streaming badge -->
+      <g transform="translate(52 116)">
+        <rect width="160" height="22" rx="4" fill="rgba(116,232,162,0.12)" stroke="rgba(116,232,162,0.36)"/>
+        <text x="10" y="16" font-family="ui-monospace, monospace" font-size="10" font-weight="700" fill="#74e8a2">● STREAMING · 412 ms</text>
+      </g>
+    </g>
+
+    <!-- Message 3: user -->
+    <g transform="translate(22 332)">
+      <circle cx="20" cy="20" r="20" fill="#3a86ff"/>
+      <text x="20" y="26" text-anchor="middle" font-family="Inter, sans-serif" font-size="14" font-weight="800" fill="#ffffff">A</text>
+      <text x="52" y="20" font-family="Inter, sans-serif" font-size="14" font-weight="800" fill="#ffffff">anshuman</text>
+      <text x="138" y="20" font-family="ui-monospace, monospace" font-size="11" fill="#7a6db8">14:03</text>
+      <text x="52" y="44" font-family="Inter, sans-serif" font-size="14" fill="#cbd5e1">ztl es "ship the change before the meeting"</text>
+    </g>
+
+    <!-- Message 4: bot translate -->
+    <g transform="translate(22 412)">
+      <circle cx="20" cy="20" r="20" fill="url(#znAccent)"/>
+      <text x="20" y="26" text-anchor="middle" font-family="Inter, sans-serif" font-size="14" font-weight="800" fill="#070c17">Z</text>
+      <text x="52" y="20" font-family="Inter, sans-serif" font-size="14" font-weight="800" fill="#cfb8ff">Zinging</text>
+      <rect x="118" y="6" width="46" height="18" rx="4" fill="rgba(178,155,255,0.18)"/>
+      <text x="124" y="20" font-family="ui-monospace, monospace" font-size="10" font-weight="800" fill="#cfb8ff">BOT</text>
+      <text x="172" y="20" font-family="ui-monospace, monospace" font-size="11" fill="#7a6db8">14:03</text>
+      <g transform="translate(52 36)" font-family="Inter, sans-serif" font-size="14" fill="#ffffff">
+        <text>Embárquelo antes de la reunión.</text>
+      </g>
+      <g transform="translate(52 56)">
+        <rect width="240" height="22" rx="4" fill="rgba(178,155,255,0.12)" stroke="rgba(178,155,255,0.36)"/>
+        <text x="10" y="16" font-family="ui-monospace, monospace" font-size="10" font-weight="700" fill="#cfb8ff">GEMMA 3N · TRANSLATE COG</text>
+      </g>
+    </g>
+
+    <!-- Input box -->
+    <g transform="translate(22 528)">
+      <rect width="752" height="46" rx="12" fill="rgba(255,255,255,0.04)" stroke="rgba(178,155,255,0.24)"/>
+      <text x="20" y="30" font-family="ui-monospace, monospace" font-size="13" fill="#a8a3c8">zask </text>
+      <text x="60" y="30" font-family="ui-monospace, monospace" font-size="13" fill="#cfb8ff">|</text>
+    </g>
+  </g>
+
+  <!-- Floating tags -->
+  <g font-family="ui-monospace, monospace" font-size="11" font-weight="700" letter-spacing="2">
+    <rect x="60" y="60" width="186" height="28" rx="14" fill="rgba(178,155,255,0.14)" stroke="rgba(178,155,255,0.36)"/>
+    <text x="76" y="78" fill="#cfb8ff">NVIDIA NIM · 3 MODELS</text>
+    <rect x="1042" y="60" width="178" height="28" rx="14" fill="rgba(178,155,255,0.14)" stroke="rgba(178,155,255,0.36)"/>
+    <text x="1058" y="78" fill="#cfb8ff">RAILWAY · READY</text>
+  </g>
+</svg>

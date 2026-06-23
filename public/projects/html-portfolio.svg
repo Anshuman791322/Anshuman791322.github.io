@@ -1,0 +1,151 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 800" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Static portfolio systems — browser preview + editor pane">
+  <defs>
+    <linearGradient id="htmlBg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#0d2238"/>
+      <stop offset="100%" stop-color="#070c17"/>
+    </linearGradient>
+    <radialGradient id="htmlGlow" cx="50%" cy="20%" r="55%">
+      <stop offset="0%" stop-color="#8ce5ff" stop-opacity="0.34"/>
+      <stop offset="100%" stop-color="#8ce5ff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="htmlPreview" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#0c1a2e"/>
+      <stop offset="100%" stop-color="#070f1c"/>
+    </linearGradient>
+    <linearGradient id="htmlAccent" x1="0" x2="1">
+      <stop offset="0%" stop-color="#8ce5ff"/>
+      <stop offset="100%" stop-color="#bdf2ff"/>
+    </linearGradient>
+    <pattern id="htmlGrid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M 48 0 L 0 0 0 48" fill="none" stroke="rgba(140,229,255,0.05)" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1280" height="800" fill="url(#htmlBg)"/>
+  <rect width="1280" height="800" fill="url(#htmlGrid)"/>
+  <rect width="1280" height="800" fill="url(#htmlGlow)"/>
+
+  <!-- Editor pane (back) -->
+  <g transform="translate(80 110)">
+    <rect width="560" height="600" rx="20" fill="#0d1e34" stroke="rgba(140,229,255,0.28)" stroke-width="1.4"/>
+    <!-- Title bar -->
+    <rect width="560" height="44" rx="20" fill="#0a1626"/>
+    <rect y="22" width="560" height="22" fill="#0a1626"/>
+    <circle cx="22" cy="22" r="5" fill="#ff5f57"/>
+    <circle cx="42" cy="22" r="5" fill="#febc2e"/>
+    <circle cx="62" cy="22" r="5" fill="#28c840"/>
+    <text x="100" y="28" fill="#8ce5ff" font-family="ui-monospace, monospace" font-size="13" font-weight="700">app/page.tsx</text>
+    <!-- Code -->
+    <g transform="translate(28 78)" font-family="ui-monospace, monospace" font-size="13">
+      <text y="0" fill="#5c7894">1</text>
+      <text x="28" fill="#8ce5ff">import</text>
+      <text x="86" fill="#cbd5e1">{ Hero }</text>
+      <text x="160" fill="#8ce5ff">from</text>
+      <text x="206" fill="#bdf2ff">"@/sections/Hero"</text>
+      <text x="0" y="26" fill="#5c7894">2</text>
+      <text x="28" y="26" fill="#8ce5ff">import</text>
+      <text x="86" y="26" fill="#cbd5e1">{ Stack }</text>
+      <text x="170" y="26" fill="#8ce5ff">from</text>
+      <text x="216" y="26" fill="#bdf2ff">"@/sections/Stack"</text>
+      <text x="0" y="52" fill="#5c7894">3</text>
+      <text x="0" y="78" fill="#5c7894">4</text>
+      <text x="28" y="78" fill="#ffc188">export default function</text>
+      <text x="232" y="78" fill="#ffffff">Home</text>
+      <text x="280" y="78" fill="#cbd5e1">() {</text>
+      <text x="0" y="104" fill="#5c7894">5</text>
+      <text x="28" y="104" fill="#bdf2ff">return</text>
+      <text x="86" y="104" fill="#cbd5e1">(</text>
+      <text x="0" y="130" fill="#5c7894">6</text>
+      <text x="46" y="130" fill="#8ce5ff">&lt;main</text>
+      <text x="106" y="130" fill="#ffc188">className</text>
+      <text x="190" y="130" fill="#cbd5e1">=</text>
+      <text x="200" y="130" fill="#bdf2ff">"shell"</text>
+      <text x="252" y="130" fill="#8ce5ff">&gt;</text>
+      <text x="0" y="156" fill="#5c7894">7</text>
+      <text x="64" y="156" fill="#8ce5ff">&lt;Hero /&gt;</text>
+      <text x="0" y="182" fill="#5c7894">8</text>
+      <text x="64" y="182" fill="#8ce5ff">&lt;Stack /&gt;</text>
+      <text x="0" y="208" fill="#5c7894">9</text>
+      <text x="64" y="208" fill="#8ce5ff">&lt;SelectedWork /&gt;</text>
+      <text x="0" y="234" fill="#5c7894">10</text>
+      <text x="46" y="234" fill="#8ce5ff">&lt;/main&gt;</text>
+      <text x="0" y="260" fill="#5c7894">11</text>
+      <text x="28" y="260" fill="#cbd5e1">);</text>
+      <text x="0" y="286" fill="#5c7894">12</text>
+      <text x="0" y="286" fill="#cbd5e1">}</text>
+      <text x="0" y="312" fill="#5c7894">13</text>
+      <text x="0" y="338" fill="#5c7894">14</text>
+      <text x="28" y="338" fill="#7991b8">// rendered statically · 0 KB JS</text>
+    </g>
+    <!-- Status bar -->
+    <g transform="translate(0 564)">
+      <rect width="560" height="36" rx="0" fill="#0a1626"/>
+      <text x="20" y="22" fill="#8ce5ff" font-family="ui-monospace, monospace" font-size="11" font-weight="700" letter-spacing="2">● BUILD READY · 118 KB FIRST LOAD</text>
+      <text x="500" y="22" font-family="ui-monospace, monospace" font-size="11" fill="#7991b8">Ln 14</text>
+    </g>
+  </g>
+
+  <!-- Browser preview (front, offset) -->
+  <g transform="translate(540 80)">
+    <rect width="660" height="640" rx="22" fill="url(#htmlPreview)" stroke="rgba(140,229,255,0.5)" stroke-width="1.6"/>
+    <!-- Title bar -->
+    <rect width="660" height="48" rx="22" fill="#0a1424"/>
+    <rect y="24" width="660" height="24" fill="#0a1424"/>
+    <circle cx="22" cy="24" r="5" fill="#ff5f57"/>
+    <circle cx="42" cy="24" r="5" fill="#febc2e"/>
+    <circle cx="62" cy="24" r="5" fill="#28c840"/>
+    <rect x="120" y="13" width="420" height="22" rx="11" fill="rgba(140,229,255,0.12)" stroke="rgba(140,229,255,0.36)" stroke-width="1"/>
+    <text x="330" y="28" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#bdf2ff">anshuman791322.github.io</text>
+    <!-- Hero -->
+    <g transform="translate(40 96)">
+      <text font-family="ui-monospace, monospace" font-size="11" letter-spacing="2" fill="#8ce5ff">● OPEN TO ROLES · 2026</text>
+      <text y="56" font-family="Inter, sans-serif" font-size="34" font-weight="800" fill="#ffffff">Software that feels</text>
+      <text y="96" font-family="Inter, sans-serif" font-size="34" font-weight="800" fill="#ffffff">considered, shipped,</text>
+      <text y="136" font-family="Inter, sans-serif" font-size="34" font-weight="800" fill="url(#htmlAccent)">and alive.</text>
+      <text y="180" font-family="Inter, sans-serif" font-size="13" fill="#cbd5e1">A portfolio for local-first AI, computer vision,</text>
+      <text y="200" font-family="Inter, sans-serif" font-size="13" fill="#cbd5e1">research notebooks, and front-end systems.</text>
+      <!-- CTAs -->
+      <g transform="translate(0 232)">
+        <rect width="174" height="42" rx="12" fill="url(#htmlAccent)"/>
+        <text x="20" y="27" font-family="Inter, sans-serif" font-size="13" font-weight="800" fill="#070c17">View selected work →</text>
+      </g>
+      <g transform="translate(190 232)">
+        <rect width="138" height="42" rx="12" fill="none" stroke="rgba(255,255,255,0.2)"/>
+        <text x="20" y="27" font-family="Inter, sans-serif" font-size="13" font-weight="700" fill="#ffffff">Get in touch</text>
+      </g>
+    </g>
+    <!-- Stats -->
+    <g transform="translate(40 396)">
+      <rect width="580" height="92" rx="14" fill="rgba(140,229,255,0.08)" stroke="rgba(140,229,255,0.22)"/>
+      <g font-family="Inter, sans-serif">
+        <text x="32" y="42" font-size="28" font-weight="800" fill="#ffffff">5</text>
+        <text x="32" y="64" font-size="10" font-family="ui-monospace, monospace" letter-spacing="2" fill="#8ce5ff">PUBLIC REPOS</text>
+        <text x="172" y="42" font-size="28" font-weight="800" fill="#ffffff">4</text>
+        <text x="172" y="64" font-size="10" font-family="ui-monospace, monospace" letter-spacing="2" fill="#8ce5ff">BUILD DOMAINS</text>
+        <text x="332" y="42" font-size="28" font-weight="800" fill="#ffffff">2022</text>
+        <text x="332" y="64" font-size="10" font-family="ui-monospace, monospace" letter-spacing="2" fill="#8ce5ff">BUILDING SINCE</text>
+        <text x="476" y="42" font-size="28" font-weight="800" fill="#ffffff">100%</text>
+        <text x="476" y="64" font-size="10" font-family="ui-monospace, monospace" letter-spacing="2" fill="#8ce5ff">OPEN SOURCE</text>
+      </g>
+    </g>
+    <!-- Bento mini -->
+    <g transform="translate(40 510)">
+      <rect width="280" height="100" rx="12" fill="rgba(140,229,255,0.07)" stroke="rgba(140,229,255,0.2)"/>
+      <text x="16" y="26" font-family="ui-monospace, monospace" font-size="10" letter-spacing="2" fill="#8ce5ff">LOCAL AI</text>
+      <text x="16" y="54" font-family="Inter, sans-serif" font-size="14" font-weight="700" fill="#ffffff">AI Agent</text>
+      <text x="16" y="72" font-family="Inter, sans-serif" font-size="11" fill="#cbd5e1">PySide6 · Ollama · Whisper</text>
+
+      <rect x="296" width="284" height="100" rx="12" fill="rgba(255,159,67,0.08)" stroke="rgba(255,159,67,0.24)"/>
+      <text x="312" y="26" font-family="ui-monospace, monospace" font-size="10" letter-spacing="2" fill="#ffc188">VISION</text>
+      <text x="312" y="54" font-family="Inter, sans-serif" font-size="14" font-weight="700" fill="#ffffff">Driver Monitoring</text>
+      <text x="312" y="72" font-family="Inter, sans-serif" font-size="11" fill="#cbd5e1">Android · APK · CV</text>
+    </g>
+  </g>
+
+  <!-- Floating tags -->
+  <g font-family="ui-monospace, monospace" font-size="11" font-weight="700" letter-spacing="2">
+    <rect x="60" y="60" width="166" height="28" rx="14" fill="rgba(140,229,255,0.14)" stroke="rgba(140,229,255,0.36)"/>
+    <text x="76" y="78" fill="#bdf2ff">NEXT.JS · STATIC</text>
+    <rect x="1058" y="60" width="160" height="28" rx="14" fill="rgba(140,229,255,0.14)" stroke="rgba(140,229,255,0.36)"/>
+    <text x="1074" y="78" fill="#bdf2ff">VIEW-SOURCE OK</text>
+  </g>
+</svg>

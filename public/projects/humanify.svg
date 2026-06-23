@@ -1,0 +1,174 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 800" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Humanify — multi-stage writing-refinement pipeline">
+  <defs>
+    <linearGradient id="humBg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#0d2238"/>
+      <stop offset="100%" stop-color="#070c17"/>
+    </linearGradient>
+    <radialGradient id="humGlow" cx="50%" cy="22%" r="55%">
+      <stop offset="0%" stop-color="#8ce5ff" stop-opacity="0.34"/>
+      <stop offset="100%" stop-color="#8ce5ff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="humPanel" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#0c1a2e"/>
+      <stop offset="100%" stop-color="#0a1322"/>
+    </linearGradient>
+    <linearGradient id="humAccent" x1="0" x2="1">
+      <stop offset="0%" stop-color="#8ce5ff"/>
+      <stop offset="100%" stop-color="#bdf2ff"/>
+    </linearGradient>
+    <pattern id="humGrid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M 48 0 L 0 0 0 48" fill="none" stroke="rgba(140,229,255,0.05)" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1280" height="800" fill="url(#humBg)"/>
+  <rect width="1280" height="800" fill="url(#humGrid)"/>
+  <rect width="1280" height="800" fill="url(#humGlow)"/>
+
+  <!-- Original document (left) -->
+  <g transform="translate(80 130)">
+    <rect width="380" height="540" rx="22" fill="url(#humPanel)" stroke="rgba(140,229,255,0.28)" stroke-width="1.4"/>
+    <g transform="translate(28 26)" font-family="ui-monospace, monospace" font-size="11" letter-spacing="2" font-weight="700" fill="#7991b8">
+      <text>ORIGINAL · 432 WORDS</text>
+    </g>
+    <g transform="translate(28 70)" font-family="Inter, sans-serif" font-size="13" fill="#cbd5e1">
+      <text>The leveraging of synergistic solutions</text>
+      <text y="22">in todays fast-paced environment</text>
+      <text y="44">cannot be understated. Furthermore,</text>
+      <text y="66">it is important to note that the</text>
+      <text y="88">aforementioned strategic initiatives</text>
+      <text y="110">are pivotal to our continued growth.</text>
+    </g>
+    <!-- Highlighted issues -->
+    <g transform="translate(28 200)">
+      <rect width="324" height="22" rx="4" fill="rgba(255,180,120,0.16)" stroke="rgba(255,180,120,0.4)"/>
+      <text x="10" y="15" font-family="ui-monospace, monospace" font-size="10" fill="#ffc188">INFLATED PHRASE · "synergistic solutions"</text>
+    </g>
+    <g transform="translate(28 232)">
+      <rect width="324" height="22" rx="4" fill="rgba(255,180,120,0.16)" stroke="rgba(255,180,120,0.4)"/>
+      <text x="10" y="15" font-family="ui-monospace, monospace" font-size="10" fill="#ffc188">GENERIC TRANSITION · "Furthermore"</text>
+    </g>
+    <g transform="translate(28 264)">
+      <rect width="324" height="22" rx="4" fill="rgba(140,229,255,0.16)" stroke="rgba(140,229,255,0.4)"/>
+      <text x="10" y="15" font-family="ui-monospace, monospace" font-size="10" fill="#bdf2ff">REPEATED OPENING · "the"</text>
+    </g>
+
+    <text x="28" y="320" fill="#7991b8" font-family="ui-monospace, monospace" font-size="11" letter-spacing="2" font-weight="700">PREFLIGHT</text>
+    <g transform="translate(28 336)" font-family="Inter, sans-serif" font-size="12" fill="#cbd5e1">
+      <text>● 3 issues flagged</text>
+      <text y="20">● 2 inflated phrases</text>
+      <text y="40">● 1 generic transition</text>
+      <text y="60">● 0 unsupported claims</text>
+    </g>
+  </g>
+
+  <!-- Pipeline stages (center) -->
+  <g transform="translate(500 250)">
+    <text fill="#8ce5ff" font-family="ui-monospace, monospace" font-size="11" font-weight="700" letter-spacing="2">PIPELINE · POST /api/refine</text>
+    <!-- Stages -->
+    <g transform="translate(0 22)">
+      <g>
+        <rect width="280" height="36" rx="10" fill="rgba(140,229,255,0.12)" stroke="rgba(140,229,255,0.36)"/>
+        <circle cx="20" cy="18" r="10" fill="#8ce5ff"/>
+        <text x="20" y="22" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10" font-weight="800" fill="#070c17">01</text>
+        <text x="42" y="22" font-family="Inter, sans-serif" font-size="13" font-weight="700" fill="#ffffff">Zod validate</text>
+      </g>
+      <g transform="translate(0 44)">
+        <rect width="280" height="36" rx="10" fill="rgba(140,229,255,0.12)" stroke="rgba(140,229,255,0.36)"/>
+        <circle cx="20" cy="18" r="10" fill="#8ce5ff"/>
+        <text x="20" y="22" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10" font-weight="800" fill="#070c17">02</text>
+        <text x="42" y="22" font-family="Inter, sans-serif" font-size="13" font-weight="700" fill="#ffffff">Preflight scan</text>
+      </g>
+      <g transform="translate(0 88)">
+        <rect width="280" height="36" rx="10" fill="rgba(140,229,255,0.12)" stroke="rgba(140,229,255,0.36)"/>
+        <circle cx="20" cy="18" r="10" fill="#8ce5ff"/>
+        <text x="20" y="22" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10" font-weight="800" fill="#070c17">03</text>
+        <text x="42" y="22" font-family="Inter, sans-serif" font-size="13" font-weight="700" fill="#ffffff">Diagnose</text>
+      </g>
+      <g transform="translate(0 132)">
+        <rect width="280" height="36" rx="10" fill="rgba(140,229,255,0.12)" stroke="rgba(140,229,255,0.36)"/>
+        <circle cx="20" cy="18" r="10" fill="#8ce5ff"/>
+        <text x="20" y="22" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10" font-weight="800" fill="#070c17">04</text>
+        <text x="42" y="22" font-family="Inter, sans-serif" font-size="13" font-weight="700" fill="#ffffff">Fact-lock extract</text>
+      </g>
+      <g transform="translate(0 176)">
+        <rect width="280" height="36" rx="10" fill="rgba(140,229,255,0.22)" stroke="rgba(140,229,255,0.5)"/>
+        <circle cx="20" cy="18" r="10" fill="#bdf2ff"/>
+        <text x="20" y="22" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10" font-weight="800" fill="#070c17">05</text>
+        <text x="42" y="22" font-family="Inter, sans-serif" font-size="13" font-weight="700" fill="#ffffff">Rewrite plan</text>
+        <text x="200" y="22" font-family="ui-monospace, monospace" font-size="10" fill="#bdf2ff" font-weight="700">RUNNING</text>
+      </g>
+      <g transform="translate(0 220)">
+        <rect width="280" height="36" rx="10" fill="rgba(140,229,255,0.06)" stroke="rgba(140,229,255,0.18)"/>
+        <circle cx="20" cy="18" r="10" fill="rgba(140,229,255,0.36)"/>
+        <text x="20" y="22" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10" font-weight="800" fill="#070c17">06</text>
+        <text x="42" y="22" font-family="Inter, sans-serif" font-size="13" font-weight="700" fill="#a7b4c8">Gemini rewrite</text>
+      </g>
+      <g transform="translate(0 264)">
+        <rect width="280" height="36" rx="10" fill="rgba(140,229,255,0.06)" stroke="rgba(140,229,255,0.18)"/>
+        <circle cx="20" cy="18" r="10" fill="rgba(140,229,255,0.36)"/>
+        <text x="20" y="22" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10" font-weight="800" fill="#070c17">07</text>
+        <text x="42" y="22" font-family="Inter, sans-serif" font-size="13" font-weight="700" fill="#a7b4c8">Quality check</text>
+      </g>
+      <g transform="translate(0 308)">
+        <rect width="280" height="36" rx="10" fill="rgba(140,229,255,0.06)" stroke="rgba(140,229,255,0.18)"/>
+        <circle cx="20" cy="18" r="10" fill="rgba(140,229,255,0.36)"/>
+        <text x="20" y="22" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10" font-weight="800" fill="#070c17">08</text>
+        <text x="42" y="22" font-family="Inter, sans-serif" font-size="13" font-weight="700" fill="#a7b4c8">Careful preserve</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- Refined document (right) -->
+  <g transform="translate(820 130)">
+    <rect width="380" height="540" rx="22" fill="url(#humPanel)" stroke="rgba(140,229,255,0.6)" stroke-width="1.6"/>
+    <g transform="translate(28 26)" font-family="ui-monospace, monospace" font-size="11" letter-spacing="2" font-weight="700" fill="#bdf2ff">
+      <text>REFINED · 318 WORDS</text>
+    </g>
+    <g transform="translate(28 70)" font-family="Inter, sans-serif" font-size="13" fill="#ffffff">
+      <text>Real growth depends on shipping</text>
+      <text y="22">products that survive contact with</text>
+      <text y="44">users. The team's focus on small,</text>
+      <text y="66">measurable releases compounds —</text>
+      <text y="88">each one teaches us where the</text>
+      <text y="110">model breaks before customers do.</text>
+    </g>
+    <!-- Quality check panel -->
+    <g transform="translate(28 200)">
+      <rect width="324" height="120" rx="14" fill="rgba(140,229,255,0.08)" stroke="rgba(140,229,255,0.24)"/>
+      <text x="14" y="22" fill="#bdf2ff" font-family="ui-monospace, monospace" font-size="11" letter-spacing="2" font-weight="700">QUALITY CHECK</text>
+      <g transform="translate(14 38)" font-family="Inter, sans-serif" font-size="12" fill="#cbd5e1">
+        <text>Clarity</text>
+        <text x="200" font-family="Inter, sans-serif" font-weight="800" fill="#ffffff">+38%</text>
+        <text y="22">Rhythm</text>
+        <text x="200" y="22" font-family="Inter, sans-serif" font-weight="800" fill="#ffffff">+24%</text>
+        <text y="44">Meaning preserved</text>
+        <text x="200" y="44" font-family="Inter, sans-serif" font-weight="800" fill="#8ce5ff">YES</text>
+        <text y="66">Invented content risk</text>
+        <text x="200" y="66" font-family="Inter, sans-serif" font-weight="800" fill="#74e8a2">LOW</text>
+      </g>
+    </g>
+    <!-- Fact-lock -->
+    <g transform="translate(28 340)">
+      <text fill="#7991b8" font-family="ui-monospace, monospace" font-size="11" letter-spacing="2" font-weight="700">FACT-LOCK · 3 CLAIMS</text>
+      <g transform="translate(0 16)" font-family="Inter, sans-serif" font-size="12" fill="#cbd5e1">
+        <text>● "small releases" → preserved</text>
+        <text y="20">● "the team" → preserved</text>
+        <text y="40">● No numbers altered</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- Arrows -->
+  <g stroke="#8ce5ff" stroke-width="2" fill="none" opacity="0.6">
+    <path d="M 470 340 L 490 340" marker-end="url(#humArrow)"/>
+    <path d="M 790 340 L 810 340" marker-end="url(#humArrow)"/>
+  </g>
+
+  <!-- Floating tags -->
+  <g font-family="ui-monospace, monospace" font-size="11" font-weight="700" letter-spacing="2">
+    <rect x="60" y="60" width="174" height="28" rx="14" fill="rgba(140,229,255,0.14)" stroke="rgba(140,229,255,0.36)"/>
+    <text x="76" y="78" fill="#bdf2ff">GEMINI · 3.1 FLASH</text>
+    <rect x="1054" y="60" width="166" height="28" rx="14" fill="rgba(140,229,255,0.14)" stroke="rgba(140,229,255,0.36)"/>
+    <text x="1070" y="78" fill="#bdf2ff">NO TEXT STORED</text>
+  </g>
+</svg>

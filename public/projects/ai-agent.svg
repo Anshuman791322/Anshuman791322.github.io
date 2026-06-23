@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 800" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Local AI assistant — Windows desktop window with transcript pane">
+  <defs>
+    <linearGradient id="aiBg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#0e1a30"/>
+      <stop offset="100%" stop-color="#070c17"/>
+    </linearGradient>
+    <radialGradient id="aiGlow" cx="50%" cy="22%" r="55%">
+      <stop offset="0%" stop-color="#74a7ff" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#74a7ff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="aiWindow" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#0f1a2e"/>
+      <stop offset="100%" stop-color="#0a1322"/>
+    </linearGradient>
+    <linearGradient id="aiUser" x1="0" x2="1">
+      <stop offset="0%" stop-color="#74a7ff"/>
+      <stop offset="100%" stop-color="#a8c7ff"/>
+    </linearGradient>
+    <pattern id="aiGrid" width="44" height="44" patternUnits="userSpaceOnUse">
+      <path d="M 44 0 L 0 0 0 44" fill="none" stroke="rgba(116,167,255,0.06)" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1280" height="800" fill="url(#aiBg)"/>
+  <rect width="1280" height="800" fill="url(#aiGrid)"/>
+  <rect width="1280" height="800" fill="url(#aiGlow)"/>
+
+  <!-- Windows app window -->
+  <g transform="translate(160 90)">
+    <rect width="960" height="620" rx="18" fill="url(#aiWindow)" stroke="rgba(116,167,255,0.32)" stroke-width="1.5"/>
+    <!-- Title bar -->
+    <rect width="960" height="42" rx="18" fill="#0c172a"/>
+    <rect y="22" width="960" height="20" fill="#0c172a"/>
+    <g transform="translate(880 12)">
+      <rect width="18" height="18" rx="2" fill="none" stroke="#7991b8" stroke-width="1.4"/>
+      <line x1="28" y1="0" x2="46" y2="18" stroke="#7991b8" stroke-width="1.4"/>
+      <line x1="46" y1="0" x2="28" y2="18" stroke="#7991b8" stroke-width="1.4"/>
+    </g>
+    <text x="20" y="27" fill="#a8c7ff" font-family="ui-monospace, monospace" font-size="13" font-weight="700">AI Agent · local</text>
+
+    <!-- Sidebar -->
+    <rect x="0" y="42" width="220" height="578" fill="rgba(10,18,32,0.6)"/>
+    <text x="22" y="76" fill="#7991b8" font-family="ui-monospace, monospace" font-size="11" font-weight="700" letter-spacing="2">SESSIONS</text>
+    <g font-family="Inter, sans-serif" font-size="13" fill="#cbd5e1">
+      <rect x="16" y="92" width="188" height="34" rx="8" fill="rgba(116,167,255,0.16)"/>
+      <text x="28" y="113" fill="#a8c7ff" font-weight="700">Local model · Llama 3</text>
+      <text x="28" y="146">Summarise notes</text>
+      <text x="28" y="176">Daily standup</text>
+      <text x="28" y="206">Refactor diff</text>
+    </g>
+    <g transform="translate(16 520)">
+      <rect width="188" height="40" rx="10" fill="rgba(116,167,255,0.12)" stroke="rgba(116,167,255,0.3)" stroke-width="1"/>
+      <circle cx="22" cy="20" r="8" fill="#74a7ff"/>
+      <text x="38" y="25" fill="#cbd5e1" font-family="Inter, sans-serif" font-size="12" font-weight="600">Ollama ready</text>
+    </g>
+
+    <!-- Main pane -->
+    <g transform="translate(220 42)">
+      <text x="32" y="50" fill="#f4f6fb" font-family="Inter, sans-serif" font-size="18" font-weight="700">Local model · Llama 3 — 8B</text>
+      <text x="32" y="74" fill="#7991b8" font-family="ui-monospace, monospace" font-size="11" letter-spacing="2">RUNNING ON-DEVICE</text>
+
+      <!-- Chat bubble: user -->
+      <g transform="translate(180 102)">
+        <rect width="540" height="80" rx="14" fill="url(#aiUser)"/>
+        <text x="22" y="32" fill="#070c17" font-family="Inter, sans-serif" font-size="13" font-weight="700">you</text>
+        <text x="22" y="56" fill="#070c17" font-family="Inter, sans-serif" font-size="14">Summarise the last 5 commits in plain English.</text>
+      </g>
+      <!-- Chat bubble: assistant -->
+      <g transform="translate(32 196)">
+        <rect width="640" height="138" rx="14" fill="#0f1a2e" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+        <text x="22" y="32" fill="#74a7ff" font-family="Inter, sans-serif" font-size="13" font-weight="700">assistant</text>
+        <text x="22" y="58" fill="#cbd5e1" font-family="Inter, sans-serif" font-size="14">Five commits ago you split the Whisper worker into a thread.</text>
+        <text x="22" y="80" fill="#cbd5e1" font-family="Inter, sans-serif" font-size="14">Two of them refactor the Ollama bridge. The latest one fixes</text>
+        <text x="22" y="102" fill="#cbd5e1" font-family="Inter, sans-serif" font-size="14">a crash on model swap. Want a per-commit breakdown?</text>
+        <g transform="translate(22 118)">
+          <circle r="3" fill="#74a7ff"/>
+          <circle cx="12" r="3" fill="#74a7ff" opacity="0.6"/>
+          <circle cx="24" r="3" fill="#74a7ff" opacity="0.3"/>
+        </g>
+      </g>
+
+      <!-- Voice waveform input -->
+      <g transform="translate(32 380)">
+        <rect width="690" height="74" rx="14" fill="rgba(116,167,255,0.08)" stroke="rgba(116,167,255,0.28)" stroke-width="1"/>
+        <!-- Mic -->
+        <g transform="translate(24 37)">
+          <circle r="22" fill="rgba(116,167,255,0.18)"/>
+          <rect x="-6" y="-12" width="12" height="20" rx="6" fill="#74a7ff"/>
+          <path d="M -12 4 V 8 a 12 12 0 0 0 24 0 V 4" fill="none" stroke="#74a7ff" stroke-width="2.4" stroke-linecap="round"/>
+        </g>
+        <!-- Waveform -->
+        <g transform="translate(72 37)" stroke="#a8c7ff" stroke-width="2.5" stroke-linecap="round" fill="none">
+          <line x1="0" y1="-4" x2="0" y2="4"/>
+          <line x1="10" y1="-10" x2="10" y2="10"/>
+          <line x1="20" y1="-16" x2="20" y2="16"/>
+          <line x1="30" y1="-22" x2="30" y2="22"/>
+          <line x1="40" y1="-14" x2="40" y2="14"/>
+          <line x1="50" y1="-8" x2="50" y2="8"/>
+          <line x1="60" y1="-18" x2="60" y2="18"/>
+          <line x1="70" y1="-24" x2="70" y2="24"/>
+          <line x1="80" y1="-12" x2="80" y2="12"/>
+          <line x1="90" y1="-6" x2="90" y2="6"/>
+          <line x1="100" y1="-14" x2="100" y2="14"/>
+          <line x1="110" y1="-20" x2="110" y2="20"/>
+          <line x1="120" y1="-10" x2="120" y2="10"/>
+          <line x1="130" y1="-4" x2="130" y2="4"/>
+          <line x1="140" y1="-12" x2="140" y2="12"/>
+          <line x1="150" y1="-22" x2="150" y2="22"/>
+          <line x1="160" y1="-14" x2="160" y2="14"/>
+          <line x1="170" y1="-8" x2="170" y2="8"/>
+          <line x1="180" y1="-18" x2="180" y2="18"/>
+          <line x1="190" y1="-6" x2="190" y2="6"/>
+          <line x1="200" y1="-14" x2="200" y2="14"/>
+          <line x1="210" y1="-20" x2="210" y2="20"/>
+          <line x1="220" y1="-12" x2="220" y2="12"/>
+          <line x1="230" y1="-6" x2="230" y2="6"/>
+          <line x1="240" y1="-16" x2="240" y2="16"/>
+        </g>
+        <text x="350" y="42" fill="#7991b8" font-family="ui-monospace, monospace" font-size="11" letter-spacing="2">WHISPER · STREAMING</text>
+      </g>
+
+      <!-- Status row -->
+      <g transform="translate(32 480)" font-family="ui-monospace, monospace" font-size="11" letter-spacing="2" fill="#7991b8">
+        <text>● LOCAL</text>
+        <text x="80">● OLLAMA</text>
+        <text x="180">● WHISPER</text>
+        <text x="300">CONTEXT 8K</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- Floating chips -->
+  <g font-family="ui-monospace, monospace" font-size="11" font-weight="700" letter-spacing="2" fill="#a8c7ff">
+    <rect x="68" y="48" width="74" height="26" rx="13" fill="rgba(116,167,255,0.15)" stroke="rgba(116,167,255,0.36)"/>
+    <text x="78" y="65">JARVIS</text>
+    <rect x="1156" y="60" width="64" height="26" rx="13" fill="rgba(255,159,67,0.12)" stroke="rgba(255,159,67,0.36)" />
+    <text x="1166" y="77" fill="#ffc188">VOICE</text>
+  </g>
+</svg>

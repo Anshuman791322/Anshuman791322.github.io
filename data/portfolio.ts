@@ -15,11 +15,15 @@ export type Project = {
   featured: boolean;
   archived?: boolean;
   accent: ProjectAccent;
+  /** Cover image (themed SVG illustration, lives in /public/projects). */
+  image?: string;
 };
 
 export type SkillGroup = {
   label: string;
   items: string[];
+  /** Themed illustration in /public/stack. */
+  image?: string;
 };
 
 export type TimelineEntry = {
@@ -69,8 +73,8 @@ export const portfolio = {
   ] satisfies NavItem[],
   // Stats — real values surfaced clearly. No placeholder zeros in rendered HTML.
   stats: [
-    { value: 5, label: "Public repositories" },
-    { value: 4, label: "Build domains" },
+    { value: 6, label: "Public repositories" },
+    { value: 5, label: "Build domains" },
     { value: 2022, label: "Building since" },
     { value: 100, suffix: "%", label: "Open source" },
   ] satisfies Stat[],
@@ -78,18 +82,22 @@ export const portfolio = {
     {
       label: "Languages",
       items: ["Python", "TypeScript", "JavaScript", "HTML", "CSS"],
+      image: "/stack/languages.svg",
     },
     {
       label: "AI & ML",
       items: ["Ollama", "Whisper", "PyTorch", "scikit-learn", "Jupyter"],
+      image: "/stack/ai-ml.svg",
     },
     {
       label: "App & Web",
       items: ["PySide6", "Next.js", "React", "Tailwind CSS", "Anime.js"],
+      image: "/stack/app-web.svg",
     },
     {
       label: "Delivery",
       items: ["Git & GitHub", "GitHub Actions", "Android (APK)", "Static export"],
+      image: "/stack/delivery.svg",
     },
   ] satisfies SkillGroup[],
   timeline: [
@@ -142,6 +150,7 @@ export const portfolio = {
       year: "2026",
       featured: true,
       accent: "blue",
+      image: "/projects/ai-agent.svg",
     },
     {
       title: "Smart Driver Monitoring",
@@ -155,6 +164,7 @@ export const portfolio = {
       year: "2026",
       featured: true,
       accent: "orange",
+      image: "/projects/driver-monitoring.svg",
     },
     {
       title: "Periodically Variable Stars",
@@ -168,6 +178,7 @@ export const portfolio = {
       year: "2025",
       featured: true,
       accent: "violet",
+      image: "/projects/variable-stars.svg",
     },
     {
       title: "HTML Portfolio",
@@ -180,6 +191,7 @@ export const portfolio = {
       year: "2024",
       featured: false,
       accent: "cyan",
+      image: "/projects/html-portfolio.svg",
     },
     {
       title: "Anshuman-07",
@@ -193,6 +205,7 @@ export const portfolio = {
       featured: false,
       archived: true,
       accent: "green",
+      image: "/projects/anshuman-07.svg",
     },
   ] satisfies Project[],
 

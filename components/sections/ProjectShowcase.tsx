@@ -85,8 +85,33 @@ export function ProjectShowcase({ projects }: Props) {
         });
       },
     });
+
+    // Subtle parallax on each tile's image — translate as it crosses the viewport.
+    const tileImages = reduced
+      ? []
+      : Array.from(root.querySelectorAll<HTMLElement>(".work-tile-image img"));
+    const parallaxObservers = tileImages.map((img) => {
+      const tile = img.closest<HTMLElement>(".work-tile");
+      if (!tile) return null;
+      function update() {
+        const rect = tile!.getBoundingClientRect();
+        const viewport = window.innerHeight;
+        // progress: 0 when tile entering bottom, 1 when leaving top
+        const progress = Math.max(
+          0,
+          Math.min(1, (viewport - rect.top) / (viewport + rect.height)),
+        );
+        const shift = (progress - 0.5) * 24; // -12px → +12px
+        img.style.transform = `translate3d(0, ${shift}px, 0) scale(1.08)`;
+      }
+      update();
+      window.addEventListener("scroll", update, { passive: true });
+      return () => window.removeEventListener("scroll", update);
+    });
+
     return () => {
       scrollObserver.revert();
+      parallaxObservers.forEach((d) => d && d());
     };
   }, []);
 
@@ -119,7 +144,7 @@ export function ProjectShowcase({ projects }: Props) {
               <SpotlightCard
                 className={`work-tile project-${project.accent} ${
                   project.featured ? "featured" : ""
-                } ${project.archived ? "archived" : ""} ${span === "hero" ? "is-hero" : ""}`}
+                } ${project.archived ? "archived" : ""} ${span === "hero" ? "is-hero" : ""} ${project.image ? "has-image" : ""}`}
                 spotlightColor={
                   SPOTLIGHT_COLOR[project.accent] ?? SPOTLIGHT_COLOR.blue
                 }
@@ -127,6 +152,18 @@ export function ProjectShowcase({ projects }: Props) {
                 onClick={() => setSelected(project)}
                 ariaLabel={`Open details for ${project.title}`}
               >
+                {project.image && (
+                  <div className="work-tile-image" aria-hidden="true">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={project.image}
+                      alt=""
+                      loading="lazy"
+                      decoding="async"
+                    />
+                    <span className="work-tile-image-shade" />
+                  </div>
+                )}
                 <div className="work-tile-top">
                   <span className="work-tile-index">
                     {(index + 1).toString().padStart(2, "0")} /{" "}

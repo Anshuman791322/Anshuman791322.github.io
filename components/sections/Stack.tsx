@@ -43,6 +43,18 @@ export function Stack() {
               const Icon = GROUP_ICONS[i] ?? Box;
               return (
                 <div key={group.label} className="stack-group">
+                  {group.image && (
+                    <div className="stack-group-image" aria-hidden="true">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={group.image}
+                        alt=""
+                        loading="lazy"
+                        decoding="async"
+                      />
+                      <span className="stack-group-image-shade" />
+                    </div>
+                  )}
                   <span className="stack-group-label">
                     <AnimatedIcon><Icon size={16} variant="Bulk" /></AnimatedIcon>
                     {group.label}
