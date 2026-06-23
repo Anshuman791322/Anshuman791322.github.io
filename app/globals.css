@@ -3805,3 +3805,120 @@ p {
   .case-journal-card { transition: none; }
   .case-spotlight::before { transition: none; }
 }
+
+/* ===========================================================
+   Hero headline — per-word + per-char split with rhythm-word
+   glow pulse and a gradient underline sweep that lands after
+   the chars finish their entrance.
+   =========================================================== */
+.taste-hero-title {
+  position: relative;
+  padding-bottom: 0.14em;
+}
+
+.taste-hero-title-inner {
+  display: inline;
+}
+
+.taste-hero-word {
+  position: relative;
+  display: inline-block;
+  white-space: pre;
+  vertical-align: baseline;
+}
+
+.taste-hero-char {
+  display: inline-block;
+  transform-origin: 50% 100%;
+  will-change: transform, opacity, filter;
+}
+
+/* Accent words get a soft, pulsing glow blob behind them. The blob lives
+   in the word's stacking context so it sits behind the glyphs but in front
+   of the page background. */
+.taste-hero-word.is-accent::before {
+  content: "";
+  position: absolute;
+  inset: -0.08em -0.18em;
+  z-index: -1;
+  border-radius: 0.38em;
+  background:
+    radial-gradient(
+      62% 70% at 50% 55%,
+      rgba(178, 155, 255, 0.32),
+      rgba(140, 229, 255, 0.18) 55%,
+      transparent 78%
+    );
+  filter: blur(14px);
+  opacity: 0;
+  animation: taste-hero-glow 6.4s cubic-bezier(0.42, 0.05, 0.4, 1) infinite;
+}
+
+.taste-hero-word.is-accent-1::before { animation-delay: 0s; }
+.taste-hero-word.is-accent-2::before { animation-delay: 1.6s; }
+.taste-hero-word.is-accent-3::before { animation-delay: 3.2s; }
+
+@keyframes taste-hero-glow {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  38% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  62% {
+    opacity: 0.35;
+    transform: scale(1);
+  }
+}
+
+/* Underline that sweeps in after the chars land. Pure CSS gradient; GSAP
+   tweens scaleX from 0 to 1 once on entrance, then the keyframe gently
+   pans the gradient sideways forever. */
+.taste-hero-underline {
+  position: absolute;
+  left: 0;
+  bottom: 0.04em;
+  width: min(560px, 62%);
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(178, 155, 255, 0.0) 4%,
+    rgba(178, 155, 255, 0.85) 22%,
+    rgba(140, 229, 255, 0.85) 58%,
+    rgba(248, 250, 252, 0.55) 85%,
+    transparent 100%
+  );
+  background-size: 220% 100%;
+  transform-origin: left center;
+  transform: scaleX(0);
+  opacity: 0;
+  animation: taste-hero-underline-pan 9s ease-in-out 1.6s infinite;
+}
+
+@keyframes taste-hero-underline-pan {
+  0%, 100% { background-position: 0% 0%; }
+  50% { background-position: 100% 0%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .taste-hero-word.is-accent::before {
+    animation: none;
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  .taste-hero-underline {
+    animation: none;
+    transform: scaleX(1);
+    opacity: 0.7;
+  }
+  .taste-hero-char {
+    transform: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+  }
+}
+

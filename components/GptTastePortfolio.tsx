@@ -92,12 +92,32 @@ const stackCards = [
   },
 ];
 
-export function GptTastePortfolio() {
+const HEADLINE = "Software that feels considered, shipped, and alive.";
+// Rhythm words carry the gradient sheen + glow pulse. Trailing punctuation
+// included so the comma/period travels with the highlight.
+const HEADLINE_ACCENTS = new Set(["considered,", "shipped,", "alive."]);
+
+type GptTastePortfolioProps = {
+  /** Live public-repo count, fetched at build time in app/page.tsx. */
+  publicRepoCount?: number;
+};
+
+export function GptTastePortfolio({ publicRepoCount }: GptTastePortfolioProps = {}) {
   const rootRef = useRef<HTMLElement | null>(null);
   const pinRef = useRef<HTMLDivElement | null>(null);
   const storyRef = useRef<HTMLParagraphElement | null>(null);
 
   const storyWords = useMemo(() => story.split(" "), []);
+  const headlineWords = useMemo(() => HEADLINE.split(" "), []);
+
+  // Render-time override: keep portfolio.ts as the single source of truth for
+  // the rest of the stats, only swap the live-data slot.
+  const stats = useMemo(() => {
+    if (typeof publicRepoCount !== "number") return portfolio.stats;
+    return portfolio.stats.map((stat) =>
+      stat.label === "Public repositories" ? { ...stat, value: publicRepoCount } : stat,
+    );
+  }, [publicRepoCount]);
 
   useGSAP(
     () => {
@@ -118,13 +138,54 @@ export function GptTastePortfolio() {
         ease: "power3.out",
       });
 
-      gsap.from(".taste-hero-copy > *", {
-        y: 32,
-        opacity: 0,
-        duration: 0.9,
-        stagger: 0.08,
-        ease: "power3.out",
-      });
+      // Non-headline hero copy (p, actions) keeps the simple stagger fade so
+      // the rhythm of the page entrance is unchanged.
+      gsap.from(
+        ".taste-hero-copy > *:not(.taste-hero-title)",
+        {
+          y: 32,
+          opacity: 0,
+          duration: 0.9,
+          stagger: 0.08,
+          ease: "power3.out",
+          delay: 0.45,
+        },
+      );
+
+      // Headline — per-character rise with blur clear. Punctuation rides with
+      // its word, so the comma in "considered," lands with the word.
+      gsap.fromTo(
+        ".taste-hero-title .taste-hero-char",
+        {
+          yPercent: 130,
+          opacity: 0,
+          rotate: 4,
+          filter: "blur(10px)",
+        },
+        {
+          yPercent: 0,
+          opacity: 1,
+          rotate: 0,
+          filter: "blur(0px)",
+          duration: 1,
+          stagger: 0.018,
+          ease: "power4.out",
+        },
+      );
+
+      // Underline gradient sweeps in after the chars land — gives the line a
+      // satisfying "settled" beat before the rest of the page reveals.
+      gsap.fromTo(
+        ".taste-hero-underline",
+        { scaleX: 0, opacity: 0 },
+        {
+          scaleX: 1,
+          opacity: 1,
+          duration: 1.1,
+          ease: "expo.out",
+          delay: 0.75,
+        },
+      );
 
       gsap.from(".taste-hero-terminal", {
         x: 52,
@@ -333,7 +394,36 @@ export function GptTastePortfolio() {
 
       <section className="taste-hero" id="top">
         <div className="taste-hero-copy">
-          <h1>Software that feels considered, shipped, and alive.</h1>
+          <h1 className="taste-hero-title" aria-label={HEADLINE}>
+            <span className="taste-hero-title-inner" aria-hidden="true">
+              {headlineWords.map((word, wi) => {
+                const accent = HEADLINE_ACCENTS.has(word);
+                const accentIndex = accent
+                  ? [...HEADLINE_ACCENTS].indexOf(word) + 1
+                  : 0;
+                return (
+                  <span
+                    key={`${word}-${wi}`}
+                    className={`taste-hero-word${
+                      accent ? ` is-accent is-accent-${accentIndex}` : ""
+                    }`}
+                  >
+                    {[...word].map((ch, ci) => (
+                      <span
+                        key={ci}
+                        className="taste-hero-char"
+                        style={{ ["--c-i" as string]: String(ci) }}
+                      >
+                        {ch}
+                      </span>
+                    ))}
+                    {wi < headlineWords.length - 1 ? " " : null}
+                  </span>
+                );
+              })}
+            </span>
+            <span className="taste-hero-underline" aria-hidden="true" />
+          </h1>
           <p>
             A portfolio for local-first AI, computer vision, research notebooks,
             and front-end systems that can be opened, inspected, and run.
@@ -388,7 +478,7 @@ export function GptTastePortfolio() {
       </section>
 
       <section className="taste-stats" aria-label="Portfolio numbers">
-        {portfolio.stats.map((stat) => (
+        {stats.map((stat) => (
           <div className="taste-stat" key={stat.label}>
             <strong>{stat.value}</strong>
             <span>{stat.suffix ?? ""}</span>
