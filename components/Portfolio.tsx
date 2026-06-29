@@ -1181,6 +1181,32 @@ const projects = [
     image: "/projects/humanify.svg",
     accent: "#2dd4bf",
   },
+  {
+    title: "Zinging",
+    subtitle: "Production-oriented Discord assistant bot powered by NVIDIA NIM.",
+    description:
+      "A cog-based Discord assistant with AI ask/code workflows, translation mode, database-backed memory, command controls, caching, and Railway deployment readiness.",
+    repository: "https://github.com/Lakshay-13/zinging",
+    category: "Discord AI",
+    status: "Collab",
+    role: "Collaboration - AI assistant bot and deployment-ready backend",
+    tags: ["Python", "Discord", "NVIDIA NIM", "Postgres", "Railway"],
+    image: "/projects/zinging.svg",
+    accent: "#22c55e",
+  },
+  {
+    title: "ArtGridX",
+    subtitle: "Scrapbook-style portfolio system for a drawing artist.",
+    description:
+      "A premium artist portfolio with oversized parallax typography, masonry collage galleries, animated lightbox, Supabase contact flow, and a mobile-friendly admin dashboard.",
+    repository: "https://github.com/Lakshay-13/artgridx",
+    category: "Creative Web",
+    status: "Collab",
+    role: "Collaboration - portfolio interface and content-management workflow",
+    tags: ["Next.js", "TypeScript", "Supabase", "Tailwind", "Framer Motion"],
+    image: "/projects/artgridx.svg",
+    accent: "#f59e0b",
+  },
 ];
 
 function projectStyle(accent: string) {
