@@ -1,666 +1,1552 @@
 "use client";
 
-import { useEffect } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Github, Linkedin, Mail } from "lucide-react";
+import Image from "next/image";
+import { useEffect, useRef } from "react";
 
-const REVEAL_STYLE = `
-@keyframes spin{to{transform:rotate(360deg)}}
-@keyframes spinrev{to{transform:rotate(-360deg)}}
-@keyframes blobFloat{0%{transform:translate(0,0)}50%{transform:translate(24px,-30px)}100%{transform:translate(0,0)}}
-@keyframes blobFloat2{0%{transform:translate(0,0)}50%{transform:translate(-30px,24px)}100%{transform:translate(0,0)}}
-@keyframes pulseDot{0%,100%{opacity:1}50%{opacity:.25}}
-@keyframes hueShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
-@keyframes bars{0%,100%{transform:scaleY(.35)}50%{transform:scaleY(1)}}
+import { portfolio } from "@/data/portfolio";
 
-.p-root{background:#070B12;color:#E5E7EB;font-family:'Inter Tight',ui-sans-serif,system-ui,sans-serif;font-weight:400;overflow-x:hidden;min-height:100vh;position:relative}
-.p-root *{box-sizing:border-box}
-.p-root ::selection{background:#38BDF8;color:#070B12}
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-.p-root [data-reveal]{opacity:0;transform:translateY(40px)}
-.p-root [data-reveal="pop"]{transform:translateY(26px) scale(.975)}
-.p-root [data-reveal][data-shown]{opacity:1;transform:none}
-@media (prefers-reduced-motion:reduce){.p-root [data-reveal]{opacity:1!important;transform:none!important}}
-
-.p-nav-link{text-decoration:none;color:#94A3B8;font-size:14.5px;transition:color .2s}
-.p-nav-link:hover{color:#E5E7EB}
-.p-btn-ghost{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(148,163,184,0.3);color:#E5E7EB;border-radius:100px;text-decoration:none;transition:border-color .2s,background .2s}
-.p-btn-ghost:hover{border-color:rgba(148,163,184,0.55);background:rgba(148,163,184,0.08)}
-.p-btn-primary{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(140deg,#38BDF8,#0ea5e9);color:#070B12;border-radius:100px;font-weight:600;text-decoration:none;box-shadow:0 8px 30px rgba(56,189,248,0.25);transition:transform .2s,box-shadow .2s}
-.p-btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 38px rgba(56,189,248,0.4)}
-.p-card{transition:transform .3s,border-color .25s}
-.p-card.accent-cyan:hover{transform:translateY(-5px);border-color:#38BDF8}
-.p-card.accent-amber:hover{transform:translateY(-5px);border-color:#F59E0B}
-.p-card.accent-violet:hover{transform:translateY(-5px);border-color:#A78BFA}
-.p-card.accent-green:hover{transform:translateY(-5px);border-color:#22C55E}
-
-@media (max-width:880px){
-  .p-hero-grid{grid-template-columns:1fr!important}
-  .p-about-grid{grid-template-columns:1fr!important}
-  .p-proj-card{grid-template-columns:1fr!important}
-  .p-nav-links{display:none!important}
+const STYLES = `
+.dc-root {
+  --dc-bg: #070b12;
+  --dc-panel: #0f172a;
+  --dc-text: #e5e7eb;
+  --dc-muted: #94a3b8;
+  --dc-soft: #64748b;
+  --dc-line: rgba(148, 163, 184, 0.18);
+  --dc-blue: #38bdf8;
+  --dc-green: #22c55e;
+  --dc-violet: #a78bfa;
+  --dc-amber: #f59e0b;
+  --dc-teal: #2dd4bf;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background:
+    radial-gradient(700px 560px at 9% 12%, rgba(56, 189, 248, 0.14), transparent 68%),
+    radial-gradient(760px 580px at 84% 18%, rgba(167, 139, 250, 0.13), transparent 70%),
+    radial-gradient(620px 560px at 50% 88%, rgba(34, 197, 94, 0.08), transparent 72%),
+    var(--dc-bg);
+  color: var(--dc-text);
+  font-family: var(--font-body), "Inter Tight", ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: -0.01em;
 }
-`;
 
-const ORBIT_LABELS = [
-  { text: "Local AI", accent: "#38BDF8" },
-  { text: "Computer Vision", accent: "#F59E0B" },
-  { text: "ML Research", accent: "#A78BFA" },
-  { text: "Frontend Systems", accent: "#38BDF8" },
-  { text: "Android Releases", accent: "#22C55E" },
-  { text: "Open Source", accent: "#A78BFA" },
-];
+.dc-root * { box-sizing: border-box; }
+.dc-root ::selection { background: var(--dc-blue); color: var(--dc-bg); }
 
-const SNAPSHOT = [
-  { name: "Local AI Assistant", label: "Desktop AI", status: "Active", accent: "#38BDF8" },
-  { name: "Driver Monitoring", label: "Computer Vision Release", status: "Release Hub", accent: "#F59E0B" },
-  { name: "Variable Star Classifier", label: "Applied ML Research", status: "Notebook", accent: "#A78BFA" },
-  { name: "Portfolio System", label: "Frontend / Static Export", status: "Live", accent: "#22C55E" },
-];
-
-const ABOUT_CARDS = [
-  { k: "Education", v: "B.Tech Computer Science Engineering" },
-  { k: "Focus", v: "AI, Computer Vision, ML, Frontend Systems" },
-  { k: "Current Direction", v: "Local-first AI tools and product-ready project interfaces" },
-];
-
-const ECOSYSTEM = [
-  { name: "Jarvis Local AI Assistant", text: "Local desktop assistant with voice input, memory, and local model inference.", metric: "Local-first AI", accent: "#38BDF8", glyph: "◆" },
-  { name: "Smart Driver Monitoring", text: "Release hub for a computer-vision driver-safety Android app.", metric: "Computer vision", accent: "#F59E0B", glyph: "▣" },
-  { name: "Variable Star Classifier", text: "Notebook-driven ML classifier for periodic variable stars.", metric: "Research ML", accent: "#A78BFA", glyph: "✦" },
-  { name: "Portfolio System", text: "Static Next.js portfolio built as a product surface.", metric: "Frontend system", accent: "#38BDF8", glyph: "❏" },
-];
-
-const STACK = [
-  { cat: "Languages", items: ["Python", "TypeScript", "C++", "HTML/CSS"], accent: "#38BDF8" },
-  { cat: "AI & ML", items: ["Ollama", "Whisper", "PyTorch", "scikit-learn", "Jupyter"], accent: "#22C55E" },
-  { cat: "Apps & Web", items: ["Next.js", "React", "PySide6", "Anime.js", "GitHub Pages"], accent: "#A78BFA" },
-  { cat: "Delivery", items: ["GitHub", "GitHub Actions", "APK releases", "Static export", "Docs"], accent: "#F59E0B" },
-];
-
-const TIMELINE = [
-  { year: "2026", title: "Local-first AI desktop product", text: "Designed a Windows-first Jarvis-style assistant with PySide6, local Ollama inference, voice transcription, memory, and safer bounded autonomy.", accent: "#38BDF8" },
-  { year: "2026", title: "Driver-safety release channel", text: "Built the public APK distribution surface for a Smart Driver Monitoring Dashboard, turning a computer-vision app into a shareable release.", accent: "#F59E0B" },
-  { year: "2025", title: "Applied research — variable stars", text: "Created a notebook-driven classifier for periodically variable stars using astronomical data, feature engineering, and classical machine-learning workflows.", accent: "#A78BFA" },
-  { year: "2024", title: "Frontend foundations", text: "Built the first version of a public HTML portfolio while learning layout, typography, responsive design, and web fundamentals.", accent: "#22C55E" },
-];
-
-const COLLABS = [
-  { name: "Zinging", owner: "Lakshay-13", text: "A Python Discord bot with assistant workflows, database-backed memory, caching, and deployment readiness.", credit: "Built by Lakshay-13 · included with permission", role: "Showcased with permission", link: "https://github.com/Lakshay-13", accent: "#A78BFA" },
-  { name: "ArtGridX", owner: "Lakshay-13", text: "A masonry-style collage portfolio with parallax hero, draggable cards, animated lightbox, and an admin dashboard.", credit: "Built by Lakshay-13 · included with permission", role: "Showcased with permission", link: "https://github.com/Lakshay-13", accent: "#F59E0B" },
-];
-
-function accentClass(hex: string): string {
-  switch (hex) {
-    case "#38BDF8": return "p-card accent-cyan";
-    case "#F59E0B": return "p-card accent-amber";
-    case "#A78BFA": return "p-card accent-violet";
-    case "#22C55E": return "p-card accent-green";
-    default: return "p-card";
+@media (pointer: fine) {
+  .dc-root,
+  .dc-root a,
+  .dc-root button {
+    cursor: none;
   }
 }
 
+.dc-starfield {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.dc-cursor-dot,
+.dc-cursor-trail {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 120;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate3d(-100px, -100px, 0);
+  transition: opacity 160ms ease, width 160ms ease, height 160ms ease, background 160ms ease;
+}
+
+.dc-cursor-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #e5e7eb;
+  box-shadow: 0 0 10px rgba(125, 211, 252, 0.72);
+}
+
+.dc-cursor-trail {
+  width: 28px;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.9));
+  transform-origin: 100% 50%;
+}
+
+.dc-cursor-dot.is-hovering {
+  width: 12px;
+  height: 12px;
+  background: #22c55e;
+  box-shadow: 0 0 12px rgba(34, 197, 94, 0.86);
+}
+
+.dc-progress {
+  position: fixed;
+  inset: 0 auto auto 0;
+  z-index: 80;
+  width: 100%;
+  height: 2px;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  background: linear-gradient(90deg, var(--dc-blue), var(--dc-violet), var(--dc-green));
+}
+
+.dc-nav {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 70;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 15px clamp(18px, 5vw, 40px);
+  border-bottom: 1px solid var(--dc-line);
+  background: rgba(7, 11, 18, 0.74);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.dc-brand,
+.dc-nav-links,
+.dc-socials,
+.dc-actions,
+.dc-tags,
+.dc-project-actions {
+  display: flex;
+  align-items: center;
+}
+
+.dc-brand {
+  gap: 10px;
+  color: var(--dc-text);
+  text-decoration: none;
+}
+
+.dc-logo {
+  display: inline-grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border-radius: 9px;
+  background: linear-gradient(140deg, var(--dc-blue), var(--dc-violet));
+  color: var(--dc-bg);
+  font-family: var(--font-display), var(--font-body), sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.dc-brand strong {
+  font-family: var(--font-display), var(--font-body), sans-serif;
+  font-size: 15.5px;
+  font-weight: 700;
+}
+
+.dc-nav-links {
+  gap: 26px;
+}
+
+.dc-nav-links a {
+  color: var(--dc-muted);
+  font-size: 14.5px;
+  text-decoration: none;
+  transition: color 180ms ease;
+}
+
+.dc-nav-links a:hover,
+.dc-nav-links a:focus-visible,
+.dc-nav-links a.is-active {
+  color: var(--dc-text);
+}
+
+.dc-shell {
+  position: relative;
+  z-index: 2;
+  width: min(1200px, calc(100% - 36px));
+  margin: 0 auto;
+}
+
+.dc-section {
+  padding: 96px 0 0;
+  scroll-margin-top: 88px;
+}
+
+.dc-hero {
+  position: relative;
+  display: grid;
+  min-height: 100svh;
+  grid-template-columns: minmax(0, 1.12fr) minmax(320px, 0.88fr);
+  gap: clamp(34px, 5vw, 64px);
+  align-items: center;
+  padding: 132px 0 44px;
+}
+
+.dc-orb {
+  position: absolute;
+  z-index: 0;
+  width: 380px;
+  height: 380px;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.18;
+  pointer-events: none;
+}
+
+.dc-orb-one {
+  top: 64px;
+  left: -12%;
+  background: radial-gradient(circle, var(--dc-blue), transparent 68%);
+  animation: dc-float 14s ease-in-out infinite;
+}
+
+.dc-orb-two {
+  right: -10%;
+  top: 210px;
+  background: radial-gradient(circle, var(--dc-violet), transparent 68%);
+  animation: dc-float-alt 17s ease-in-out infinite;
+}
+
+.dc-hero-copy,
+.dc-hero-orbit {
+  position: relative;
+  z-index: 1;
+}
+
+.dc-hero h1 {
+  max-width: 760px;
+  margin: 0;
+  color: var(--dc-text);
+  font-family: var(--font-display), var(--font-body), sans-serif;
+  font-size: clamp(44px, 7.4vw, 92px);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 1;
+}
+
+.dc-gradient-text {
+  background: linear-gradient(120deg, var(--dc-blue), var(--dc-violet));
+  background-size: 220% 220%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: dc-hue 7s ease-in-out infinite;
+}
+
+.dc-hero-lead,
+.dc-hero-body {
+  max-width: 580px;
+}
+
+.dc-hero-lead {
+  margin-top: 20px;
+  color: #cbd5e1;
+  font-family: var(--font-display), var(--font-body), sans-serif;
+  font-size: clamp(16px, 1.5vw, 19px);
+  line-height: 1.45;
+}
+
+.dc-hero-body {
+  margin-top: 16px;
+  color: var(--dc-muted);
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+.dc-socials,
+.dc-actions {
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.dc-socials {
+  margin-top: 28px;
+}
+
+.dc-icon-btn,
+.dc-pill {
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  color: var(--dc-text);
+  text-decoration: none;
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, color 180ms ease;
+}
+
+.dc-icon-btn {
+  display: inline-grid;
+  width: 50px;
+  height: 50px;
+  place-items: center;
+  border-radius: 14px;
+}
+
+.dc-icon-btn svg {
+  width: 21px;
+  height: 21px;
+}
+
+.dc-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 0 18px;
+  border-radius: 100px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.dc-pill-primary {
+  border-color: transparent;
+  background: linear-gradient(140deg, var(--dc-blue), #0ea5e9);
+  color: var(--dc-bg);
+}
+
+.dc-icon-btn:hover,
+.dc-icon-btn:focus-visible,
+.dc-pill:hover,
+.dc-pill:focus-visible {
+  transform: translateY(-2px);
+  border-color: rgba(229, 231, 235, 0.56);
+  background: rgba(148, 163, 184, 0.08);
+}
+
+.dc-pill-primary:hover,
+.dc-pill-primary:focus-visible {
+  background: linear-gradient(140deg, #7dd3fc, var(--dc-violet));
+  color: var(--dc-bg);
+}
+
+.dc-hero-orbit {
+  display: flex;
+  justify-content: center;
+}
+
+.dc-orbit-stage {
+  position: relative;
+  width: clamp(292px, 36vw, 430px);
+  aspect-ratio: 1;
+}
+
+.dc-ring,
+.dc-ring-dashed,
+.dc-core-glow,
+.dc-avatar-core,
+.dc-label-track {
+  position: absolute;
+  border-radius: 50%;
+}
+
+.dc-ring {
+  inset: 5%;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+}
+
+.dc-ring-dashed {
+  inset: 21%;
+  border: 1px dashed rgba(148, 163, 184, 0.16);
+}
+
+.dc-core-glow {
+  inset: 26%;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.22), rgba(167, 139, 250, 0.12), transparent 72%);
+  filter: blur(6px);
+}
+
+.dc-avatar-core {
+  inset: 26%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  background: linear-gradient(160deg, var(--dc-panel), #111827);
+}
+
+.dc-avatar-frame {
+  width: 98%;
+  aspect-ratio: 1;
+  padding: 3px;
+  overflow: hidden;
+  border-radius: 50%;
+  background: conic-gradient(from 140deg, var(--dc-green), #5eead4, var(--dc-blue), var(--dc-violet), var(--dc-green));
+}
+
+.dc-avatar-frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: 50% 18%;
+  background: #0a0f1a;
+  transform: scale(1.16);
+}
+
+.dc-label-track {
+  inset: 0;
+  animation: dc-spin 48s linear infinite;
+}
+
+.dc-orbit-label {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  transform: translate(-50%, -50%);
+}
+
+.dc-orbit-label span {
+  display: block;
+  padding: 5px 11px;
+  border: 1px solid var(--accent);
+  border-radius: 100px;
+  background: rgba(15, 23, 42, 0.92);
+  color: #cbd5e1;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 11px;
+  white-space: nowrap;
+  animation: dc-spin-rev 48s linear infinite;
+}
+
+.dc-section-head {
+  margin-bottom: 40px;
+}
+
+.dc-label {
+  margin-bottom: 16px;
+  color: var(--accent, var(--dc-blue));
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.dc-section h2 {
+  max-width: 800px;
+  margin: 0;
+  color: var(--dc-text);
+  font-family: var(--font-display), var(--font-body), sans-serif;
+  font-size: clamp(40px, 5.8vw, 66px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.dc-section p {
+  color: var(--dc-muted);
+}
+
+.dc-about-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.dc-about-card,
+.dc-project,
+.dc-stack-card,
+.dc-timeline-row,
+.dc-contact-card {
+  border: 1px solid var(--dc-line);
+  background: rgba(15, 23, 42, 0.78);
+}
+
+.dc-about-card {
+  position: relative;
+  overflow: hidden;
+  min-height: 170px;
+  padding: 26px 24px;
+  border-radius: 16px;
+  transition: transform 240ms ease, border-color 240ms ease;
+}
+
+.dc-about-card::before {
+  position: absolute;
+  inset: -60% auto auto -30%;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--accent), transparent 70%);
+  opacity: 0.14;
+  content: "";
+}
+
+.dc-about-card:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, var(--accent) 64%, transparent);
+}
+
+.dc-about-card small,
+.dc-about-card span {
+  position: relative;
+  z-index: 1;
+}
+
+.dc-about-card small {
+  display: block;
+  color: var(--accent);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+}
+
+.dc-about-card span {
+  display: block;
+  margin-top: 9px;
+  color: var(--dc-text);
+  font-family: var(--font-display), var(--font-body), sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.32;
+  white-space: pre-line;
+}
+
+.dc-project-list {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.dc-project {
+  display: grid;
+  grid-template-columns: minmax(0, 0.96fr) minmax(320px, 1.04fr);
+  overflow: hidden;
+  border-radius: 18px;
+}
+
+.dc-project-copy {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(22px, 3vw, 34px);
+}
+
+.dc-tags {
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.dc-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 11px;
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  border-radius: 100px;
+  color: var(--accent);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 11px;
+}
+
+.dc-tag::before {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  content: "";
+  animation: dc-pulse 2.3s ease-in-out infinite;
+}
+
+.dc-project h3 {
+  margin: 0;
+  color: var(--dc-text);
+  font-family: var(--font-display), var(--font-body), sans-serif;
+  font-size: clamp(24px, 3vw, 32px);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+}
+
+.dc-project-sub {
+  margin-top: 7px;
+  color: var(--accent);
+  font-family: var(--font-display), var(--font-body), sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.dc-project-desc {
+  margin: 14px 0 0;
+  color: var(--dc-muted);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.dc-chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 16px;
+}
+
+.dc-chip {
+  padding: 5px 11px;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 100px;
+  color: var(--dc-muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 11.5px;
+}
+
+.dc-project-role {
+  margin-top: 16px;
+  color: var(--dc-soft);
+  font-size: 13px;
+}
+
+.dc-project-actions {
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 20px;
+  flex-wrap: wrap;
+}
+
+.dc-project-media {
+  display: grid;
+  min-height: 340px;
+  place-items: center;
+  border-left: 1px solid rgba(148, 163, 184, 0.12);
+  background: linear-gradient(160deg, #0b1220, var(--dc-panel));
+  padding: 26px;
+}
+
+.dc-window {
+  width: min(100%, 400px);
+  overflow: hidden;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 12px;
+  background: #0a0f1a;
+}
+
+.dc-window-top {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 12px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+  background: #0b1220;
+}
+
+.dc-window-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+
+.dc-window-title {
+  margin-left: 6px;
+  flex: 1;
+  overflow: hidden;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 6px;
+  background: #111827;
+  color: var(--accent);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 9px;
+  padding: 3px 8px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.dc-window img {
+  display: block;
+  width: 100%;
+  min-height: 220px;
+  object-fit: cover;
+  background: #0b1220;
+}
+
+.dc-stack-wrap {
+  overflow: hidden;
+  margin-top: 40px;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.dc-marquee {
+  display: flex;
+  width: max-content;
+  gap: 14px;
+  animation: dc-marquee 34s linear infinite;
+}
+
+.dc-marquee + .dc-marquee {
+  margin-top: 14px;
+  animation-direction: reverse;
+  animation-duration: 38s;
+}
+
+.dc-stack-pill {
+  padding: 11px 22px;
+  border: 1px solid var(--dc-line);
+  border-radius: 100px;
+  color: var(--dc-text);
+  font-size: 20px;
+  white-space: nowrap;
+}
+
+.dc-stack-pill.is-accent {
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 52%, transparent);
+}
+
+.dc-stack-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 44px;
+}
+
+.dc-stack-card {
+  padding: 22px;
+  border-radius: 16px;
+}
+
+.dc-stack-card h3 {
+  margin: 0 0 14px;
+  color: var(--accent);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.dc-stack-card ul {
+  display: grid;
+  gap: 9px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.dc-stack-card li {
+  color: var(--dc-text);
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.dc-timeline {
+  margin-top: 48px;
+  border-bottom: 1px solid var(--dc-line);
+}
+
+.dc-timeline-row {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 28px;
+  align-items: flex-start;
+  padding: 28px 0;
+  border-width: 1px 0 0;
+  border-color: var(--dc-line);
+  background: transparent;
+}
+
+.dc-year {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: var(--dc-muted);
+  font-size: 22px;
+}
+
+.dc-year::before {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: linear-gradient(114deg, var(--dc-green), #abff84);
+  content: "";
+}
+
+.dc-timeline-row h3 {
+  margin: 0;
+  color: var(--dc-text);
+  font-family: var(--font-display), var(--font-body), sans-serif;
+  font-size: 24px;
+  letter-spacing: -0.02em;
+}
+
+.dc-timeline-row p {
+  max-width: 720px;
+  margin: 8px 0 0;
+  color: var(--dc-muted);
+  font-size: 17px;
+  line-height: 1.4;
+}
+
+.dc-contact-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  padding: clamp(30px, 5vw, 56px);
+}
+
+.dc-contact-card::after {
+  position: absolute;
+  right: -70px;
+  top: -80px;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.18), transparent 70%);
+  content: "";
+}
+
+.dc-contact-card h2 {
+  position: relative;
+  z-index: 1;
+  font-size: clamp(40px, 7vw, 92px);
+}
+
+.dc-contact-card p,
+.dc-contact-card .dc-actions {
+  position: relative;
+  z-index: 1;
+}
+
+.dc-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 36px 0 56px;
+  border-top: 1px solid var(--dc-line);
+  color: var(--dc-soft);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12.5px;
+}
+
+@keyframes dc-spin { to { transform: rotate(360deg); } }
+@keyframes dc-spin-rev { to { transform: rotate(-360deg); } }
+@keyframes dc-float { 50% { transform: translate(24px, -30px); } }
+@keyframes dc-float-alt { 50% { transform: translate(-30px, 24px); } }
+@keyframes dc-pulse { 50% { opacity: 0.28; } }
+@keyframes dc-hue { 50% { background-position: 100% 50%; } }
+@keyframes dc-marquee { to { transform: translateX(-50%); } }
+
+@media (max-width: 900px) {
+  .dc-hero,
+  .dc-project {
+    grid-template-columns: 1fr;
+  }
+
+  .dc-nav-links {
+    gap: 14px;
+  }
+
+  .dc-nav-links a {
+    font-size: 13px;
+  }
+
+  .dc-project-media {
+    border-left: 0;
+    border-top: 1px solid rgba(148, 163, 184, 0.12);
+  }
+
+  .dc-orbit-stage {
+    width: min(100%, 520px);
+  }
+
+  .dc-about-grid,
+  .dc-stack-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .dc-about-grid,
+  .dc-stack-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dc-hero {
+    padding-top: 108px;
+  }
+
+  .dc-hero h1 {
+    font-size: clamp(42px, 15vw, 64px);
+  }
+
+  .dc-orbit-stage {
+    width: clamp(320px, 88vw, 520px);
+  }
+
+  .dc-timeline-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .dc-brand strong {
+    display: none;
+  }
+
+  .dc-nav {
+    gap: 14px;
+  }
+
+  .dc-nav-links {
+    gap: 10px;
+  }
+
+  .dc-nav-links a {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 430px) {
+  .dc-nav-links {
+    gap: 8px;
+  }
+
+  .dc-nav-links a {
+    font-size: 11px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dc-root *,
+  .dc-root *::before,
+  .dc-root *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+`;
+
+const orbitLabels = [
+  { text: "Local AI", accent: "#38bdf8" },
+  { text: "Computer Vision", accent: "#f59e0b" },
+  { text: "ML Research", accent: "#a78bfa" },
+  { text: "Frontend Systems", accent: "#38bdf8" },
+  { text: "Android Releases", accent: "#22c55e" },
+  { text: "Open Source", accent: "#a78bfa" },
+].map((label, index) => {
+  const theta = ((-90 + index * 60) * Math.PI) / 180;
+  return {
+    ...label,
+    x: `${50 + 47 * Math.cos(theta)}%`,
+    y: `${50 + 47 * Math.sin(theta)}%`,
+  };
+});
+
+const aboutCards = [
+  {
+    label: "Education",
+    value: "Bachelor of Technology (Computer Science Engineering)\nJagannath University · 09/2023 – 06/2027",
+    accent: "#38bdf8",
+  },
+  {
+    label: "Focus",
+    value: "AI, computer vision, ML, and front-end systems",
+    accent: "#a78bfa",
+  },
+  {
+    label: "Direction",
+    value: "AI tools and Machine learning",
+    accent: "#22c55e",
+  },
+];
+
+const projects = [
+  {
+    title: "Jarvis Local AI Assistant",
+    subtitle: "Windows desktop assistant with local LLM inference and voice control.",
+    description:
+      "A Windows-first desktop assistant built with Python and PySide6. It uses Ollama for local reasoning, Whisper for speech-to-text, SQLite for memory, and bounded autonomy rules for safer local actions.",
+    repository: "https://github.com/Anshuman791322/Ai-agent",
+    category: "Desktop AI",
+    status: "Active",
+    role: "Solo build - design, engineering, local AI workflow",
+    tags: ["Python", "PySide6", "Ollama", "Whisper", "SQLite"],
+    image: "/projects/ai-agent.svg",
+    accent: "#38bdf8",
+  },
+  {
+    title: "Smart Driver Monitoring Release Hub",
+    subtitle: "Android APK release page for a computer-vision driver-safety system.",
+    description:
+      "A release and download surface for a Smart Driver Monitoring Dashboard. The project makes an Android computer-vision app easier to distribute, document, and test.",
+    repository: "https://github.com/Anshuman791322/smart-driver-monitoring-dashboard-downloads",
+    category: "Computer Vision",
+    status: "Release Hub",
+    role: "Release engineering and public distribution",
+    tags: ["Android", "APK", "Computer Vision", "Driver Safety", "Release Eng"],
+    image: "/projects/driver-monitoring.svg",
+    accent: "#f59e0b",
+  },
+  {
+    title: "Variable Star Classifier",
+    subtitle: "Machine-learning notebook for classifying periodic variable stars.",
+    description:
+      "A Jupyter Notebook project for classifying periodic variable stars from astronomical data. It highlights applied machine learning, feature engineering, and reproducible research workflows.",
+    repository: "https://github.com/Anshuman791322/periodically-variable-stars",
+    category: "Research",
+    status: "Applied ML",
+    role: "Research notebook and applied ML",
+    tags: ["Python", "Jupyter", "scikit-learn", "Astronomy", "Gaia DR3"],
+    image: "/projects/variable-stars.svg",
+    accent: "#a78bfa",
+  },
+  {
+    title: "Humanify",
+    subtitle: "Rewrites AI-sounding text into natural, human writing.",
+    description:
+      "A Next.js app that runs a rewrite pipeline over Gemini models: preflight, diagnosis, fact-lock, rewrite, and final quality check. Built privacy-first, with text processed in-request.",
+    repository: "https://github.com/Anshuman791322/humanify",
+    category: "Web AI",
+    status: "Live",
+    role: "Solo build - full-stack design and engineering",
+    tags: ["Next.js", "TypeScript", "Gemini", "Server Actions", "Privacy-first"],
+    image: "/projects/humanify.svg",
+    accent: "#2dd4bf",
+  },
+];
+
+function projectStyle(accent: string) {
+  return { "--accent": accent } as React.CSSProperties;
+}
+
+const LINKEDIN_URL = "https://www.linkedin.com/in/anshuman-singh-1358031b2/?skipRedirect=true";
+
 export function Portfolio() {
+  const rootRef = useRef<HTMLDivElement | null>(null);
+  const progressRef = useRef<HTMLDivElement | null>(null);
+  const starfieldRef = useRef<HTMLCanvasElement | null>(null);
+  const cursorDotRef = useRef<HTMLDivElement | null>(null);
+  const cursorTrailRef = useRef<HTMLDivElement | null>(null);
+
   useEffect(() => {
-    const prefersReduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const canvas = starfieldRef.current;
+    const context = canvas?.getContext("2d");
+    if (!canvas || !context) return;
 
-    const bar = document.createElement("div");
-    bar.style.cssText = "position:fixed;top:0;left:0;height:2px;width:100%;transform:scaleX(0);transform-origin:0 50%;background:linear-gradient(90deg,#38BDF8,#A78BFA);z-index:70;pointer-events:none;will-change:transform";
-    document.body.appendChild(bar);
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const pointer = { x: window.innerWidth * 0.5, y: window.innerHeight * 0.35, active: false };
+    const stars: Array<{
+      x: number;
+      y: number;
+      vx: number;
+      vy: number;
+      size: number;
+      hue: number;
+      alpha: number;
+      pulse: number;
+    }> = [];
+    let width = 0;
+    let height = 0;
+    let animationFrame = 0;
 
-    let sraf = 0;
-    const applyScroll = () => {
-      sraf = 0;
-      const se = document.scrollingElement || document.documentElement;
-      const max = se.scrollHeight - se.clientHeight;
-      bar.style.transform = `scaleX(${max > 0 ? Math.min(1, se.scrollTop / max) : 0})`;
-    };
-    const onScroll = () => { if (!sraf) sraf = requestAnimationFrame(applyScroll); };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    applyScroll();
-
-    let spot: HTMLDivElement | null = null;
-    let onMove: ((e: MouseEvent) => void) | null = null;
-    if (!prefersReduced && window.matchMedia("(pointer:fine)").matches) {
-      spot = document.createElement("div");
-      spot.style.cssText = "position:fixed;top:0;left:0;width:760px;height:760px;margin:-380px 0 0 -380px;pointer-events:none;z-index:45;opacity:0;border-radius:50%;background:radial-gradient(circle,rgba(56,189,248,0.09),transparent 62%);transition:opacity .5s ease;will-change:transform";
-      document.body.appendChild(spot);
-      let mx = 0, my = 0, mraf = 0;
-      const applyMouse = () => { mraf = 0; spot!.style.opacity = "1"; spot!.style.transform = `translate(${mx}px,${my}px)`; };
-      onMove = (e: MouseEvent) => { mx = e.clientX; my = e.clientY; if (!mraf) mraf = requestAnimationFrame(applyMouse); };
-      window.addEventListener("mousemove", onMove, { passive: true });
-    }
-
-    const ease = (t: number) => 1 - Math.pow(1 - t, 3);
-    const beginReveal = (e: HTMLElement) => {
-      e.setAttribute("data-shown", "");
-      if (prefersReduced) { e.style.opacity = ""; e.style.transform = ""; return; }
-      const pop = e.getAttribute("data-reveal") === "pop";
-      const dur = pop ? 760 : 860;
-      const t0 = performance.now();
-      const tick = (t: number) => {
-        const p = Math.min(1, (t - t0) / dur);
-        const k = ease(p);
-        e.style.setProperty("opacity", String(k), "important");
-        if (pop) e.style.setProperty("transform", `translateY(${(1 - k) * 26}px) scale(${0.975 + 0.025 * k})`, "important");
-        else e.style.setProperty("transform", `translateY(${(1 - k) * 40}px)`, "important");
-        if (p < 1) requestAnimationFrame(tick);
-        else { e.style.removeProperty("opacity"); e.style.removeProperty("transform"); }
-      };
-      requestAnimationFrame(tick);
-    };
-    const revealed = new WeakSet<HTMLElement>();
-    const show = (e: HTMLElement, delay: number) => {
-      if (revealed.has(e)) return;
-      revealed.add(e);
-      if (delay > 0) setTimeout(() => beginReveal(e), delay);
-      else beginReveal(e);
-    };
-
-    const els = document.querySelectorAll<HTMLElement>("[data-reveal]");
-    let io: IntersectionObserver | null = null;
-    if ("IntersectionObserver" in window) {
-      io = new IntersectionObserver((entries) => {
-        let n = 0;
-        entries.forEach((en) => {
-          if (en.isIntersecting) { show(en.target as HTMLElement, n * 80); n++; io!.unobserve(en.target); }
+    const createStars = () => {
+      stars.length = 0;
+      const count = Math.min(150, Math.max(70, Math.round((width * height) / 14500)));
+      for (let index = 0; index < count; index += 1) {
+        stars.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: (Math.random() - 0.5) * 0.18,
+          vy: (Math.random() - 0.5) * 0.18,
+          size: Math.random() * 1.9 + 0.55,
+          hue: [190, 215, 258, 168][Math.floor(Math.random() * 4)],
+          alpha: Math.random() * 0.48 + 0.24,
+          pulse: Math.random() * Math.PI * 2,
         });
-      }, { threshold: 0.14, rootMargin: "0px 0px -7% 0px" });
-      els.forEach((e) => io!.observe(e));
-    } else {
-      els.forEach((e, i) => show(e, Math.min(i * 55, 1400)));
-    }
+      }
+    };
+
+    const resize = () => {
+      const ratio = Math.min(window.devicePixelRatio || 1, 2);
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = Math.floor(width * ratio);
+      canvas.height = Math.floor(height * ratio);
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      context.setTransform(ratio, 0, 0, ratio, 0, 0);
+      createStars();
+    };
+
+    const draw = (time = 0) => {
+      context.clearRect(0, 0, width, height);
+      context.fillStyle = "rgba(7, 11, 18, 0.28)";
+      context.fillRect(0, 0, width, height);
+
+      const maxDistance = pointer.active ? 132 : 92;
+
+      for (let index = 0; index < stars.length; index += 1) {
+        const star = stars[index];
+        const dx = pointer.x - star.x;
+        const dy = pointer.y - star.y;
+        const distance = Math.hypot(dx, dy);
+
+        if (!media.matches) {
+          if (pointer.active && distance < 150) {
+            const force = (150 - distance) / 150;
+            star.vx -= (dx / Math.max(distance, 1)) * force * 0.018;
+            star.vy -= (dy / Math.max(distance, 1)) * force * 0.018;
+          }
+
+          star.x += star.vx;
+          star.y += star.vy;
+          star.vx *= 0.992;
+          star.vy *= 0.992;
+
+          if (star.x < -8) star.x = width + 8;
+          if (star.x > width + 8) star.x = -8;
+          if (star.y < -8) star.y = height + 8;
+          if (star.y > height + 8) star.y = -8;
+        }
+
+        for (let nextIndex = index + 1; nextIndex < stars.length; nextIndex += 1) {
+          const next = stars[nextIndex];
+          const lineDistance = Math.hypot(next.x - star.x, next.y - star.y);
+          if (lineDistance < maxDistance) {
+            const pointerBoost =
+              pointer.active && (distance < 190 || Math.hypot(pointer.x - next.x, pointer.y - next.y) < 190)
+                ? 1.8
+                : 1;
+            context.beginPath();
+            context.moveTo(star.x, star.y);
+            context.lineTo(next.x, next.y);
+            context.strokeStyle = `rgba(56, 189, 248, ${((1 - lineDistance / maxDistance) * 0.18 * pointerBoost).toFixed(3)})`;
+            context.lineWidth = 1;
+            context.stroke();
+          }
+        }
+
+        const glow = pointer.active && distance < 160 ? (160 - distance) / 160 : 0;
+        const alpha = star.alpha + Math.sin(time * 0.0014 + star.pulse) * 0.16 + glow * 0.7;
+        context.beginPath();
+        context.arc(star.x, star.y, star.size + glow * 2.2, 0, Math.PI * 2);
+        context.fillStyle = `hsla(${star.hue}, 90%, ${64 + glow * 18}%, ${Math.min(alpha, 0.95)})`;
+        context.shadowColor = `hsla(${star.hue}, 90%, 62%, ${0.5 + glow * 0.4})`;
+        context.shadowBlur = 8 + glow * 24;
+        context.fill();
+        context.shadowBlur = 0;
+      }
+
+      animationFrame = window.requestAnimationFrame(draw);
+    };
+
+    const onPointerMove = (event: PointerEvent) => {
+      pointer.x = event.clientX;
+      pointer.y = event.clientY;
+      pointer.active = true;
+    };
+
+    const onPointerLeave = () => {
+      pointer.active = false;
+    };
+
+    resize();
+    draw();
+    window.addEventListener("resize", resize);
+    window.addEventListener("pointermove", onPointerMove, { passive: true });
+    window.addEventListener("pointerleave", onPointerLeave);
 
     return () => {
-      window.removeEventListener("scroll", onScroll);
-      if (onMove) window.removeEventListener("mousemove", onMove);
-      if (io) io.disconnect();
-      bar.remove();
-      if (spot) spot.remove();
+      window.cancelAnimationFrame(animationFrame);
+      window.removeEventListener("resize", resize);
+      window.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("pointerleave", onPointerLeave);
     };
   }, []);
 
-  const orbitChips = ORBIT_LABELS.map((l, i) => {
-    const theta = ((-90 + i * 60) * Math.PI) / 180;
-    const x = 50 + 47 * Math.cos(theta);
-    const y = 50 + 47 * Math.sin(theta);
-    return { ...l, x, y };
-  });
+  useEffect(() => {
+    const dot = cursorDotRef.current;
+    const trail = cursorTrailRef.current;
+    if (!dot || !trail || !window.matchMedia("(pointer: fine)").matches) return;
+
+    let dotX = window.innerWidth * 0.5;
+    let dotY = window.innerHeight * 0.5;
+    let trailX = dotX;
+    let trailY = dotY;
+    let targetX = dotX;
+    let targetY = dotY;
+    let lastX = dotX;
+    let lastY = dotY;
+    let frame = 0;
+
+    const show = () => {
+      dot.style.opacity = "1";
+      trail.style.opacity = "1";
+    };
+
+    const hide = () => {
+      dot.style.opacity = "0";
+      trail.style.opacity = "0";
+    };
+
+    const render = () => {
+      dotX += (targetX - dotX) * 0.55;
+      dotY += (targetY - dotY) * 0.55;
+      trailX += (targetX - trailX) * 0.18;
+      trailY += (targetY - trailY) * 0.18;
+
+      const angle = Math.atan2(targetY - lastY, targetX - lastX);
+      dot.style.transform = `translate3d(${dotX}px, ${dotY}px, 0) translate(-50%, -50%)`;
+      trail.style.transform = `translate3d(${trailX}px, ${trailY}px, 0) translate(-100%, -50%) rotate(${angle}rad)`;
+
+      lastX += (targetX - lastX) * 0.22;
+      lastY += (targetY - lastY) * 0.22;
+      frame = window.requestAnimationFrame(render);
+    };
+
+    const onPointerMove = (event: PointerEvent) => {
+      targetX = event.clientX;
+      targetY = event.clientY;
+      show();
+    };
+
+    const onPointerEnter = show;
+    const onPointerLeave = hide;
+
+    const onOver = (event: Event) => {
+      const target = event.target;
+      if (target instanceof Element && target.closest("a, button")) {
+        dot.classList.add("is-hovering");
+      }
+    };
+
+    const onOut = (event: Event) => {
+      const target = event.target;
+      if (target instanceof Element && target.closest("a, button")) {
+        dot.classList.remove("is-hovering");
+      }
+    };
+
+    window.addEventListener("pointermove", onPointerMove, { passive: true });
+    window.addEventListener("pointerenter", onPointerEnter);
+    window.addEventListener("pointerleave", onPointerLeave);
+    document.addEventListener("mouseover", onOver);
+    document.addEventListener("mouseout", onOut);
+    render();
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("pointerenter", onPointerEnter);
+      window.removeEventListener("pointerleave", onPointerLeave);
+      document.removeEventListener("mouseover", onOver);
+      document.removeEventListener("mouseout", onOut);
+    };
+  }, []);
+
+  useGSAP(
+    () => {
+      const root = rootRef.current;
+      if (!root) return;
+
+      const hash = window.location.hash.replace("#", "");
+      if (hash) {
+        window.setTimeout(() => {
+          document.getElementById(hash)?.scrollIntoView({ block: "start" });
+        }, 120);
+      }
+
+      gsap.from(".dc-nav", {
+        y: -24,
+        opacity: 0,
+        duration: 0.75,
+        ease: "power3.out",
+      });
+
+      gsap.from(".dc-hero-copy > *", {
+        y: 32,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.08,
+        ease: "power3.out",
+      });
+
+      gsap.from(".dc-orbit-stage", {
+        scale: 0.82,
+        opacity: 0,
+        duration: 0.95,
+        ease: "power3.out",
+        delay: 0.16,
+      });
+
+      gsap.utils.toArray<HTMLElement>(".dc-reveal").forEach((element) => {
+        gsap.from(element, {
+          scrollTrigger: {
+            trigger: element,
+            start: "top 82%",
+          },
+          y: 44,
+          opacity: 0,
+          duration: 0.8,
+          ease: "power3.out",
+        });
+      });
+
+      gsap.utils.toArray<HTMLElement>(".dc-project").forEach((card) => {
+        gsap.from(card, {
+          scrollTrigger: {
+            trigger: card,
+            start: "top 84%",
+          },
+          y: 50,
+          scale: 0.985,
+          opacity: 0,
+          duration: 0.85,
+          ease: "power3.out",
+        });
+      });
+
+      gsap.to(".dc-window", {
+        yPercent: -6,
+        ease: "none",
+        scrollTrigger: {
+          trigger: ".dc-project-list",
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+
+      gsap.utils.toArray<HTMLElement>(".dc-count").forEach((count) => {
+        const value = Number(count.dataset.value || "0");
+        gsap.fromTo(
+          count,
+          { textContent: 0 },
+          {
+            textContent: value,
+            duration: 1.1,
+            snap: { textContent: 1 },
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: count,
+              start: "top 86%",
+            },
+          },
+        );
+      });
+
+      const links = gsap.utils.toArray<HTMLAnchorElement>(".dc-nav-links a");
+      ["about", "projects", "stack", "contact"].forEach((id) => {
+        ScrollTrigger.create({
+          trigger: `#${id}`,
+          start: "top center",
+          end: "bottom center",
+          onToggle: (self) => {
+            links
+              .find((link) => link.getAttribute("href") === `#${id}`)
+              ?.classList.toggle("is-active", self.isActive);
+          },
+        });
+      });
+
+      ScrollTrigger.create({
+        start: 0,
+        end: "max",
+        onUpdate: (self) => {
+          if (progressRef.current) {
+            progressRef.current.style.transform = `scaleX(${self.progress})`;
+          }
+        },
+      });
+    },
+    { scope: rootRef },
+  );
 
   return (
     <>
-      <style>{REVEAL_STYLE}</style>
-      <div id="top" className="p-root">
+      <style>{STYLES}</style>
+      <div className="dc-root" id="top" ref={rootRef}>
+        <canvas className="dc-starfield" ref={starfieldRef} aria-hidden="true" />
+        <div className="dc-cursor-trail" ref={cursorTrailRef} aria-hidden="true" />
+        <div className="dc-cursor-dot" ref={cursorDotRef} aria-hidden="true" />
+        <div className="dc-progress" ref={progressRef} />
 
-        <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 60, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 24, padding: "15px clamp(18px,5vw,40px)", background: "rgba(7,11,18,0.72)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)", borderBottom: "1px solid rgba(148,163,184,0.18)" }}>
-          <a href="#top" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none", color: "#E5E7EB" }}>
-            <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 30, height: 30, borderRadius: 9, background: "linear-gradient(140deg,#38BDF8,#A78BFA)", color: "#070B12", fontFamily: "'Space Grotesk'", fontWeight: 700, fontSize: 13 }}>AS</span>
-            <span style={{ fontFamily: "'Space Grotesk'", fontWeight: 600, fontSize: 15.5, letterSpacing: "-0.01em" }}>Anshuman Singh</span>
+        <nav className="dc-nav" aria-label="Primary">
+          <a className="dc-brand" href="#top" aria-label="Anshuman Singh home">
+            <span className="dc-logo">AS</span>
+            <strong>Anshuman Singh</strong>
           </a>
-          <div className="p-nav-links" style={{ display: "flex", alignItems: "center", gap: 26 }}>
-            <a className="p-nav-link" href="#about">About</a>
-            <a className="p-nav-link" href="#ecosystem">Ecosystem</a>
-            <a className="p-nav-link" href="#projects">Projects</a>
-            <a className="p-nav-link" href="#stack">Stack</a>
-            <a className="p-nav-link" href="#timeline">Timeline</a>
-            <a className="p-nav-link" href="#contact">Contact</a>
+          <div className="dc-nav-links">
+            <a href="#about">About</a>
+            <a href="#projects">Projects</a>
+            <a href="#stack">Stack</a>
+            <a href="#contact">Contact</a>
           </div>
-          <a className="p-btn-ghost" href="https://github.com/Anshuman791322" target="_blank" rel="noopener noreferrer" style={{ padding: "8px 15px", fontSize: 13.5 }}>GitHub <span style={{ color: "#38BDF8" }}>↗</span></a>
         </nav>
 
-        {/* HERO */}
-        <section style={{ position: "relative", overflow: "hidden", padding: "148px clamp(18px,5vw,40px) 40px" }}>
-          <div style={{ position: "absolute", top: 60, left: "-4%", width: 380, height: 380, borderRadius: "50%", background: "radial-gradient(circle,#38BDF8,transparent 68%)", filter: "blur(90px)", opacity: 0.18, animation: "blobFloat 14s ease-in-out infinite", pointerEvents: "none" }} />
-          <div style={{ position: "absolute", top: 180, right: "-4%", width: 360, height: 360, borderRadius: "50%", background: "radial-gradient(circle,#A78BFA,transparent 68%)", filter: "blur(94px)", opacity: 0.16, animation: "blobFloat2 17s ease-in-out infinite", pointerEvents: "none" }} />
-          <div className="p-hero-grid" style={{ position: "relative", maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "1.15fr 0.85fr", gap: 48, alignItems: "center" }}>
-            <div>
-              <div data-reveal style={{ display: "inline-flex", alignItems: "center", gap: 8, fontFamily: "'JetBrains Mono',monospace", fontSize: 12, letterSpacing: "0.04em", color: "#94A3B8", border: "1px solid rgba(148,163,184,0.18)", borderRadius: 100, padding: "6px 13px", marginBottom: 24 }}>
-                <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#22C55E", animation: "pulseDot 2s infinite" }} />B.Tech CSE · building in public
-              </div>
-              <h1 data-reveal style={{ fontFamily: "'Space Grotesk',sans-serif", fontWeight: 600, fontSize: "clamp(36px,5.6vw,68px)", lineHeight: 1.04, letterSpacing: "-0.03em", color: "#E5E7EB" }}>
-                I build practical <span style={{ background: "linear-gradient(120deg,#38BDF8,#7dd3fc)", backgroundSize: "200% 200%", animation: "hueShift 7s ease-in-out infinite", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent", color: "transparent" }}>AI</span>, <span style={{ background: "linear-gradient(120deg,#22C55E,#86efac)", backgroundSize: "200% 200%", animation: "hueShift 8s ease-in-out infinite", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent", color: "transparent" }}>computer-vision</span>, and <span style={{ background: "linear-gradient(120deg,#A78BFA,#d8b4fe)", backgroundSize: "200% 200%", animation: "hueShift 9s ease-in-out infinite", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent", color: "transparent" }}>web products</span>.
+        <main>
+          <section className="dc-shell dc-hero" aria-labelledby="hero-title">
+            <div className="dc-orb dc-orb-one" />
+            <div className="dc-orb dc-orb-two" />
+            <div className="dc-hero-copy">
+              <h1 id="hero-title">
+                Anshuman <span className="dc-gradient-text">Singh</span>
               </h1>
-              <p data-reveal style={{ fontFamily: "'Space Grotesk'", fontSize: "clamp(16px,1.5vw,19px)", lineHeight: 1.45, color: "#cbd5e1", marginTop: 20, maxWidth: 560 }}>B.Tech Computer Science student focused on local-first AI, computer-vision systems, applied machine learning, and polished front-end interfaces.</p>
-              <p data-reveal style={{ fontSize: 16, lineHeight: 1.55, color: "#94A3B8", marginTop: 16, maxWidth: 560 }}>I turn academic and personal projects into usable software: desktop assistants with local inference, Android release pages for computer-vision apps, reproducible ML notebooks, and portfolio systems that are fast, visual, and open source.</p>
-              <div data-reveal style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 28 }}>
-                <a className="p-btn-primary" href="#projects" style={{ padding: "13px 22px", fontSize: 15 }}>View Projects →</a>
-                <a className="p-btn-ghost" href="https://github.com/Anshuman791322" target="_blank" rel="noopener noreferrer" style={{ padding: "13px 22px", fontSize: 15 }}>Open GitHub</a>
-                <a className="p-btn-ghost" href="mailto:anshuman6062@gmail.com" style={{ padding: "13px 22px", fontSize: 15 }}>Contact Me</a>
+              <p className="dc-hero-lead">
+                B.Tech Computer Science student focused on local-first AI,
+                computer-vision systems, applied machine learning, and polished
+                front-end interfaces.
+              </p>
+              <p className="dc-hero-body">
+                I turn academic and personal projects into usable software:
+                desktop assistants with local inference, Android release pages
+                for computer-vision apps, reproducible ML notebooks, and
+                portfolio systems that are fast, visual, and open source.
+              </p>
+              <div className="dc-socials">
+                <a className="dc-icon-btn" href={portfolio.person.github} target="_blank" rel="noreferrer" aria-label="GitHub">
+                  <Github aria-hidden="true" strokeWidth={2.2} />
+                </a>
+                <a className="dc-icon-btn" href={LINKEDIN_URL} target="_blank" rel="noreferrer" aria-label="LinkedIn">
+                  <Linkedin aria-hidden="true" strokeWidth={2.2} />
+                </a>
+                <a className="dc-icon-btn" href="mailto:anshuman6062@gmail.com" aria-label="Email">
+                  <Mail aria-hidden="true" strokeWidth={2.2} />
+                </a>
+                <a className="dc-pill dc-pill-primary" href="#projects">
+                  View Projects <span>→</span>
+                </a>
               </div>
             </div>
-            <div data-reveal="pop" style={{ display: "flex", justifyContent: "center" }}>
-              <div style={{ position: "relative", width: "clamp(280px,36vw,430px)", aspectRatio: "1" }}>
-                <div style={{ position: "absolute", inset: "5%", border: "1px solid rgba(148,163,184,0.14)", borderRadius: "50%" }} />
-                <div style={{ position: "absolute", inset: "21%", border: "1px dashed rgba(148,163,184,0.13)", borderRadius: "50%" }} />
-                <div style={{ position: "absolute", inset: "30%", borderRadius: "50%", background: "radial-gradient(circle,rgba(56,189,248,0.22),rgba(167,139,250,0.12),transparent 72%)", filter: "blur(6px)" }} />
-                <div style={{ position: "absolute", inset: "31%", borderRadius: "50%", background: "linear-gradient(160deg,#0F172A,#111827)", border: "1px solid rgba(148,163,184,0.25)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", boxShadow: "0 0 50px rgba(56,189,248,0.16)" }}>
-                  <div style={{ fontFamily: "'Space Grotesk'", fontSize: "clamp(30px,5vw,46px)", fontWeight: 700, letterSpacing: "-0.02em", background: "linear-gradient(125deg,#38BDF8,#A78BFA)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent", color: "transparent" }}>AS</div>
-                  <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 9.5, letterSpacing: "0.12em", color: "#94A3B8", marginTop: 5 }}>ANSHUMAN SINGH</div>
-                  <div style={{ display: "flex", alignItems: "center", gap: 5, marginTop: 7 }}>
-                    <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#22C55E", animation: "pulseDot 2s infinite" }} />
-                    <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 10, color: "#22C55E" }}>available</span>
+
+            <div className="dc-hero-orbit" aria-hidden="true">
+              <div className="dc-orbit-stage">
+                <div className="dc-ring" />
+                <div className="dc-ring-dashed" />
+                <div className="dc-core-glow" />
+                <div className="dc-avatar-core">
+                  <div className="dc-avatar-frame">
+                    <Image src="/avatar-cut.png" alt="" width={420} height={420} priority />
                   </div>
                 </div>
-                <div style={{ position: "absolute", inset: 0, animation: "spin 50s linear infinite" }}>
-                  {orbitChips.map((chip, i) => (
-                    <div key={i} style={{ position: "absolute", left: `${chip.x}%`, top: `${chip.y}%`, transform: "translate(-50%,-50%)" }}>
-                      <div style={{ animation: "spinrev 50s linear infinite" }}>
-                        <span style={{ display: "inline-block", whiteSpace: "nowrap", fontFamily: "'JetBrains Mono',monospace", fontSize: 11, color: "#cbd5e1", background: "rgba(15,23,42,0.92)", border: `1px solid ${chip.accent}`, borderRadius: 100, padding: "5px 11px", boxShadow: `0 0 18px ${chip.accent}33` }}>{chip.text}</span>
+                <div className="dc-label-track">
+                  {orbitLabels.map((label) => (
+                    <div
+                      className="dc-orbit-label"
+                      key={label.text}
+                      style={{ "--x": label.x, "--y": label.y, "--accent": label.accent } as React.CSSProperties}
+                    >
+                      <span>{label.text}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section className="dc-shell dc-section" id="about" aria-labelledby="about-title">
+            <div className="dc-section-head dc-reveal" style={projectStyle("#38bdf8")}>
+              <h2 id="about-title">
+                About <span className="dc-gradient-text">Me</span>
+              </h2>
+            </div>
+            <div className="dc-about-grid">
+              {aboutCards.map((card) => (
+                <article className="dc-about-card dc-reveal" key={card.label} style={projectStyle(card.accent)}>
+                  <small>{card.label}</small>
+                  <span>{card.value}</span>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <section className="dc-shell dc-section" id="projects" aria-labelledby="projects-title">
+            <div className="dc-section-head dc-reveal" style={projectStyle("#a78bfa")}>
+              <h2 id="projects-title">Projects</h2>
+            </div>
+            <div className="dc-project-list">
+              {projects.map((project) => (
+                <article className="dc-project" key={project.title} style={projectStyle(project.accent)}>
+                  <div className="dc-project-copy">
+                    <div className="dc-tags">
+                      <span className="dc-tag">{project.status}</span>
+                      <span className="dc-chip">{project.category}</span>
+                    </div>
+                    <h3>{project.title}</h3>
+                    <div className="dc-project-sub">{project.subtitle}</div>
+                    <p className="dc-project-desc">{project.description}</p>
+                    <div className="dc-chip-list">
+                      {project.tags.map((tag) => (
+                        <span className="dc-chip" key={tag}>{tag}</span>
+                      ))}
+                    </div>
+                    <div className="dc-project-role">
+                      <span>Role:</span> {project.role}
+                    </div>
+                    <div className="dc-project-actions">
+                      <a className="dc-pill" href={project.repository} target="_blank" rel="noreferrer">
+                        GitHub <span>↗</span>
+                      </a>
+                    </div>
+                  </div>
+                  <div className="dc-project-media">
+                    <div className="dc-window" role="img" aria-label={`${project.title} visual preview`}>
+                      <div className="dc-window-top">
+                        <span className="dc-window-dot" style={{ background: "#ef4444" }} />
+                        <span className="dc-window-dot" style={{ background: "#f59e0b" }} />
+                        <span className="dc-window-dot" style={{ background: "#22c55e" }} />
+                        <span className="dc-window-title">{project.title.toLowerCase()}</span>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* SNAPSHOT */}
-        <section style={{ maxWidth: 1200, margin: "0 auto", padding: "40px clamp(18px,5vw,40px) 0" }}>
-          <div data-reveal style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 12, letterSpacing: "0.06em", textTransform: "uppercase", color: "#94A3B8", marginBottom: 18 }}>{"// Selected public work"}</div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))", gap: 14 }}>
-            {SNAPSHOT.map((s, i) => (
-              <div key={i} className={accentClass(s.accent)} data-reveal="pop" style={{ background: "#0F172A", border: "1px solid rgba(148,163,184,0.18)", borderRadius: 14, padding: 18 }}>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, marginBottom: 14 }}>
-                  <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 11, letterSpacing: "0.04em", color: "#94A3B8" }}>{s.label}</span>
-                  <span style={{ display: "inline-flex", alignItems: "center", gap: 6, fontFamily: "'JetBrains Mono',monospace", fontSize: 11, color: s.accent }}>
-                    <span style={{ width: 6, height: 6, borderRadius: "50%", background: s.accent }} />{s.status}
-                  </span>
-                </div>
-                <div style={{ fontFamily: "'Space Grotesk'", fontSize: 18, fontWeight: 500, color: "#E5E7EB" }}>{s.name}</div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* ABOUT */}
-        <section id="about" style={{ maxWidth: 1200, margin: "0 auto", padding: "96px clamp(18px,5vw,40px) 0", scrollMarginTop: 88 }}>
-          <div className="p-about-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 48, alignItems: "start" }}>
-            <div>
-              <div data-reveal style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 12, letterSpacing: "0.06em", textTransform: "uppercase", color: "#38BDF8", marginBottom: 16 }}>{"// About me"}</div>
-              <h2 data-reveal style={{ fontFamily: "'Space Grotesk'", fontSize: "clamp(28px,4vw,40px)", lineHeight: 1.1, letterSpacing: "-0.02em", fontWeight: 500, color: "#E5E7EB" }}>Turning repositories into products people can open, inspect, and run.</h2>
-            </div>
-            <div>
-              <p data-reveal style={{ fontSize: 17, lineHeight: 1.6, color: "#94A3B8" }}>I am a B.Tech Computer Science Engineering student building projects across AI, computer vision, applied machine learning, and web interfaces. I like turning repos into usable products: clear interfaces, readable documentation, release paths, and project pages that people can actually open, inspect, and run.</p>
-              <div style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 24 }}>
-                {ABOUT_CARDS.map((c, i) => (
-                  <div key={i} data-reveal style={{ background: "#111827", border: "1px solid rgba(148,163,184,0.18)", borderRadius: 12, padding: "15px 17px", display: "flex", gap: 14, alignItems: "baseline" }}>
-                    <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 11, letterSpacing: "0.04em", color: "#38BDF8", minWidth: 120, textTransform: "uppercase" }}>{c.k}</span>
-                    <span style={{ fontSize: 15, color: "#E5E7EB", lineHeight: 1.4 }}>{c.v}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ECOSYSTEM */}
-        <section id="ecosystem" style={{ maxWidth: 1200, margin: "0 auto", padding: "96px clamp(18px,5vw,40px) 0", scrollMarginTop: 88 }}>
-          <div data-reveal style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 12, letterSpacing: "0.06em", textTransform: "uppercase", color: "#22C55E", marginBottom: 16 }}>{"// Live project ecosystem"}</div>
-          <h2 data-reveal style={{ fontFamily: "'Space Grotesk'", fontSize: "clamp(28px,4vw,40px)", lineHeight: 1.1, letterSpacing: "-0.02em", fontWeight: 500, color: "#E5E7EB", maxWidth: 720 }}>Live project ecosystem</h2>
-          <p data-reveal style={{ fontSize: 17, color: "#94A3B8", marginTop: 14, maxWidth: 640, lineHeight: 1.5 }}>A snapshot of the systems, experiments, and interfaces I am building.</p>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(250px,1fr))", gap: 16, marginTop: 36 }}>
-            {ECOSYSTEM.map((e, i) => (
-              <div key={i} className={accentClass(e.accent)} data-reveal="pop" style={{ position: "relative", background: "#0F172A", border: "1px solid rgba(148,163,184,0.18)", borderRadius: 16, padding: 22, overflow: "hidden" }}>
-                <div style={{ position: "absolute", top: -30, right: -30, width: 120, height: 120, borderRadius: "50%", filter: "blur(40px)", opacity: 0.18, background: e.accent }} />
-                <div style={{ position: "relative", display: "flex", alignItems: "center", justifyContent: "center", width: 42, height: 42, borderRadius: 11, fontSize: 19, border: "1px solid rgba(148,163,184,0.2)", color: e.accent, background: `${e.accent}14` }}>{e.glyph}</div>
-                <div style={{ fontFamily: "'Space Grotesk'", fontSize: 18, fontWeight: 500, color: "#E5E7EB", marginTop: 16 }}>{e.name}</div>
-                <p style={{ fontSize: 14.5, lineHeight: 1.5, color: "#94A3B8", marginTop: 8 }}>{e.text}</p>
-                <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 11, letterSpacing: "0.03em", marginTop: 14, paddingTop: 13, borderTop: "1px solid rgba(148,163,184,0.14)", color: e.accent }}>{e.metric}</div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* PROJECTS */}
-        <section id="projects" style={{ maxWidth: 1200, margin: "0 auto", padding: "96px clamp(18px,5vw,40px) 0", scrollMarginTop: 88 }}>
-          <div data-reveal style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 12, letterSpacing: "0.06em", textTransform: "uppercase", color: "#38BDF8", marginBottom: 16 }}>{"// Featured projects"}</div>
-          <h2 data-reveal style={{ fontFamily: "'Space Grotesk'", fontSize: "clamp(28px,4vw,40px)", lineHeight: 1.1, letterSpacing: "-0.02em", fontWeight: 500, color: "#E5E7EB", maxWidth: 760 }}>Featured projects</h2>
-          <p data-reveal style={{ fontSize: 17, color: "#94A3B8", marginTop: 14, maxWidth: 680, lineHeight: 1.5 }}>Product surfaces first, repositories second. Each project is presented with context, role, tech stack, and a clear build path.</p>
-
-          <div style={{ display: "flex", flexDirection: "column", gap: 22, marginTop: 40 }}>
-
-            {/* Jarvis */}
-            <article className="p-proj-card" data-reveal="pop" style={{ display: "grid", gridTemplateColumns: "0.95fr 1.05fr", gap: 0, background: "#0F172A", border: "1px solid rgba(148,163,184,0.18)", borderRadius: 18, overflow: "hidden" }}>
-              <div style={{ padding: "30px clamp(20px,2.6vw,34px)", display: "flex", flexDirection: "column" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", marginBottom: 14 }}>
-                  <span style={{ display: "inline-flex", alignItems: "center", gap: 6, fontFamily: "'JetBrains Mono',monospace", fontSize: 11, color: "#38BDF8", border: "1px solid rgba(56,189,248,0.4)", borderRadius: 100, padding: "4px 11px" }}><span style={{ width: 6, height: 6, borderRadius: "50%", background: "#38BDF8", animation: "pulseDot 2.4s infinite" }} />Active</span>
-                  <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 11, color: "#94A3B8" }}>Desktop AI</span>
-                </div>
-                <h3 style={{ fontFamily: "'Space Grotesk'", fontSize: 25, fontWeight: 600, color: "#E5E7EB", letterSpacing: "-0.01em" }}>Jarvis Local AI Assistant</h3>
-                <div style={{ fontFamily: "'Space Grotesk'", fontSize: 15, color: "#7dd3fc", marginTop: 6 }}>Windows desktop assistant with local LLM inference and voice control.</div>
-                <p style={{ fontSize: 15, lineHeight: 1.55, color: "#94A3B8", marginTop: 14 }}>A Windows-first desktop assistant built with Python and PySide6. It uses Ollama for local reasoning, Whisper / faster-whisper for speech-to-text, SQLite for memory, and bounded autonomy rules for safer local actions. It reflects my interest in privacy-first AI tools that run on a user&apos;s own machine.</p>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 7, marginTop: 16 }}>
-                  {["Python", "PySide6", "Ollama", "Whisper", "SQLite"].map((t) => (
-                    <span key={t} style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 11.5, color: "#94A3B8", border: "1px solid rgba(148,163,184,0.18)", borderRadius: 100, padding: "5px 11px" }}>{t}</span>
-                  ))}
-                </div>
-                <div style={{ fontSize: 13, color: "#64748b", marginTop: 16 }}><span style={{ color: "#94A3B8" }}>Role:</span> Solo build — design, engineering, local AI workflow</div>
-                <div style={{ display: "flex", gap: 10, marginTop: "auto", paddingTop: 20 }}>
-                  <a className="p-btn-ghost" href="https://github.com/Anshuman791322/Ai-agent" target="_blank" rel="noopener noreferrer" style={{ padding: "10px 17px", fontSize: 13.5 }}>GitHub ↗</a>
-                </div>
-              </div>
-              <div style={{ background: "linear-gradient(160deg,#0b1220,#0F172A)", borderLeft: "1px solid rgba(148,163,184,0.12)", padding: 26, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <div style={{ width: "100%", maxWidth: 380, border: "1px solid rgba(148,163,184,0.2)", borderRadius: 12, overflow: "hidden", background: "#0a0f1a", boxShadow: "0 18px 50px rgba(0,0,0,0.4)" }} role="img" aria-label="Dark desktop interface for a local AI assistant with chat, voice input, and model status panels.">
-                  <div style={{ display: "flex", alignItems: "center", gap: 7, padding: "9px 12px", borderBottom: "1px solid rgba(148,163,184,0.14)", background: "#0b1220" }}>
-                    <span style={{ width: 9, height: 9, borderRadius: "50%", background: "#ef4444" }} /><span style={{ width: 9, height: 9, borderRadius: "50%", background: "#f59e0b" }} /><span style={{ width: 9, height: 9, borderRadius: "50%", background: "#22c55e" }} />
-                    <span style={{ marginLeft: 6, fontFamily: "'JetBrains Mono',monospace", fontSize: 10.5, color: "#64748b" }}>jarvis — local</span>
-                  </div>
-                  <div style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: 0 }}>
-                    <div style={{ padding: 13, display: "flex", flexDirection: "column", gap: 8, borderRight: "1px solid rgba(148,163,184,0.12)" }}>
-                      <div style={{ alignSelf: "flex-start", maxWidth: "85%", background: "#111827", border: "1px solid rgba(148,163,184,0.14)", borderRadius: "9px 9px 9px 3px", padding: "8px 10px", fontSize: 11, color: "#cbd5e1" }}>Summarize today&apos;s notes</div>
-                      <div style={{ alignSelf: "flex-end", maxWidth: "85%", background: "rgba(56,189,248,0.14)", border: "1px solid rgba(56,189,248,0.3)", borderRadius: "9px 9px 3px 9px", padding: "8px 10px", fontSize: 11, color: "#e0f2fe" }}>Running locally on llama3…</div>
-                      <div style={{ display: "flex", alignItems: "flex-end", gap: 3, height: 24, marginTop: 4 }}>
-                        {[0, 0.15, 0.3, 0.45, 0.6].map((d, i) => (
-                          <span key={i} style={{ width: 3, background: "#38BDF8", borderRadius: 2, height: "100%", animation: "bars 1s ease-in-out infinite", animationDelay: `${d}s` }} />
-                        ))}
-                        <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 9.5, color: "#38BDF8", marginLeft: 6 }}>listening</span>
-                      </div>
-                    </div>
-                    <div style={{ padding: 13, display: "flex", flexDirection: "column", gap: 9 }}>
-                      <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 9, color: "#22C55E", display: "flex", alignItems: "center", gap: 5 }}><span style={{ width: 5, height: 5, borderRadius: "50%", background: "#22C55E" }} />model · llama3 ready</div>
-                      <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 9, color: "#94A3B8" }}>memory · 128 notes</div>
-                      <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 9, color: "#A78BFA", display: "flex", alignItems: "center", gap: 5 }}><span style={{ width: 5, height: 5, borderRadius: "50%", background: "#A78BFA" }} />autonomy · bounded</div>
-                      <div style={{ marginTop: "auto", fontFamily: "'JetBrains Mono',monospace", fontSize: 8.5, color: "#475569", border: "1px dashed rgba(148,163,184,0.2)", borderRadius: 7, padding: 7, textAlign: "center" }}>on-device · private</div>
+                      <Image src={project.image} alt="" width={800} height={480} />
                     </div>
                   </div>
-                </div>
-              </div>
-            </article>
+                </article>
+              ))}
+            </div>
+          </section>
 
-            {/* Smart Driver */}
-            <article className="p-proj-card" data-reveal="pop" style={{ display: "grid", gridTemplateColumns: "0.95fr 1.05fr", gap: 0, background: "#0F172A", border: "1px solid rgba(148,163,184,0.18)", borderRadius: 18, overflow: "hidden" }}>
-              <div style={{ padding: "30px clamp(20px,2.6vw,34px)", display: "flex", flexDirection: "column" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", marginBottom: 14 }}>
-                  <span style={{ display: "inline-flex", alignItems: "center", gap: 6, fontFamily: "'JetBrains Mono',monospace", fontSize: 11, color: "#F59E0B", border: "1px solid rgba(245,158,11,0.4)", borderRadius: 100, padding: "4px 11px" }}>Release Hub</span>
-                  <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 11, color: "#94A3B8" }}>Computer Vision</span>
-                </div>
-                <h3 style={{ fontFamily: "'Space Grotesk'", fontSize: 25, fontWeight: 600, color: "#E5E7EB", letterSpacing: "-0.01em" }}>Smart Driver Monitoring Release Hub</h3>
-                <div style={{ fontFamily: "'Space Grotesk'", fontSize: 15, color: "#fbbf24", marginTop: 6 }}>Android APK release page for a computer-vision driver-safety system.</div>
-                <p style={{ fontSize: 15, lineHeight: 1.55, color: "#94A3B8", marginTop: 14 }}>A release and download surface for a Smart Driver Monitoring Dashboard. The project focuses on making an Android computer-vision app easier to distribute, document, and test by providing public APK downloads and clear release information.</p>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 7, marginTop: 16 }}>
-                  {["Android", "APK", "Computer Vision", "Driver Safety", "Release Eng"].map((t) => (
-                    <span key={t} style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 11.5, color: "#94A3B8", border: "1px solid rgba(148,163,184,0.18)", borderRadius: 100, padding: "5px 11px" }}>{t}</span>
-                  ))}
-                </div>
-                <div style={{ fontSize: 13, color: "#64748b", marginTop: 16 }}><span style={{ color: "#94A3B8" }}>Role:</span> Release engineering and public distribution</div>
-                <div style={{ display: "flex", gap: 10, marginTop: "auto", paddingTop: 20, flexWrap: "wrap" }}>
-                  <a className="p-btn-ghost" href="https://github.com/Anshuman791322/smart-driver-monitoring-dashboard-downloads" target="_blank" rel="noopener noreferrer" style={{ padding: "10px 17px", fontSize: 13.5 }}>GitHub ↗</a>
-                  <a href="https://github.com/Anshuman791322/smart-driver-monitoring-dashboard-downloads/releases" target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 7, background: "rgba(245,158,11,0.14)", border: "1px solid rgba(245,158,11,0.4)", color: "#fbbf24", borderRadius: 100, padding: "10px 17px", fontSize: 13.5, textDecoration: "none" }}>APK Releases ↓</a>
-                </div>
-              </div>
-              <div style={{ background: "linear-gradient(160deg,#0b1220,#0F172A)", borderLeft: "1px solid rgba(148,163,184,0.12)", padding: 26, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <div style={{ width: 172, border: "1px solid rgba(148,163,184,0.22)", borderRadius: 24, padding: "8px 8px 12px", background: "#0a0f1a", boxShadow: "0 18px 50px rgba(0,0,0,0.45)" }} role="img" aria-label="Mobile dashboard mockup showing driver monitoring status cards and computer-vision indicators.">
-                  <div style={{ display: "flex", justifyContent: "center", margin: "3px 0 8px" }}><span style={{ width: 46, height: 4, borderRadius: 100, background: "#1e293b" }} /></div>
-                  <div style={{ position: "relative", height: 96, borderRadius: 12, background: "radial-gradient(circle at 50% 40%,#13233a,#0b1220)", overflow: "hidden", border: "1px solid rgba(148,163,184,0.14)" }}>
-                    <svg viewBox="0 0 160 96" width="100%" height="100%" style={{ position: "absolute", inset: 0 }}>
-                      <circle cx="80" cy="42" r="26" fill="none" stroke="#F59E0B" strokeWidth="1" opacity="0.5" />
-                      <circle cx="71" cy="38" r="2.4" fill="#F59E0B" />
-                      <circle cx="89" cy="38" r="2.4" fill="#F59E0B" />
-                      <polyline points="76,48 80,52 84,48" fill="none" stroke="#F59E0B" strokeWidth="1.4" />
-                      <line x1="80" y1="52" x2="80" y2="60" stroke="#F59E0B" strokeWidth="1" opacity="0.6" />
-                      <line x1="40" y1="10" x2="120" y2="10" stroke="#22C55E" strokeWidth="1" opacity="0.35" />
-                    </svg>
-                    <span style={{ position: "absolute", top: 6, left: 8, fontFamily: "'JetBrains Mono',monospace", fontSize: 8, color: "#22C55E" }}>● live cam</span>
-                  </div>
-                  <div style={{ display: "flex", flexDirection: "column", gap: 6, marginTop: 9 }}>
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(34,197,94,0.12)", border: "1px solid rgba(34,197,94,0.3)", borderRadius: 8, padding: "7px 9px" }}><span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 9.5, color: "#86efac" }}>Status</span><span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 9.5, color: "#22C55E" }}>OK</span></div>
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(245,158,11,0.1)", border: "1px solid rgba(245,158,11,0.28)", borderRadius: 8, padding: "7px 9px" }}><span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 9.5, color: "#fcd34d" }}>Drowsy</span><span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 9.5, color: "#F59E0B" }}>0.12</span></div>
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.25)", borderRadius: 8, padding: "7px 9px" }}><span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 9.5, color: "#fca5a5" }}>Distracted</span><span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 9.5, color: "#ef4444" }}>0.04</span></div>
-                  </div>
-                </div>
-              </div>
-            </article>
+          <section className="dc-shell dc-section" id="stack" aria-labelledby="stack-title">
+            <div className="dc-section-head dc-reveal" style={projectStyle("#22c55e")}>
+              <h2 id="stack-title">Stack I use to build, test, and ship</h2>
+              <p className="dc-hero-body">
+                Tools behind the public repos: local models, native desktop UI,
+                static front-end delivery, and release packaging.
+              </p>
+            </div>
+            <div className="dc-stack-grid">
+              {portfolio.skills.map((group, index) => (
+                <article className="dc-stack-card dc-reveal" key={group.label} style={projectStyle(["#38bdf8", "#22c55e", "#a78bfa", "#f59e0b"][index % 4])}>
+                  <h3>{group.label}</h3>
+                  <ul>
+                    {group.items.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </article>
+              ))}
+            </div>
+          </section>
 
-            {/* Variable Star */}
-            <article className="p-proj-card" data-reveal="pop" style={{ display: "grid", gridTemplateColumns: "0.95fr 1.05fr", gap: 0, background: "#0F172A", border: "1px solid rgba(148,163,184,0.18)", borderRadius: 18, overflow: "hidden" }}>
-              <div style={{ padding: "30px clamp(20px,2.6vw,34px)", display: "flex", flexDirection: "column" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", marginBottom: 14 }}>
-                  <span style={{ display: "inline-flex", alignItems: "center", gap: 6, fontFamily: "'JetBrains Mono',monospace", fontSize: 11, color: "#A78BFA", border: "1px solid rgba(167,139,250,0.4)", borderRadius: 100, padding: "4px 11px" }}>Research</span>
-                  <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 11, color: "#94A3B8" }}>Applied ML · Notebook</span>
-                </div>
-                <h3 style={{ fontFamily: "'Space Grotesk'", fontSize: 25, fontWeight: 600, color: "#E5E7EB", letterSpacing: "-0.01em" }}>Variable Star Classifier</h3>
-                <div style={{ fontFamily: "'Space Grotesk'", fontSize: 15, color: "#c4b5fd", marginTop: 6 }}>Machine-learning notebook for classifying periodic variable stars.</div>
-                <p style={{ fontSize: 15, lineHeight: 1.55, color: "#94A3B8", marginTop: 14 }}>A Jupyter Notebook project for classifying periodic variable stars into RR Lyrae, Cepheid, Long Period Variable, and Eclipsing Binary categories using astronomical data. It highlights applied machine learning, feature engineering, and reproducible research workflows.</p>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 7, marginTop: 16 }}>
-                  {["Python", "Jupyter", "scikit-learn", "Astronomy", "Gaia DR3"].map((t) => (
-                    <span key={t} style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 11.5, color: "#94A3B8", border: "1px solid rgba(148,163,184,0.18)", borderRadius: 100, padding: "5px 11px" }}>{t}</span>
-                  ))}
-                </div>
-                <div style={{ fontSize: 13, color: "#64748b", marginTop: 16 }}><span style={{ color: "#94A3B8" }}>Role:</span> Research notebook / applied ML</div>
-                <div style={{ display: "flex", gap: 10, marginTop: "auto", paddingTop: 20 }}>
-                  <a className="p-btn-ghost" href="https://github.com/Anshuman791322/periodically-variable-stars" target="_blank" rel="noopener noreferrer" style={{ padding: "10px 17px", fontSize: 13.5 }}>GitHub ↗</a>
-                </div>
-              </div>
-              <div style={{ background: "linear-gradient(160deg,#0b1220,#0F172A)", borderLeft: "1px solid rgba(148,163,184,0.12)", padding: 26, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <div style={{ width: "100%", maxWidth: 380, border: "1px solid rgba(148,163,184,0.2)", borderRadius: 12, overflow: "hidden", background: "#0a0f1a", boxShadow: "0 18px 50px rgba(0,0,0,0.4)" }} role="img" aria-label="Astronomy machine-learning visual with a star field, light curve, notebook cells, and variable star class labels.">
-                  <div style={{ position: "relative", height: 104, background: "radial-gradient(1px 1px at 20% 30%,#fff,transparent),radial-gradient(1px 1px at 60% 60%,#cbd5e1,transparent),radial-gradient(1px 1px at 80% 25%,#fff,transparent),radial-gradient(1px 1px at 35% 75%,#a78bfa,transparent),radial-gradient(1px 1px at 75% 80%,#fff,transparent),linear-gradient(160deg,#0b1220,#10091f)", borderBottom: "1px solid rgba(148,163,184,0.14)" }}>
-                    <svg viewBox="0 0 380 104" width="100%" height="100%" style={{ position: "absolute", inset: 0 }}>
-                      <polyline points="10,70 40,40 70,72 100,38 130,70 160,40 190,72 220,40 250,70 280,42 310,70 340,40 370,68" fill="none" stroke="#A78BFA" strokeWidth="1.6" opacity="0.9" />
-                    </svg>
-                    <span style={{ position: "absolute", top: 7, left: 9, fontFamily: "'JetBrains Mono',monospace", fontSize: 9, color: "#c4b5fd" }}>light curve · period 0.57d</span>
-                  </div>
-                  <div style={{ padding: "12px 13px", display: "flex", flexDirection: "column", gap: 5 }}>
-                    <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 9.5, color: "#64748b" }}>In[3]: clf.predict(features)</div>
-                    <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 9.5, color: "#94A3B8" }}>Out[3]: [&apos;RR Lyrae&apos;]  acc 0.91</div>
-                    <div style={{ display: "flex", flexWrap: "wrap", gap: 5, marginTop: 7 }}>
-                      <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 9, color: "#c4b5fd", border: "1px solid rgba(167,139,250,0.35)", borderRadius: 100, padding: "3px 8px" }}>RR Lyrae</span>
-                      <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 9, color: "#94A3B8", border: "1px solid rgba(148,163,184,0.2)", borderRadius: 100, padding: "3px 8px" }}>Cepheid</span>
-                      <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 9, color: "#94A3B8", border: "1px solid rgba(148,163,184,0.2)", borderRadius: 100, padding: "3px 8px" }}>LPV</span>
-                      <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 9, color: "#94A3B8", border: "1px solid rgba(148,163,184,0.2)", borderRadius: 100, padding: "3px 8px" }}>Eclipsing Binary</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </article>
-
-            {/* Portfolio System */}
-            <article className="p-proj-card" data-reveal="pop" style={{ display: "grid", gridTemplateColumns: "0.95fr 1.05fr", gap: 0, background: "#0F172A", border: "1px solid rgba(148,163,184,0.18)", borderRadius: 18, overflow: "hidden" }}>
-              <div style={{ padding: "30px clamp(20px,2.6vw,34px)", display: "flex", flexDirection: "column" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", marginBottom: 14 }}>
-                  <span style={{ display: "inline-flex", alignItems: "center", gap: 6, fontFamily: "'JetBrains Mono',monospace", fontSize: 11, color: "#22C55E", border: "1px solid rgba(34,197,94,0.4)", borderRadius: 100, padding: "4px 11px" }}><span style={{ width: 6, height: 6, borderRadius: "50%", background: "#22C55E", animation: "pulseDot 2.4s infinite" }} />Live</span>
-                  <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 11, color: "#94A3B8" }}>Frontend / Static Export</span>
-                </div>
-                <h3 style={{ fontFamily: "'Space Grotesk'", fontSize: 25, fontWeight: 600, color: "#E5E7EB", letterSpacing: "-0.01em" }}>Portfolio System</h3>
-                <div style={{ fontFamily: "'Space Grotesk'", fontSize: 15, color: "#7dd3fc", marginTop: 6 }}>Next.js portfolio with static export, motion, and case-study pages.</div>
-                <p style={{ fontSize: 15, lineHeight: 1.55, color: "#94A3B8", marginTop: 14 }}>A personal portfolio built as a product, not just a webpage. It uses Next.js, TypeScript, static export, self-hosted typography, motion components, and GitHub Pages deployment to present projects in a polished and inspectable way.</p>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 7, marginTop: 16 }}>
-                  {["Next.js", "TypeScript", "Anime.js", "GitHub Pages", "Static Export"].map((t) => (
-                    <span key={t} style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 11.5, color: "#94A3B8", border: "1px solid rgba(148,163,184,0.18)", borderRadius: 100, padding: "5px 11px" }}>{t}</span>
-                  ))}
-                </div>
-                <div style={{ fontSize: 13, color: "#64748b", marginTop: 16 }}><span style={{ color: "#94A3B8" }}>Role:</span> Frontend design and engineering</div>
-                <div style={{ display: "flex", gap: 10, marginTop: "auto", paddingTop: 20, flexWrap: "wrap" }}>
-                  <a className="p-btn-ghost" href="https://github.com/Anshuman791322/Anshuman791322.github.io" target="_blank" rel="noopener noreferrer" style={{ padding: "10px 17px", fontSize: 13.5 }}>GitHub ↗</a>
-                  <a href="https://anshuman791322.github.io" target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 7, background: "rgba(56,189,248,0.14)", border: "1px solid rgba(56,189,248,0.4)", color: "#7dd3fc", borderRadius: 100, padding: "10px 17px", fontSize: 13.5, textDecoration: "none" }}>Live Site ↗</a>
-                </div>
-              </div>
-              <div style={{ background: "linear-gradient(160deg,#0b1220,#0F172A)", borderLeft: "1px solid rgba(148,163,184,0.12)", padding: 26, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <div style={{ width: "100%", maxWidth: 380, border: "1px solid rgba(148,163,184,0.2)", borderRadius: 12, overflow: "hidden", background: "#0a0f1a", boxShadow: "0 18px 50px rgba(0,0,0,0.4)" }} role="img" aria-label="Browser mockup of a dark personal portfolio with project cards and GitHub Pages deployment badge.">
-                  <div style={{ display: "flex", alignItems: "center", gap: 7, padding: "9px 12px", borderBottom: "1px solid rgba(148,163,184,0.14)", background: "#0b1220" }}>
-                    <span style={{ width: 9, height: 9, borderRadius: "50%", background: "#ef4444" }} /><span style={{ width: 9, height: 9, borderRadius: "50%", background: "#f59e0b" }} /><span style={{ width: 9, height: 9, borderRadius: "50%", background: "#22c55e" }} />
-                    <span style={{ marginLeft: 6, flex: 1, background: "#111827", border: "1px solid rgba(148,163,184,0.14)", borderRadius: 6, fontFamily: "'JetBrains Mono',monospace", fontSize: 9, color: "#7dd3fc", padding: "3px 8px" }}>anshuman791322.github.io</span>
-                  </div>
-                  <div style={{ padding: 13, display: "grid", gridTemplateColumns: "1.3fr 1fr", gridAutoRows: "30px", gap: 7 }}>
-                    <div style={{ gridRow: "span 2", background: "linear-gradient(150deg,rgba(56,189,248,0.16),rgba(167,139,250,0.1))", border: "1px solid rgba(148,163,184,0.16)", borderRadius: 8, padding: 9 }}>
-                      <div style={{ fontFamily: "'Space Grotesk'", fontSize: 11, color: "#E5E7EB", fontWeight: 600 }}>Anshuman</div>
-                      <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 7.5, color: "#94A3B8", marginTop: 3 }}>builds AI · CV · web</div>
-                    </div>
-                    <div style={{ background: "#111827", border: "1px solid rgba(148,163,184,0.14)", borderRadius: 8 }} />
-                    <div style={{ background: "#111827", border: "1px solid rgba(148,163,184,0.14)", borderRadius: 8 }} />
-                    <div style={{ background: "#111827", border: "1px solid rgba(148,163,184,0.14)", borderRadius: 8 }} />
-                    <div style={{ background: "#111827", border: "1px solid rgba(148,163,184,0.14)", borderRadius: 8 }} />
-                  </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "0 13px 13px" }}>
-                    <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 8.5, color: "#22C55E", border: "1px solid rgba(34,197,94,0.3)", borderRadius: 100, padding: "3px 8px" }}>● GitHub Pages · deployed</span>
-                  </div>
-                </div>
-              </div>
-            </article>
-
-          </div>
-        </section>
-
-        {/* ARCHIVE */}
-        <section style={{ maxWidth: 1200, margin: "0 auto", padding: "96px clamp(18px,5vw,40px) 0", scrollMarginTop: 88 }}>
-          <div data-reveal style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 12, letterSpacing: "0.06em", textTransform: "uppercase", color: "#94A3B8", marginBottom: 16 }}>{"// Early work and public history"}</div>
-          <h2 data-reveal style={{ fontFamily: "'Space Grotesk'", fontSize: "clamp(26px,3.4vw,36px)", lineHeight: 1.1, letterSpacing: "-0.02em", fontWeight: 500, color: "#E5E7EB" }}>Early work and public history</h2>
-          <p data-reveal style={{ fontSize: 16, color: "#94A3B8", marginTop: 12, maxWidth: 600, lineHeight: 1.5 }}>Older repositories kept visible as part of my learning path.</p>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(320px,1fr))", gap: 16, marginTop: 32 }}>
-
-            <div data-reveal="pop" style={{ background: "#111827", border: "1px solid rgba(148,163,184,0.18)", borderRadius: 16, overflow: "hidden" }}>
-              <div style={{ padding: "20px 22px" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 9, marginBottom: 11 }}>
-                  <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 10.5, color: "#94A3B8", border: "1px solid rgba(148,163,184,0.22)", borderRadius: 100, padding: "3px 9px" }}>Archive</span>
-                  <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 10.5, color: "#64748b" }}>html-portfolio</span>
-                </div>
-                <h3 style={{ fontFamily: "'Space Grotesk'", fontSize: 19, fontWeight: 500, color: "#E5E7EB" }}>HTML/CSS Portfolio v1</h3>
-                <div style={{ fontSize: 13.5, color: "#22C55E", marginTop: 4, fontFamily: "'Space Grotesk'" }}>Early handcrafted portfolio built with plain HTML and CSS.</div>
-                <p style={{ fontSize: 14, lineHeight: 1.5, color: "#94A3B8", marginTop: 11 }}>My first portfolio experiment, built with basic web technologies — the starting point of my front-end learning before the structured Next.js portfolio system.</p>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 13 }}>
-                  {["HTML", "CSS", "Web Basics"].map((t) => (
-                    <span key={t} style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 11, color: "#94A3B8", border: "1px solid rgba(148,163,184,0.18)", borderRadius: 100, padding: "4px 9px" }}>{t}</span>
-                  ))}
-                </div>
-                <a className="p-btn-ghost" href="https://github.com/Anshuman791322/html-portfolio" target="_blank" rel="noopener noreferrer" style={{ marginTop: 15, padding: "8px 15px", fontSize: 13 }}>GitHub ↗</a>
-              </div>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", borderTop: "1px solid rgba(148,163,184,0.12)" }} role="img" aria-label="Before and after comparison of a simple old portfolio page versus the new portfolio style.">
-                <div style={{ padding: 13, borderRight: "1px solid rgba(148,163,184,0.12)", background: "#0b1220" }}>
-                  <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 8.5, color: "#64748b", marginBottom: 7 }}>v1 · 2024</div>
-                  <div style={{ height: 7, width: "60%", background: "#334155", borderRadius: 3, marginBottom: 5 }} />
-                  <div style={{ height: 5, width: "90%", background: "#1e293b", borderRadius: 3, marginBottom: 4 }} />
-                  <div style={{ height: 5, width: "80%", background: "#1e293b", borderRadius: 3 }} />
-                </div>
-                <div style={{ padding: 13, background: "linear-gradient(150deg,#0b1220,#10162a)" }}>
-                  <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 8.5, color: "#22C55E", marginBottom: 7 }}>now</div>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 4 }}>
-                    <div style={{ height: 18, background: "rgba(56,189,248,0.16)", border: "1px solid rgba(56,189,248,0.25)", borderRadius: 4 }} />
-                    <div style={{ height: 18, background: "#111827", border: "1px solid rgba(148,163,184,0.16)", borderRadius: 4 }} />
-                  </div>
-                </div>
+          <section className="dc-shell dc-section" id="contact" aria-labelledby="contact-title">
+            <div className="dc-contact-card dc-reveal">
+              <h2 id="contact-title">
+                Have a project, role, or collaboration in mind?
+              </h2>
+              <p className="dc-hero-body">
+                I am open to software roles, internships, collaborations, and
+                product engineering work where the implementation has to survive
+                real use.
+              </p>
+              <div className="dc-actions">
+                <a className="dc-pill dc-pill-primary" href={`mailto:${portfolio.person.email}`}>
+                  Email Me <span>→</span>
+                </a>
+                <a className="dc-pill" href={portfolio.person.github} target="_blank" rel="noreferrer">
+                  GitHub <span>↗</span>
+                </a>
               </div>
             </div>
+          </section>
+        </main>
 
-            <div data-reveal="pop" style={{ background: "#111827", border: "1px solid rgba(148,163,184,0.18)", borderRadius: 16, overflow: "hidden" }}>
-              <div style={{ padding: "20px 22px" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 9, marginBottom: 11 }}>
-                  <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 10.5, color: "#94A3B8", border: "1px solid rgba(148,163,184,0.22)", borderRadius: 100, padding: "3px 9px" }}>Archive</span>
-                  <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 10.5, color: "#64748b" }}>Anshuman-07</span>
-                </div>
-                <h3 style={{ fontFamily: "'Space Grotesk'", fontSize: 19, fontWeight: 500, color: "#E5E7EB" }}>GitHub Profile Config Archive</h3>
-                <div style={{ fontSize: 13.5, color: "#94A3B8", marginTop: 4, fontFamily: "'Space Grotesk'" }}>Archived GitHub profile configuration from my early developer setup.</div>
-                <p style={{ fontSize: 14, lineHeight: 1.5, color: "#94A3B8", marginTop: 11 }}>An archived profile/config repository kept for continuity. This is not a featured software project, but part of my public GitHub history.</p>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 13 }}>
-                  {["GitHub", "Config", "Archive"].map((t) => (
-                    <span key={t} style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 11, color: "#94A3B8", border: "1px solid rgba(148,163,184,0.18)", borderRadius: 100, padding: "4px 9px" }}>{t}</span>
-                  ))}
-                </div>
-                <a className="p-btn-ghost" href="https://github.com/Anshuman791322" target="_blank" rel="noopener noreferrer" style={{ marginTop: 15, padding: "8px 15px", fontSize: 13 }}>GitHub ↗</a>
-              </div>
-              <div style={{ padding: "16px 22px 20px", borderTop: "1px solid rgba(148,163,184,0.12)", background: "#0b1220" }} role="img" aria-label="Minimal GitHub profile archive card.">
-                <div style={{ display: "flex", alignItems: "center", gap: 11 }}>
-                  <span style={{ width: 34, height: 34, borderRadius: "50%", background: "linear-gradient(140deg,#334155,#22C55E)", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "'Space Grotesk'", fontSize: 12, fontWeight: 600, color: "#070B12" }}>AS</span>
-                  <div>
-                    <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 11, color: "#E5E7EB" }}>Anshuman-07</div>
-                    <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 9, color: "#64748b" }}>archived · read-only</div>
-                  </div>
-                  <span style={{ marginLeft: "auto", fontFamily: "'JetBrains Mono',monospace", fontSize: 8.5, color: "#94A3B8", border: "1px solid rgba(148,163,184,0.2)", borderRadius: 100, padding: "3px 8px" }}>archive</span>
-                </div>
-                <div style={{ display: "flex", gap: 3, marginTop: 13 }}>
-                  {[1, 0.4, 0.7, 1, 0.5, 1, 0.3, 1].map((op, i) => {
-                    const isDark = op === 1;
-                    return <span key={i} style={{ width: 9, height: 9, borderRadius: 2, background: isDark ? "#1e293b" : "#22C55E", opacity: isDark ? 1 : op }} />;
-                  })}
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </section>
-
-        {/* COLLABS */}
-        <section style={{ maxWidth: 1200, margin: "0 auto", padding: "96px clamp(18px,5vw,40px) 0" }}>
-          <div data-reveal style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 12, letterSpacing: "0.06em", textTransform: "uppercase", color: "#A78BFA", marginBottom: 16 }}>{"// Featured collaborations"}</div>
-          <h2 data-reveal style={{ fontFamily: "'Space Grotesk'", fontSize: "clamp(26px,3.4vw,36px)", lineHeight: 1.1, letterSpacing: "-0.02em", fontWeight: 500, color: "#E5E7EB" }}>Featured collaborations</h2>
-          <p data-reveal style={{ fontSize: 16, color: "#94A3B8", marginTop: 12, maxWidth: 640, lineHeight: 1.5 }}>Projects I am showcasing with clear credit. These are separate from my own repositories and remain the work of their authors.</p>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))", gap: 16, marginTop: 32 }}>
-            {COLLABS.map((c, i) => (
-              <div key={i} data-reveal="pop" style={{ position: "relative", background: "#0F172A", border: "1px dashed rgba(148,163,184,0.28)", borderRadius: 16, padding: 22 }}>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, marginBottom: 12 }}>
-                  <span style={{ display: "inline-flex", alignItems: "center", gap: 6, fontFamily: "'JetBrains Mono',monospace", fontSize: 10.5, color: c.accent, background: `${c.accent}14`, border: `1px solid ${c.accent}55`, borderRadius: 100, padding: "4px 10px" }}>↳ Collaboration</span>
-                  <a href={c.link} target="_blank" rel="noopener noreferrer" style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 11, color: "#94A3B8", textDecoration: "none" }}>{c.owner} ↗</a>
-                </div>
-                <h3 style={{ fontFamily: "'Space Grotesk'", fontSize: 20, fontWeight: 600, color: "#E5E7EB" }}>{c.name}</h3>
-                <p style={{ fontSize: 14.5, lineHeight: 1.5, color: "#94A3B8", marginTop: 9 }}>{c.text}</p>
-                <div style={{ marginTop: 14, paddingTop: 13, borderTop: "1px solid rgba(148,163,184,0.14)", display: "flex", flexDirection: "column", gap: 5 }}>
-                  <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 11, color: "#64748b" }}><span style={{ color: "#94A3B8" }}>credit ·</span> {c.credit}</div>
-                  <div style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 11, color: "#64748b" }}><span style={{ color: "#94A3B8" }}>my role ·</span> {c.role}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* STACK */}
-        <section id="stack" style={{ maxWidth: 1200, margin: "0 auto", padding: "96px clamp(18px,5vw,40px) 0", scrollMarginTop: 88 }}>
-          <div data-reveal style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 12, letterSpacing: "0.06em", textTransform: "uppercase", color: "#38BDF8", marginBottom: 16 }}>{"// Stack"}</div>
-          <h2 data-reveal style={{ fontFamily: "'Space Grotesk'", fontSize: "clamp(28px,4vw,40px)", lineHeight: 1.1, letterSpacing: "-0.02em", fontWeight: 500, color: "#E5E7EB", maxWidth: 720 }}>Stack I use to build, test, and ship</h2>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(240px,1fr))", gap: 16, marginTop: 36 }}>
-            {STACK.map((g, i) => (
-              <div key={i} data-reveal="pop" style={{ background: "#0F172A", border: "1px solid rgba(148,163,184,0.18)", borderRadius: 16, padding: 22 }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 9, marginBottom: 16 }}>
-                  <span style={{ width: 8, height: 8, borderRadius: 2, background: g.accent }} />
-                  <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 12, letterSpacing: "0.04em", textTransform: "uppercase", color: g.accent }}>{g.cat}</span>
-                </div>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 7 }}>
-                  {g.items.map((item) => (
-                    <span key={item} style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 12.5, color: "#cbd5e1", border: "1px solid rgba(148,163,184,0.18)", borderRadius: 8, padding: "6px 11px" }}>{item}</span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* TIMELINE */}
-        <section id="timeline" style={{ maxWidth: 1200, margin: "0 auto", padding: "96px clamp(18px,5vw,40px) 0", scrollMarginTop: 88 }}>
-          <div data-reveal style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 12, letterSpacing: "0.06em", textTransform: "uppercase", color: "#22C55E", marginBottom: 16 }}>{"// Build timeline"}</div>
-          <h2 data-reveal style={{ fontFamily: "'Space Grotesk'", fontSize: "clamp(28px,4vw,40px)", lineHeight: 1.1, letterSpacing: "-0.02em", fontWeight: 500, color: "#E5E7EB" }}>Build timeline</h2>
-          <div style={{ marginTop: 36, position: "relative" }}>
-            {TIMELINE.map((t, i) => (
-              <div key={i} data-reveal style={{ display: "grid", gridTemplateColumns: "96px 1fr", gap: 22, padding: "22px 0", borderTop: "1px solid rgba(148,163,184,0.14)" }}>
-                <div style={{ display: "flex", alignItems: "flex-start", gap: 11 }}>
-                  <span style={{ width: 9, height: 9, borderRadius: "50%", marginTop: 7, flexShrink: 0, background: t.accent }} />
-                  <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 17, color: "#94A3B8" }}>{t.year}</span>
-                </div>
-                <div>
-                  <h3 style={{ fontFamily: "'Space Grotesk'", fontSize: 20, fontWeight: 500, color: "#E5E7EB", letterSpacing: "-0.01em" }}>{t.title}</h3>
-                  <p style={{ fontSize: 15, lineHeight: 1.5, color: "#94A3B8", marginTop: 7, maxWidth: 720 }}>{t.text}</p>
-                </div>
-              </div>
-            ))}
-            <div style={{ borderTop: "1px solid rgba(148,163,184,0.14)" }} />
-          </div>
-        </section>
-
-        {/* CONTACT */}
-        <section id="contact" style={{ maxWidth: 1200, margin: "0 auto", padding: "96px clamp(18px,5vw,40px) 0", scrollMarginTop: 88 }}>
-          <div data-reveal="pop" style={{ position: "relative", background: "linear-gradient(160deg,#0F172A,#0b1220)", border: "1px solid rgba(148,163,184,0.18)", borderRadius: 24, padding: "clamp(28px,5vw,56px)", overflow: "hidden" }}>
-            <div style={{ position: "absolute", top: -60, right: -40, width: 280, height: 280, borderRadius: "50%", background: "radial-gradient(circle,rgba(56,189,248,0.2),transparent 68%)", filter: "blur(70px)", pointerEvents: "none" }} />
-            <div style={{ position: "relative" }}>
-              <h2 style={{ fontFamily: "'Space Grotesk'", fontSize: "clamp(28px,4.4vw,46px)", lineHeight: 1.08, letterSpacing: "-0.02em", fontWeight: 600, color: "#E5E7EB", maxWidth: 760 }}>Have a project, role, or collaboration in mind?</h2>
-              <p style={{ fontSize: 17, lineHeight: 1.55, color: "#94A3B8", marginTop: 18, maxWidth: 600 }}>I am open to software roles, internships, collaborations, and product engineering work where the implementation has to survive real use.</p>
-              <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 28 }}>
-                <a className="p-btn-primary" href="mailto:anshuman6062@gmail.com" style={{ padding: "13px 24px", fontSize: 15 }}>Email Me →</a>
-                <a className="p-btn-ghost" href="https://github.com/Anshuman791322" target="_blank" rel="noopener noreferrer" style={{ padding: "13px 24px", fontSize: 15 }}>GitHub ↗</a>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <footer style={{ maxWidth: 1200, margin: "80px auto 0", padding: "36px clamp(18px,5vw,40px) 56px", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 16, flexWrap: "wrap", borderTop: "1px solid rgba(148,163,184,0.12)" }}>
-          <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 12.5, color: "#64748b" }}>© 2026 Anshuman Singh · built in public</span>
-          <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 12.5, color: "#64748b" }}>local-first AI · computer vision · web</span>
+        <footer className="dc-shell dc-footer">
+          <span>© 2026 Anshuman Singh - built in public</span>
+          <span>local-first AI - computer vision - web</span>
         </footer>
-
       </div>
     </>
   );

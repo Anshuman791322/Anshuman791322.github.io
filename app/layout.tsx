@@ -49,7 +49,7 @@ export default function RootLayout({
       lang="en"
       className={`${spaceGrotesk.variable} ${interTight.variable} ${jetBrainsMono.variable}`}
     >
-      <body style={{ margin: 0, background: "#070B12" }}>{children}</body>
+      <body>{children}</body>
     </html>
   );
 }
