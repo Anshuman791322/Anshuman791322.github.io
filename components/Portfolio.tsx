@@ -725,16 +725,22 @@ const STYLES = `
 }
 
 .dc-window-app-icon {
-  display: inline-grid;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2px;
   width: 18px;
   height: 18px;
-  place-items: center;
+  flex: 0 0 auto;
+  padding: 2px;
   border-radius: 4px;
-  background: linear-gradient(135deg, #2563eb, #38bdf8);
-  color: #f8fafc;
-  font-size: 9px;
-  font-weight: 800;
-  line-height: 1;
+  background: rgba(59, 130, 246, 0.16);
+  box-shadow: inset 0 0 0 1px rgba(125, 211, 252, 0.22);
+}
+
+.dc-window-app-icon span {
+  display: block;
+  border-radius: 1px;
+  background: #60a5fa;
 }
 
 .dc-window-title {
@@ -745,6 +751,17 @@ const STYLES = `
   font-size: 10px;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+.dc-window-os {
+  flex: 0 0 auto;
+  padding: 3px 7px;
+  border: 1px solid rgba(125, 211, 252, 0.18);
+  border-radius: 999px;
+  color: #93c5fd;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 9px;
+  letter-spacing: 0.04em;
 }
 
 .dc-window-controls {
@@ -759,7 +776,7 @@ const STYLES = `
   width: 36px;
   place-items: center;
   color: #94a3b8;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-family: "Segoe UI", var(--font-body), system-ui, sans-serif;
   font-size: 13px;
 }
 
@@ -1735,8 +1752,14 @@ export function Portfolio() {
                       aria-label={`${project.title} visual preview`}
                     >
                       <div className="dc-window-top">
-                        <span className="dc-window-app-icon">AI</span>
+                        <span className="dc-window-app-icon" aria-hidden="true">
+                          <span />
+                          <span />
+                          <span />
+                          <span />
+                        </span>
                         <span className="dc-window-title">{project.title}</span>
+                        <span className="dc-window-os">Windows</span>
                         <span className="dc-window-controls" aria-hidden="true">
                           <span className="dc-window-control">−</span>
                           <span className="dc-window-control">□</span>
