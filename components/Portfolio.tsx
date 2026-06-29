@@ -153,12 +153,17 @@ const STYLES = `
 }
 
 .dc-nav-links {
+  position: relative;
   gap: 26px;
+  padding: 0 2px;
 }
 
 .dc-nav-links a {
+  position: relative;
+  z-index: 1;
   color: var(--dc-muted);
   font-size: 14.5px;
+  padding: 8px 0;
   text-decoration: none;
   transition: color 180ms ease;
 }
@@ -167,6 +172,20 @@ const STYLES = `
 .dc-nav-links a:focus-visible,
 .dc-nav-links a.is-active {
   color: var(--dc-text);
+}
+
+.dc-nav-indicator {
+  position: absolute;
+  left: 0;
+  bottom: 2px;
+  z-index: 0;
+  width: 0;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--dc-blue);
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.72);
+  opacity: 0;
+  transform: translate3d(0, 0, 0);
 }
 
 .dc-shell {
@@ -229,17 +248,18 @@ const STYLES = `
   font-family: var(--font-display), var(--font-body), sans-serif;
   font-size: clamp(44px, 7.4vw, 92px);
   font-weight: 800;
-  letter-spacing: -0.045em;
+  letter-spacing: -0.04em;
   line-height: 1;
+  text-wrap: balance;
+}
+
+.dc-hero-word {
+  display: inline-block;
+  will-change: transform, opacity, filter, clip-path;
 }
 
 .dc-gradient-text {
-  background: linear-gradient(120deg, var(--dc-blue), var(--dc-violet));
-  background-size: 220% 220%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: dc-hue 7s ease-in-out infinite;
+  color: #7dd3fc;
 }
 
 .dc-hero-lead,
@@ -274,10 +294,33 @@ const STYLES = `
 
 .dc-icon-btn,
 .dc-pill {
+  position: relative;
+  overflow: hidden;
   border: 1px solid rgba(148, 163, 184, 0.3);
   color: var(--dc-text);
   text-decoration: none;
   transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, color 180ms ease;
+}
+
+.dc-icon-btn::after,
+.dc-pill::after {
+  position: absolute;
+  left: var(--press-x, 50%);
+  top: var(--press-y, 50%);
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: rgba(125, 211, 252, 0.2);
+  content: "";
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1), opacity 320ms ease;
+}
+
+.dc-icon-btn:hover::after,
+.dc-pill:hover::after {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
 }
 
 .dc-icon-btn {
@@ -317,6 +360,17 @@ const STYLES = `
   transform: translateY(-2px);
   border-color: rgba(229, 231, 235, 0.56);
   background: rgba(148, 163, 184, 0.08);
+}
+
+.dc-icon-btn:active,
+.dc-pill:active {
+  transform: translateY(0) scale(0.97);
+}
+
+.dc-icon-btn > *,
+.dc-pill > * {
+  position: relative;
+  z-index: 1;
 }
 
 .dc-pill-primary:hover,
@@ -515,13 +569,40 @@ const STYLES = `
 }
 
 .dc-project {
+  position: relative;
   display: grid;
   grid-template-columns: minmax(0, 0.96fr) minmax(320px, 1.04fr);
   overflow: hidden;
   border-radius: 18px;
+  transform-style: preserve-3d;
+  transition: border-color 240ms ease, transform 240ms ease;
+}
+
+.dc-project::after {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    460px circle at var(--mx, 50%) var(--my, 50%),
+    color-mix(in srgb, var(--accent) 18%, transparent),
+    transparent 66%
+  );
+  content: "";
+  transition: opacity 240ms ease;
+}
+
+.dc-project:hover {
+  border-color: color-mix(in srgb, var(--accent) 48%, transparent);
+}
+
+.dc-project:hover::after {
+  opacity: 1;
 }
 
 .dc-project-copy {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   padding: clamp(22px, 3vw, 34px);
@@ -608,6 +689,8 @@ const STYLES = `
 }
 
 .dc-project-media {
+  position: relative;
+  z-index: 1;
   display: grid;
   min-height: 340px;
   place-items: center;
@@ -622,6 +705,13 @@ const STYLES = `
   border: 1px solid rgba(148, 163, 184, 0.2);
   border-radius: 12px;
   background: #0a0f1a;
+  transition: transform 260ms cubic-bezier(0.16, 1, 0.3, 1), border-color 260ms ease;
+  will-change: transform;
+}
+
+.dc-project:hover .dc-window {
+  border-color: color-mix(in srgb, var(--accent) 42%, rgba(148, 163, 184, 0.2));
+  transform: translate3d(0, -5px, 0) scale(1.015);
 }
 
 .dc-window-top {
@@ -1238,6 +1328,38 @@ export function Portfolio() {
     };
   }, []);
 
+  useEffect(() => {
+    if (!window.matchMedia("(pointer: fine)").matches) return;
+
+    const cards = Array.from(document.querySelectorAll<HTMLElement>(".dc-project"));
+    const controls = Array.from(document.querySelectorAll<HTMLElement>(".dc-icon-btn, .dc-pill"));
+
+    const cardCleanups = cards.map((card) => {
+      const onMove = (event: PointerEvent) => {
+        const rect = card.getBoundingClientRect();
+        card.style.setProperty("--mx", `${event.clientX - rect.left}px`);
+        card.style.setProperty("--my", `${event.clientY - rect.top}px`);
+      };
+      card.addEventListener("pointermove", onMove, { passive: true });
+      return () => card.removeEventListener("pointermove", onMove);
+    });
+
+    const controlCleanups = controls.map((control) => {
+      const onMove = (event: PointerEvent) => {
+        const rect = control.getBoundingClientRect();
+        control.style.setProperty("--press-x", `${event.clientX - rect.left}px`);
+        control.style.setProperty("--press-y", `${event.clientY - rect.top}px`);
+      };
+      control.addEventListener("pointermove", onMove, { passive: true });
+      return () => control.removeEventListener("pointermove", onMove);
+    });
+
+    return () => {
+      cardCleanups.forEach((cleanup) => cleanup());
+      controlCleanups.forEach((cleanup) => cleanup());
+    };
+  }, []);
+
   useGSAP(
     () => {
       const root = rootRef.current;
@@ -1257,13 +1379,38 @@ export function Portfolio() {
         ease: "power3.out",
       });
 
-      gsap.from(".dc-hero-copy > *", {
-        y: 32,
-        opacity: 0,
-        duration: 0.8,
-        stagger: 0.08,
-        ease: "power3.out",
-      });
+      const intro = gsap.timeline({ defaults: { ease: "power3.out" } });
+      intro
+        .from(".dc-hero-word", {
+          yPercent: 90,
+          opacity: 0,
+          filter: "blur(10px)",
+          clipPath: "inset(0 0 100% 0)",
+          duration: 0.78,
+          stagger: 0.09,
+        })
+        .from(
+          [".dc-hero-lead", ".dc-hero-body"],
+          {
+            y: 24,
+            opacity: 0,
+            filter: "blur(8px)",
+            duration: 0.58,
+            stagger: 0.08,
+          },
+          "-=0.34",
+        )
+        .from(
+          ".dc-socials > *",
+          {
+            y: 14,
+            opacity: 0,
+            scale: 0.94,
+            duration: 0.38,
+            stagger: 0.05,
+          },
+          "-=0.18",
+        );
 
       gsap.from(".dc-orbit-stage", {
         scale: 0.82,
@@ -1329,16 +1476,41 @@ export function Portfolio() {
         );
       });
 
+      const nav = root.querySelector<HTMLElement>(".dc-nav-links");
+      const indicator = root.querySelector<HTMLElement>(".dc-nav-indicator");
       const links = gsap.utils.toArray<HTMLAnchorElement>(".dc-nav-links a");
+      const moveIndicator = (link: HTMLAnchorElement | undefined) => {
+        if (!nav || !indicator || !link) return;
+        const navRect = nav.getBoundingClientRect();
+        const linkRect = link.getBoundingClientRect();
+        gsap.to(indicator, {
+          x: linkRect.left - navRect.left,
+          width: linkRect.width,
+          opacity: 1,
+          duration: 0.28,
+          ease: "power3.out",
+        });
+      };
+
+      const navCleanups = links.map((link) => {
+        const onEnter = () => moveIndicator(link);
+        link.addEventListener("mouseenter", onEnter);
+        link.addEventListener("focus", onEnter);
+        return () => {
+          link.removeEventListener("mouseenter", onEnter);
+          link.removeEventListener("focus", onEnter);
+        };
+      });
+
       ["about", "projects", "stack", "contact"].forEach((id) => {
         ScrollTrigger.create({
           trigger: `#${id}`,
           start: "top center",
           end: "bottom center",
           onToggle: (self) => {
-            links
-              .find((link) => link.getAttribute("href") === `#${id}`)
-              ?.classList.toggle("is-active", self.isActive);
+            const link = links.find((item) => item.getAttribute("href") === `#${id}`);
+            link?.classList.toggle("is-active", self.isActive);
+            if (self.isActive) moveIndicator(link);
           },
         });
       });
@@ -1352,6 +1524,10 @@ export function Portfolio() {
           }
         },
       });
+
+      return () => {
+        navCleanups.forEach((cleanup) => cleanup());
+      };
     },
     { scope: rootRef },
   );
@@ -1375,6 +1551,7 @@ export function Portfolio() {
             <a href="#projects">Projects</a>
             <a href="#stack">Stack</a>
             <a href="#contact">Contact</a>
+            <span className="dc-nav-indicator" aria-hidden="true" />
           </div>
         </nav>
 
@@ -1384,7 +1561,8 @@ export function Portfolio() {
             <div className="dc-orb dc-orb-two" />
             <div className="dc-hero-copy">
               <h1 id="hero-title">
-                Anshuman <span className="dc-gradient-text">Singh</span>
+                <span className="dc-hero-word">Anshuman</span>{" "}
+                <span className="dc-hero-word dc-gradient-text">Singh</span>
               </h1>
               <p className="dc-hero-lead">
                 B.Tech Computer Science student focused on local-first AI,
