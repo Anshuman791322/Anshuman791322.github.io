@@ -717,31 +717,60 @@ const STYLES = `
 .dc-window-top {
   display: flex;
   align-items: center;
-  gap: 7px;
-  padding: 9px 12px;
+  gap: 10px;
+  min-height: 36px;
+  padding: 8px 10px 8px 12px;
   border-bottom: 1px solid rgba(148, 163, 184, 0.14);
   background: #0b1220;
 }
 
-.dc-window-dot {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
+.dc-window-app-icon {
+  display: inline-grid;
+  width: 18px;
+  height: 18px;
+  place-items: center;
+  border-radius: 4px;
+  background: linear-gradient(135deg, #2563eb, #38bdf8);
+  color: #f8fafc;
+  font-size: 9px;
+  font-weight: 800;
+  line-height: 1;
 }
 
 .dc-window-title {
-  margin-left: 6px;
   flex: 1;
   overflow: hidden;
-  border: 1px solid rgba(148, 163, 184, 0.14);
-  border-radius: 6px;
-  background: #111827;
   color: var(--accent);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 9px;
-  padding: 3px 8px;
+  font-size: 10px;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+.dc-window-controls {
+  display: flex;
+  align-items: center;
+  margin: -8px -10px -8px 0;
+  align-self: stretch;
+}
+
+.dc-window-control {
+  display: grid;
+  width: 36px;
+  place-items: center;
+  color: #94a3b8;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 13px;
+}
+
+.dc-window-control.is-close {
+  color: #fca5a5;
+}
+
+.dc-window-viewport {
+  position: relative;
+  overflow: hidden;
+  background: #0b1220;
 }
 
 .dc-window img {
@@ -750,6 +779,41 @@ const STYLES = `
   min-height: 220px;
   object-fit: cover;
   background: #0b1220;
+}
+
+.dc-window.is-animated .dc-window-viewport::before {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(125, 211, 252, 0.08) 44%,
+    rgba(125, 211, 252, 0.32) 50%,
+    rgba(125, 211, 252, 0.08) 56%,
+    transparent 100%
+  );
+  content: "";
+  transform: translateX(-120%);
+  animation: dc-scanline 3.8s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+.dc-window.is-animated .dc-window-viewport::after {
+  position: absolute;
+  left: 16%;
+  right: 16%;
+  bottom: 11.5%;
+  z-index: 2;
+  height: 34px;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(125, 211, 252, 0.1), rgba(125, 211, 252, 0.38), rgba(125, 211, 252, 0.1)),
+    repeating-linear-gradient(90deg, transparent 0 10px, rgba(125, 211, 252, 0.76) 10px 13px, transparent 13px 20px);
+  border-radius: 999px;
+  filter: drop-shadow(0 0 12px rgba(56, 189, 248, 0.38));
+  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  animation: dc-wave 1.2s ease-in-out infinite;
 }
 
 .dc-stack-wrap {
@@ -919,6 +983,8 @@ const STYLES = `
 @keyframes dc-pulse { 50% { opacity: 0.28; } }
 @keyframes dc-hue { 50% { background-position: 100% 50%; } }
 @keyframes dc-marquee { to { transform: translateX(-50%); } }
+@keyframes dc-scanline { 0% { transform: translateX(-120%); } 46%, 100% { transform: translateX(120%); } }
+@keyframes dc-wave { 0%, 100% { transform: scaleY(0.72); opacity: 0.62; } 50% { transform: scaleY(1.08); opacity: 1; } }
 
 @media (max-width: 900px) {
   .dc-hero,
@@ -1057,6 +1123,7 @@ const projects = [
     tags: ["Python", "PySide6", "Ollama", "Whisper", "SQLite"],
     image: "/projects/ai-agent.svg",
     accent: "#38bdf8",
+    animatedPreview: true,
   },
   {
     title: "Smart Driver Monitoring Release Hub",
@@ -1662,14 +1729,23 @@ export function Portfolio() {
                     </div>
                   </div>
                   <div className="dc-project-media">
-                    <div className="dc-window" role="img" aria-label={`${project.title} visual preview`}>
+                    <div
+                      className={`dc-window ${project.animatedPreview ? "is-animated" : ""}`}
+                      role="img"
+                      aria-label={`${project.title} visual preview`}
+                    >
                       <div className="dc-window-top">
-                        <span className="dc-window-dot" style={{ background: "#ef4444" }} />
-                        <span className="dc-window-dot" style={{ background: "#f59e0b" }} />
-                        <span className="dc-window-dot" style={{ background: "#22c55e" }} />
-                        <span className="dc-window-title">{project.title.toLowerCase()}</span>
+                        <span className="dc-window-app-icon">AI</span>
+                        <span className="dc-window-title">{project.title}</span>
+                        <span className="dc-window-controls" aria-hidden="true">
+                          <span className="dc-window-control">−</span>
+                          <span className="dc-window-control">□</span>
+                          <span className="dc-window-control is-close">×</span>
+                        </span>
                       </div>
-                      <Image src={project.image} alt="" width={800} height={480} />
+                      <div className="dc-window-viewport">
+                        <Image src={project.image} alt="" width={800} height={480} />
+                      </div>
                     </div>
                   </div>
                 </article>
