@@ -7,6 +7,7 @@ import { Github, Linkedin, Mail } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
 
+import { LiveEcosystemSnapshot } from "@/components/LiveEcosystemSnapshot";
 import { portfolio } from "@/data/portfolio";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -381,7 +382,10 @@ const STYLES = `
 
 .dc-hero-orbit {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
+  gap: 12px;
 }
 
 .dc-orbit-stage {
@@ -1207,6 +1211,58 @@ const projects = [
     image: "/projects/artgridx.svg",
     accent: "#f59e0b",
   },
+  {
+    title: "Hunar",
+    subtitle: "Full-stack storefront for handmade products and gifts.",
+    description:
+      "A handmade-goods marketplace with product discovery, variants, a persistent cart, Razorpay checkout, Google sign-in, and shop operations tools.",
+    repository: "https://github.com/Lakshay-13/hunar",
+    category: "E-commerce",
+    status: "Collab",
+    role: "Collaboration · e-commerce platform",
+    tags: ["React 19", "Express", "PostgreSQL", "Razorpay", "Google OAuth"],
+    image: "/projects/hunar.svg",
+    accent: "#f59e0b",
+  },
+  {
+    title: "Phylogenetic Tree",
+    subtitle: "Explore biological taxonomy through a searchable, interactive tree.",
+    description:
+      "A guided taxonomy explorer with searchable organism profiles, lineage context, and an alternate three-dimensional tree view.",
+    repository: "https://github.com/Lakshay-13/phylogenetic-tree",
+    category: "Bioinformatics",
+    status: "Collab",
+    role: "Project collaboration · taxonomy explorer",
+    tags: ["React", "TypeScript", "Three.js", "FastAPI", "Biology"],
+    image: "/projects/phylogenetic-tree.svg",
+    accent: "#22c55e",
+  },
+  {
+    title: "Host",
+    subtitle: "Private-by-default file hosting for images, video, and documents.",
+    description:
+      "A moderated upload and sharing platform with organized files, stable public links, and a backend built around object storage and Redis.",
+    repository: "https://github.com/Lakshay-13/host",
+    category: "File Hosting",
+    status: "Collab",
+    role: "Project collaboration · upload and delivery",
+    tags: ["React", "TypeScript", "Express", "S3", "Redis", "Moderation"],
+    image: "/projects/host.svg",
+    accent: "#38bdf8",
+  },
+  {
+    title: "AQG Studio",
+    subtitle: "Create source-grounded assessments from course materials.",
+    description:
+      "An assessment-generation studio that turns learning materials into reviewed questions and exports tests for learning platforms.",
+    repository: "https://github.com/Anshuman791322/aqg-studio",
+    category: "Education AI",
+    status: "Active",
+    role: "Solo build · system design and full-stack engineering",
+    tags: ["Next.js", "TypeScript", "FastAPI", "LangGraph", "Supabase"],
+    image: "/projects/aqg-studio.svg",
+    accent: "#a78bfa",
+  },
 ];
 
 function projectStyle(accent: string) {
@@ -1701,8 +1757,8 @@ export function Portfolio() {
               </div>
             </div>
 
-            <div className="dc-hero-orbit" aria-hidden="true">
-              <div className="dc-orbit-stage">
+            <div className="dc-hero-orbit">
+              <div className="dc-orbit-stage" aria-hidden="true">
                 <div className="dc-ring" />
                 <div className="dc-ring-dashed" />
                 <div className="dc-core-glow" />
@@ -1723,6 +1779,7 @@ export function Portfolio() {
                   ))}
                 </div>
               </div>
+              <LiveEcosystemSnapshot />
             </div>
           </section>
 

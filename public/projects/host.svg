@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="480" viewBox="0 0 800 480" fill="none">
+  <rect width="800" height="480" rx="24" fill="#0A1420"/>
+  <circle cx="637" cy="93" r="180" fill="#38BDF8" fill-opacity=".08"/>
+  <rect x="42" y="36" width="716" height="408" rx="18" fill="#101D2B" stroke="#304A5F"/>
+  <path d="M42 94h716" stroke="#304A5F"/><circle cx="69" cy="65" r="5" fill="#38BDF8"/><circle cx="87" cy="65" r="5" fill="#557C91"/><circle cx="105" cy="65" r="5" fill="#496174"/>
+  <text x="134" y="72" fill="#E0F5FF" font-family="Arial,sans-serif" font-size="16" font-weight="700">host</text>
+  <text x="630" y="71" fill="#88A3B8" font-family="Arial,sans-serif" font-size="11">PRIVATE BY DEFAULT</text>
+  <rect x="66" y="118" width="668" height="94" rx="12" fill="#14283A" stroke="#27485D" stroke-dasharray="5 5"/>
+  <path d="M394 142v34m-12-12 12 12 12-12" stroke="#7DD3FC" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><text x="354" y="198" fill="#9BB5C8" font-family="Arial,sans-serif" font-size="12">Drop files to upload</text>
+  <text x="66" y="251" fill="#90AFC3" font-family="Arial,sans-serif" font-size="11" letter-spacing="1.5">RECENT FILES</text>
+  <rect x="66" y="270" width="668" height="54" rx="9" fill="#152638" stroke="#2B4053"/><rect x="82" y="281" width="34" height="32" rx="6" fill="#21445A"/><path d="M92 303h15m-15-6h15m-15-6h10" stroke="#7DD3FC" stroke-width="2" stroke-linecap="round"/><text x="132" y="291" fill="#DCE9F2" font-family="Arial,sans-serif" font-size="12">field-notes.pdf</text><text x="132" y="308" fill="#7894A8" font-family="Arial,sans-serif" font-size="10">PDF · 2.4 MB · scanned</text><rect x="651" y="286" width="63" height="22" rx="11" fill="#183D3B"/><circle cx="663" cy="297" r="3" fill="#4ADE80"/><text x="672" y="301" fill="#91D3AD" font-family="Arial,sans-serif" font-size="9">Private</text>
+  <rect x="66" y="337" width="668" height="54" rx="9" fill="#152638" stroke="#2B4053"/><rect x="82" y="348" width="34" height="32" rx="6" fill="#253B55"/><circle cx="99" cy="364" r="7" stroke="#A9C5F1" stroke-width="2"/><path d="m87 375 8-8 6 5 6-7 8 10" stroke="#A9C5F1" stroke-width="2" stroke-linejoin="round"/><text x="132" y="358" fill="#DCE9F2" font-family="Arial,sans-serif" font-size="12">forest-study.jpg</text><text x="132" y="375" fill="#7894A8" font-family="Arial,sans-serif" font-size="10">IMAGE · 5.1 MB · ready to share</text><rect x="651" y="353" width="63" height="22" rx="11" fill="#16334A"/><circle cx="663" cy="364" r="3" fill="#7DD3FC"/><text x="672" y="368" fill="#A6DDF3" font-family="Arial,sans-serif" font-size="9">Shared</text>
+</svg>

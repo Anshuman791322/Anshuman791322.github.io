@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="480" viewBox="0 0 800 480" fill="none">
+  <rect width="800" height="480" rx="24" fill="#17130F"/>
+  <circle cx="670" cy="88" r="160" fill="#A66B30" fill-opacity=".16"/>
+  <rect x="42" y="36" width="716" height="408" rx="18" fill="#211B16" stroke="#62503C"/>
+  <path d="M42 94h716" stroke="#62503C"/>
+  <circle cx="69" cy="65" r="5" fill="#F59E0B"/><circle cx="87" cy="65" r="5" fill="#C9854B"/><circle cx="105" cy="65" r="5" fill="#7D6651"/>
+  <text x="134" y="72" fill="#F7EBD9" font-family="Arial,sans-serif" font-size="17" font-weight="700">hunar</text>
+  <text x="644" y="71" fill="#C9B9A3" font-family="Arial,sans-serif" font-size="12">GIFTS MADE BY HAND</text>
+  <rect x="68" y="121" width="664" height="88" rx="12" fill="#332419"/>
+  <text x="92" y="157" fill="#E7B47A" font-family="Arial,sans-serif" font-size="12" letter-spacing="2">MADE SLOWLY · GIVEN MEANINGFULLY</text>
+  <text x="92" y="190" fill="#FFF7EB" font-family="Georgia,serif" font-size="28">Find something made by hand.</text>
+  <rect x="68" y="232" width="205" height="178" rx="12" fill="#34281D" stroke="#65503B"/>
+  <rect x="298" y="232" width="205" height="178" rx="12" fill="#2C2820" stroke="#65503B"/>
+  <rect x="528" y="232" width="204" height="178" rx="12" fill="#31221D" stroke="#65503B"/>
+  <path d="M150 264c-13 18-24 35-24 57 0 25 14 42 38 42s38-17 38-42c0-22-11-39-24-57l-14-20-14 20Z" fill="#C77645"/>
+  <path d="M138 320c16 7 34 7 52 0" stroke="#E7B47A" stroke-width="4" stroke-linecap="round"/>
+  <path d="M361 298c0-17 12-29 29-29 14 0 23 9 27 20 5-11 14-20 28-20 17 0 29 12 29 29 0 28-36 52-57 66-20-14-56-38-56-66Z" fill="#E9B985"/>
+  <path d="M604 291h51v58h-51z" fill="#6B916B"/><path d="m599 291 31-23 31 23" stroke="#A9C294" stroke-width="7" stroke-linejoin="round"/><path d="M618 349v-28h23v28" fill="#D1A26F"/>
+  <text x="84" y="394" fill="#EADCC9" font-family="Arial,sans-serif" font-size="12">Clay keepsake</text><text x="315" y="394" fill="#EADCC9" font-family="Arial,sans-serif" font-size="12">Crochet blooms</text><text x="545" y="394" fill="#EADCC9" font-family="Arial,sans-serif" font-size="12">Gift boxes</text>
+</svg>

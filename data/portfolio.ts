@@ -56,7 +56,7 @@ export const portfolio = {
     tagline:
       "Considered software, shipped end-to-end. Local-first AI, computer vision, and front-end systems.",
     bio:
-      "I'm a B.Tech Computer Science student building five public products on GitHub — a Windows-first AI assistant, a driver-safety Android release, an applied-research classifier and front-end work. Every line is open source.",
+      "I'm a B.Tech Computer Science student building open-source software across AI, computer vision, education, biology, and full-stack web products.",
     location: "India",
     availability: "Open to roles · Available June 2026",
     email: "anshuman6062@gmail.com",
@@ -73,7 +73,7 @@ export const portfolio = {
   ] satisfies NavItem[],
   // Stats — real values surfaced clearly. No placeholder zeros in rendered HTML.
   stats: [
-    { value: 6, label: "Public repositories" },
+    { value: 9, label: "Public repositories" },
     { value: 5, label: "Build domains" },
     { value: 2022, label: "Building since" },
     { value: 100, suffix: "%", label: "Open source" },
@@ -179,6 +179,54 @@ export const portfolio = {
       featured: true,
       accent: "violet",
       image: "/projects/variable-stars.svg",
+    },
+    {
+      title: "Hunar",
+      repository: "https://github.com/Lakshay-13/hunar",
+      description:
+        "Full-stack storefront for handmade gifts, with product discovery, variants, a persistent cart, Razorpay checkout, and shop operations tools.",
+      impact: "Handmade commerce · storefront · shop operations",
+      role: "Collaborative build · e-commerce platform",
+      tags: ["React 19", "Express", "PostgreSQL", "Razorpay", "Google OAuth"],
+      year: "2026",
+      featured: false,
+      accent: "orange",
+    },
+    {
+      title: "Phylogenetic Tree",
+      repository: "https://github.com/Lakshay-13/phylogenetic-tree",
+      description:
+        "Guided taxonomy explorer with searchable taxon profiles, lineage context, and an alternate 3D tree view.",
+      impact: "Biological taxonomy · interactive 3D exploration",
+      role: "Project contributor · taxonomy explorer",
+      tags: ["React", "TypeScript", "Three.js", "FastAPI", "Biology"],
+      year: "2026",
+      featured: false,
+      accent: "green",
+    },
+    {
+      title: "Host",
+      repository: "https://github.com/Lakshay-13/host",
+      description:
+        "File hosting platform for uploading, organizing, and sharing images, videos, and PDFs through private-by-default moderation and stable public links.",
+      impact: "File hosting · upload pipeline · moderated delivery",
+      role: "Project contributor · file hosting and delivery",
+      tags: ["React", "TypeScript", "Express", "S3", "Redis", "Moderation"],
+      year: "2026",
+      featured: false,
+      accent: "cyan",
+    },
+    {
+      title: "AQG Studio",
+      repository: "https://github.com/Anshuman791322/aqg-studio",
+      description:
+        "Multi-agent assessment platform that turns course materials into source-grounded questions, evaluates quality, and exports tests for learning platforms.",
+      impact: "Education AI · grounded assessment generation",
+      role: "Solo build · system design and full-stack engineering",
+      tags: ["Next.js", "TypeScript", "FastAPI", "LangGraph", "Supabase"],
+      year: "2026",
+      featured: false,
+      accent: "violet",
     },
     {
       title: "HTML Portfolio",

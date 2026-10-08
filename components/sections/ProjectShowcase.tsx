@@ -13,6 +13,10 @@ import {
   CarFront,
   FileCode2,
   Github,
+  GitBranch,
+  CloudUpload,
+  FileQuestion,
+  ShoppingBag,
   Telescope,
   type LucideIcon,
 } from "lucide-react";
@@ -41,6 +45,10 @@ const PROJECT_ICONS: Record<string, LucideIcon> = {
   "AI Agent": Bot,
   "Smart Driver Monitoring": CarFront,
   "Periodically Variable Stars": Telescope,
+  Hunar: ShoppingBag,
+  "Phylogenetic Tree": GitBranch,
+  Host: CloudUpload,
+  "AQG Studio": FileQuestion,
   "HTML Portfolio": FileCode2,
   "Anshuman-07": Github,
 };

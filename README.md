@@ -179,7 +179,7 @@ All content lives in one typed file: `data/portfolio.ts`.
 - `portfolio.stats` — animated count-up values.
 - `portfolio.skills` — grouped stack chips.
 - `portfolio.timeline` — track-record entries.
-- `portfolio.projects` — the 5 public repos in the showcase.
+- `portfolio.projects` — the 9 public repos in the showcase.
 - `portfolio.marquee` — strings for the ticker band.
 - `portfolio.experiments` — workbench rail.
 
