@@ -137,15 +137,20 @@ const STYLES = `
 
 .dc-logo {
   display: inline-grid;
-  width: 30px;
-  height: 30px;
+  width: 38px;
+  height: 38px;
   place-items: center;
-  border-radius: 9px;
-  background: linear-gradient(140deg, var(--dc-blue), var(--dc-violet));
-  color: var(--dc-bg);
-  font-family: var(--font-display), var(--font-body), sans-serif;
-  font-size: 13px;
-  font-weight: 800;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 50%;
+  background: #050506;
+}
+
+.dc-logo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .dc-brand strong {
@@ -1736,7 +1741,16 @@ export function Portfolio() {
 
         <nav className="dc-nav" aria-label="Primary">
           <a className="dc-brand" href="#top" aria-label="Anshuman Singh home">
-            <span className="dc-logo">AS</span>
+            <span className="dc-logo">
+              <Image
+                src="/anshuman-logo.gif"
+                width={128}
+                height={128}
+                unoptimized
+                alt=""
+                aria-hidden="true"
+              />
+            </span>
             <strong>Anshuman Singh</strong>
           </a>
           <div className="dc-nav-links">

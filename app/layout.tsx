@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     "B.Tech Computer Science student building practical AI, computer-vision, and web products. Local-first desktop AI, Android release engineering, applied ML notebooks, and polished portfolio systems.",
   metadataBase: new URL("https://anshuman791322.github.io"),
   icons: {
-    icon: "/favicon.svg",
+    icon: [{ url: "/anshuman-logo.gif", type: "image/gif", sizes: "128x128" }],
   },
   openGraph: {
     title: "Anshuman Singh — Selected works",

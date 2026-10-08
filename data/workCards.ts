@@ -814,8 +814,6 @@ export const workCards = [
     repoUrl: "https://github.com/Lakshay-13/host",
     repositoryVisibility: "private",
     liveUrl: "https://host.nextgenaischool.in",
-    showcaseVideo: "/projects/showcase/host/showcase.webm",
-    showcaseNote: "Recorded from the live upload workspace.",
     gallery: [
       {
         src: "/projects/showcase/host/01-upload.png",
