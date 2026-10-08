@@ -21,6 +21,12 @@ export type Metric = {
   caption: string;
 };
 
+export type ProjectImage = {
+  src: string;
+  alt: string;
+  caption: string;
+};
+
 export type WorkCard = {
   slug: string;
   title: string;
@@ -35,6 +41,12 @@ export type WorkCard = {
   repositoryVisibility?: "public" | "private";
   /** Public production URL, when one is available. */
   liveUrl?: string;
+  /** Short recorded product walkthrough stored with the static portfolio. */
+  showcaseVideo?: string;
+  /** Clarifies whether a recording came from a local build or public site. */
+  showcaseNote?: string;
+  /** Real project screenshots opened in the case page lightbox. */
+  gallery?: readonly ProjectImage[];
   /** Bento span class. */
   className: "taste-bento-large" | "taste-bento-small";
   /** Accent for the case-study hero glow. Matches the portfolio palette. */
@@ -613,6 +625,347 @@ export const workCards = [
         { value: "Mobile", caption: "First-class admin device" },
         { value: "Supabase", caption: "Auth + storage" },
         { value: "Docker", caption: "Local dev stack" },
+      ],
+    },
+  },
+  {
+    slug: "hunar",
+    title: "Hunar",
+    tagline: "A handmade-goods storefront with the operations tools behind it.",
+    body:
+      "A full-stack shopping platform for handmade gifts, with product discovery, variant-aware carts, checkout, order tracking, and shop operations.",
+    image: "/projects/hunar.svg",
+    repoUrl: "https://github.com/Lakshay-13/hunar",
+    repositoryVisibility: "private",
+    liveUrl: "https://hunar.nextgenaischool.in",
+    showcaseVideo: "/projects/showcase/hunar/showcase.webm",
+    showcaseNote: "Recorded from the live storefront.",
+    gallery: [
+      {
+        src: "/projects/showcase/hunar/01-home.png",
+        alt: "Hunar storefront home page with search, product categories, and handmade yarn hero",
+        caption: "Storefront entry: search, categories, and featured handmade work.",
+      },
+      {
+        src: "/projects/showcase/hunar/02-products.png",
+        alt: "Hunar product discovery section with handmade product cards",
+        caption: "Product discovery across the shop’s handmade collections.",
+      },
+    ],
+    className: "taste-bento-small",
+    accent: "orange",
+    status: "Collaboration",
+    year: "2026",
+    techStack: ["React 19", "Express 5", "PostgreSQL", "Razorpay", "Google OAuth"],
+    caseStudy: {
+      intro:
+        "Hunar is a full-stack shop for clay pieces, crochet, keepsake flowers, decorations, and gift-ready products. The customer storefront and the shop operations suite share one catalog, so product details, availability, discounts, and order status stay connected.",
+      sections: [
+        {
+          title: "A complete shopping journey",
+          body:
+            "Customers can browse collections, search and filter products, choose available variants, and keep a cart as a guest or signed-in customer. Google sign-in and email accounts support saved order history, while Razorpay handles checkout.",
+          bullets: [
+            "Category discovery, product search, filters, and price sorting",
+            "Variant-aware product pages with stock revalidation",
+            "Guest and account-aware carts",
+            "Checkout, saved orders, shipping, and returns pages",
+          ],
+        },
+        {
+          title: "Shop operations in the same platform",
+          body:
+            "A role-based dashboard covers catalog changes, inventory, orders, homepage content, reusable media, discounts, and store settings. Access is divided among Super Admin, Admin, and Editor roles.",
+          bullets: [
+            "Product and category management with restore support",
+            "Product, category, and site-wide discount stages",
+            "Configurable homepage sections and reusable assets",
+            "Order fulfillment status and store policies",
+          ],
+        },
+      ],
+      journal: [
+        {
+          label: "What I built",
+          body:
+            "A React storefront and Express API backed by PostgreSQL, with account flows, carts, checkout, catalog operations, and order management.",
+        },
+        {
+          label: "Key decisions",
+          body:
+            "Keep the shop experience and its operational tools on the same catalog and order model. Revalidate stock as the customer moves toward checkout.",
+        },
+        {
+          label: "Trade-offs",
+          body:
+            "A broad commerce workflow adds configuration and edge cases around stock, delivery, payments, and account state. Checkout stays fail-closed until delivery settings are configured.",
+        },
+        {
+          label: "Outcomes",
+          body:
+            "One platform supports discovery, purchase, order follow-up, and day-to-day shop management for handmade goods.",
+        },
+      ],
+      metrics: [
+        { value: "3", caption: "Shop roles" },
+        { value: "3-stage", caption: "Discount sequence" },
+        { value: "Razorpay", caption: "Checkout provider" },
+        { value: "PostgreSQL", caption: "Commerce data" },
+      ],
+    },
+  },
+  {
+    slug: "phylogenetic-tree",
+    title: "Phylogenetic Tree",
+    tagline: "A guided way to explore taxonomy, lineage, and species profiles.",
+    body:
+      "A searchable taxonomy explorer with guided clade navigation, species profiles, lineage context, and alternate tree and comparison views.",
+    image: "/projects/phylogenetic-tree.svg",
+    repoUrl: "https://github.com/Lakshay-13/phylogenetic-tree",
+    repositoryVisibility: "private",
+    showcaseVideo: "/projects/showcase/phylogenetic-tree/showcase.webm",
+    showcaseNote: "Recorded from a local build with the API running.",
+    gallery: [
+      {
+        src: "/projects/showcase/phylogenetic-tree/01-explorer.png",
+        alt: "Phylogenetic Tree guided explorer showing taxonomy search and branch navigation",
+        caption: "Guided exploration starts at broad clades and narrows toward species.",
+      },
+      {
+        src: "/projects/showcase/phylogenetic-tree/02-tree.png",
+        alt: "Phylogenetic Tree species view with a tree visualization and Homo sapiens profile",
+        caption: "Species detail paired with the alternate tree view.",
+      },
+      {
+        src: "/projects/showcase/phylogenetic-tree/03-compare.png",
+        alt: "Phylogenetic Tree comparison view for exploring shared ancestry",
+        caption: "Compare view connects two taxa through shared ancestry.",
+      },
+    ],
+    className: "taste-bento-small",
+    accent: "green",
+    status: "Collaboration",
+    year: "2026",
+    techStack: ["React", "TypeScript", "Three.js", "FastAPI", "Taxonomy data"],
+    caseStudy: {
+      intro:
+        "Phylogenetic Tree turns a dense taxonomy into a guided exploration. Users can move from cellular life through clades, search scientific and common names, and open species profiles with lineage and reference context.",
+      sections: [
+        {
+          title: "Move through the tree in context",
+          body:
+            "The explorer keeps the current lineage visible while users move between parent and child taxa. Search accepts scientific names, common names, and curated aliases, then opens the selected taxon without dropping the broader branch context.",
+          bullets: [
+            "Guided navigation from broad groups toward species",
+            "Search by scientific name, common name, or alias",
+            "Taxon profiles with lineage, media, and reference links",
+            "Simple and advanced profile detail levels",
+          ],
+        },
+        {
+          title: "Three views of biological relationships",
+          body:
+            "The product has a guided explorer, an alternate 3D tree, and a comparison flow for related taxa. The FastAPI backend serves taxonomy, search, lineage, and graph data to the React interface.",
+          bullets: [
+            "Explorer for step-by-step taxonomy navigation",
+            "Three-dimensional tree for spatial context",
+            "Comparison view for shared ancestry and divergence",
+            "FastAPI endpoints for search, profiles, and graph queries",
+          ],
+        },
+      ],
+      journal: [
+        {
+          label: "What I built",
+          body:
+            "A React and TypeScript client, a FastAPI data service, taxonomy search, profile panels, and tree visualizations.",
+        },
+        {
+          label: "Key decisions",
+          body:
+            "Keep the guided view calm at high-level clades, then reveal denser detail only when users reach more concrete taxa.",
+        },
+        {
+          label: "Trade-offs",
+          body:
+            "A large, nested taxonomy is hard to present as one diagram. The interface separates navigation, profile detail, and spatial views so each has a clear job.",
+        },
+        {
+          label: "Outcomes",
+          body:
+            "A browseable local taxonomy with search, lineage, species profiles, a 3D view, and a comparison workflow.",
+        },
+      ],
+      metrics: [
+        { value: "4,200", caption: "Taxa in local data" },
+        { value: "3", caption: "Exploration views" },
+        { value: "FastAPI", caption: "Data service" },
+        { value: "Search", caption: "Names and aliases" },
+      ],
+    },
+  },
+  {
+    slug: "host",
+    title: "Host",
+    tagline: "File sharing with private uploads, moderation, and stable public links.",
+    body:
+      "A file hosting workspace for images, video, and PDFs, with account history, content review, and scoped API access.",
+    image: "/projects/host.svg",
+    repoUrl: "https://github.com/Lakshay-13/host",
+    repositoryVisibility: "private",
+    liveUrl: "https://host.nextgenaischool.in",
+    showcaseVideo: "/projects/showcase/host/showcase.webm",
+    showcaseNote: "Recorded from the live upload workspace.",
+    gallery: [
+      {
+        src: "/projects/showcase/host/01-upload.png",
+        alt: "Host upload workspace showing private upload controls and account sign-in",
+        caption: "Uploads stay disabled until the user signs in.",
+      },
+    ],
+    className: "taste-bento-small",
+    accent: "blue",
+    status: "Collaboration",
+    year: "2026",
+    techStack: ["React", "TypeScript", "Express", "Object storage", "Redis"],
+    caseStudy: {
+      intro:
+        "Host is a file-sharing workspace for images, videos, and PDFs. Files start private and pass through content checks before they can receive public links. The account area keeps upload history and file controls together, while scoped API keys support programmatic access.",
+      sections: [
+        {
+          title: "Private first, public after review",
+          body:
+            "The upload workflow keeps new files private until moderation clears them. Statuses distinguish pending, approved, rejected, and manual review, and the account area lets users inspect upload history or remove files.",
+          bullets: [
+            "Image, video, and PDF uploads",
+            "Content-policy checks before public delivery",
+            "Visible moderation and review states",
+            "Account history and deletion controls",
+          ],
+        },
+        {
+          title: "Stable links and scoped automation",
+          body:
+            "Approved files receive app-level public URLs. API keys can be limited by operation, and replacing a file’s content can preserve its existing link so downstream embeds do not need to change.",
+          bullets: [
+            "Separate upload, list, read, replace, and delete scopes",
+            "Stable public URLs instead of raw storage addresses",
+            "Replace-by-ID and replace-by-name endpoints",
+            "Rate limits for read, write, and authentication traffic",
+          ],
+        },
+      ],
+      journal: [
+        {
+          label: "What I built",
+          body:
+            "A web upload workspace, private file lifecycle, moderation-aware public delivery, account history, and a scoped developer API.",
+        },
+        {
+          label: "Key decisions",
+          body:
+            "Make public sharing an explicit approved state, and keep storage URLs behind a stable app-level link.",
+        },
+        {
+          label: "Trade-offs",
+          body:
+            "The moderation path adds a wait before sharing. It also makes the file lifecycle clearer and gives public delivery a content-policy checkpoint.",
+        },
+        {
+          label: "Outcomes",
+          body:
+            "People can upload through the UI or API, track review state, and share approved files through stable links.",
+        },
+      ],
+      metrics: [
+        { value: "3", caption: "Supported file groups" },
+        { value: "5", caption: "API permission scopes" },
+        { value: "Private", caption: "Default upload state" },
+        { value: "Stable", caption: "App-level public links" },
+      ],
+    },
+  },
+  {
+    slug: "aqg-studio",
+    title: "AQG Studio",
+    tagline: "Source-grounded assessments built through a six-agent workflow.",
+    body:
+      "A multi-agent assessment studio that converts learning materials into reviewed, Bloom-aligned questions and LMS-ready exports.",
+    image: "/projects/aqg-studio.svg",
+    repoUrl: "https://github.com/Anshuman791322/aqg-studio",
+    showcaseVideo: "/projects/showcase/aqg-studio/showcase.webm",
+    showcaseNote: "Recorded from the running local interface.",
+    gallery: [
+      {
+        src: "/projects/showcase/aqg-studio/01-home.png",
+        alt: "AQG Studio landing page with an assessment preview and multi-agent workflow overview",
+        caption: "The studio presents the six-agent assessment workflow and a sample question.",
+      },
+      {
+        src: "/projects/showcase/aqg-studio/02-workspace.png",
+        alt: "AQG Studio workspace showing source provenance and a generated multiple-choice question",
+        caption: "Question preview pairs source provenance with a reviewable assessment item.",
+      },
+    ],
+    className: "taste-bento-small",
+    accent: "violet",
+    status: "Shipping",
+    year: "2026",
+    techStack: ["Next.js", "React 19", "FastAPI", "LangGraph", "PostgreSQL"],
+    caseStudy: {
+      intro:
+        "AQG Studio turns course materials into structured assessments. Its six-agent pipeline parses source documents, maps concepts, plans a balanced blueprint, generates grounded questions, evaluates them, and prepares reviewed exports. The workflow is built for educators and instructional designers who need traceable question sources and consistent difficulty settings.",
+      sections: [
+        {
+          title: "From learning materials to a blueprint",
+          body:
+            "The document processor extracts content and page or slide references from PDF, DOCX, PPTX, and TXT files. Knowledge analysis identifies topics and dependencies, then question planning allocates items across Bloom levels and difficulty tiers.",
+          bullets: [
+            "Structured parsing with source page or slide context",
+            "Topic and concept-dependency analysis",
+            "Assessment blueprinting across Bloom’s Taxonomy",
+            "Retrieval-grounded question generation",
+          ],
+        },
+        {
+          title: "Review quality before export",
+          body:
+            "Generated questions are scored for groundedness, ambiguity, distractor plausibility, Bloom alignment, and bias. The refinement stage can revise weak items before the output agent creates LMS and document formats.",
+          bullets: [
+            "Five pedagogical evaluation dimensions",
+            "Human-in-the-loop review workflow",
+            "Moodle XML, GIFT, and QTI 2.1 exports",
+            "PDF, DOCX, JSON, CSV, and other review formats",
+          ],
+        },
+      ],
+      journal: [
+        {
+          label: "What I built",
+          body:
+            "A Next.js studio, FastAPI services, LangGraph orchestration, document processing, retrieval-grounded generation, evaluation, and export paths.",
+        },
+        {
+          label: "Key decisions",
+          body:
+            "Use separate workflow stages so source extraction, planning, generation, scoring, and export can be inspected independently.",
+        },
+        {
+          label: "Trade-offs",
+          body:
+            "Multi-stage generation takes longer and adds workflow complexity, but exposes the source, blueprint, quality checks, and revision decisions to reviewers.",
+        },
+        {
+          label: "Outcomes",
+          body:
+            "A single assessment workflow covers source ingestion, question planning, grounded generation, quality review, and exports for common LMS and document formats.",
+        },
+      ],
+      metrics: [
+        { value: "6", caption: "Pipeline agents" },
+        { value: "5", caption: "Question quality checks" },
+        { value: "4", caption: "Source document formats" },
+        { value: "7+", caption: "Export formats" },
       ],
     },
   },

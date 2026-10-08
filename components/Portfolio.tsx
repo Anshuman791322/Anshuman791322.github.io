@@ -4,6 +4,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Github, Linkedin, Mail } from "lucide-react";
+import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
 
@@ -578,6 +579,8 @@ const STYLES = `
   grid-template-columns: minmax(0, 0.96fr) minmax(320px, 1.04fr);
   overflow: hidden;
   border-radius: 18px;
+  color: inherit;
+  text-decoration: none;
   transform-style: preserve-3d;
   transition: border-color 240ms ease, transform 240ms ease;
 }
@@ -598,6 +601,11 @@ const STYLES = `
 
 .dc-project:hover {
   border-color: color-mix(in srgb, var(--accent) 48%, transparent);
+}
+
+.dc-project:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
 }
 
 .dc-project:hover::after {
@@ -1133,6 +1141,7 @@ const aboutCards = [
 
 const projects = [
   {
+    slug: "ai-agent",
     title: "Jarvis Local AI Assistant",
     subtitle: "Windows desktop assistant with local LLM inference and voice control.",
     description:
@@ -1147,6 +1156,7 @@ const projects = [
     animatedPreview: true,
   },
   {
+    slug: "driver-monitoring",
     title: "Smart Driver Monitoring Release Hub",
     subtitle: "Android APK release page for a computer-vision driver-safety system.",
     description:
@@ -1160,6 +1170,7 @@ const projects = [
     accent: "#f59e0b",
   },
   {
+    slug: "variable-stars",
     title: "Variable Star Classifier",
     subtitle: "Machine-learning notebook for classifying periodic variable stars.",
     description:
@@ -1173,6 +1184,7 @@ const projects = [
     accent: "#a78bfa",
   },
   {
+    slug: "humanify",
     title: "Humanify",
     subtitle: "Rewrites AI-sounding text into natural, human writing.",
     description:
@@ -1187,6 +1199,7 @@ const projects = [
     accent: "#2dd4bf",
   },
   {
+    slug: "zinging",
     title: "Zinging",
     subtitle: "Production-oriented Discord assistant bot powered by NVIDIA NIM.",
     description:
@@ -1201,6 +1214,7 @@ const projects = [
     accent: "#22c55e",
   },
   {
+    slug: "artgridx",
     title: "ArtGridX",
     subtitle: "Scrapbook-style portfolio system for a drawing artist.",
     description:
@@ -1216,6 +1230,7 @@ const projects = [
     accent: "#f59e0b",
   },
   {
+    slug: "hunar",
     title: "Hunar",
     subtitle: "Full-stack storefront for handmade products and gifts.",
     description:
@@ -1231,6 +1246,7 @@ const projects = [
     accent: "#f59e0b",
   },
   {
+    slug: "phylogenetic-tree",
     title: "Phylogenetic Tree",
     subtitle: "Explore biological taxonomy through a searchable, interactive tree.",
     description:
@@ -1245,6 +1261,7 @@ const projects = [
     accent: "#22c55e",
   },
   {
+    slug: "host",
     title: "Host",
     subtitle: "Private-by-default file hosting for images, video, and documents.",
     description:
@@ -1260,6 +1277,7 @@ const projects = [
     accent: "#38bdf8",
   },
   {
+    slug: "aqg-studio",
     title: "AQG Studio",
     subtitle: "Create source-grounded assessments from course materials.",
     description:
@@ -1814,7 +1832,13 @@ export function Portfolio() {
             </div>
             <div className="dc-project-list">
               {projects.map((project) => (
-                <article className="dc-project" key={project.title} style={projectStyle(project.accent)}>
+                <Link
+                  className="dc-project"
+                  key={project.slug}
+                  href={`/${project.slug}/`}
+                  style={projectStyle(project.accent)}
+                  aria-label={`View ${project.title} project details`}
+                >
                   <div className="dc-project-copy">
                     <div className="dc-tags">
                       <span className="dc-tag">{project.status}</span>
@@ -1830,25 +1854,6 @@ export function Portfolio() {
                     </div>
                     <div className="dc-project-role">
                       <span>Role:</span> {project.role}
-                    </div>
-                    <div className="dc-project-actions">
-                      {project.liveUrl && (
-                        <a className="dc-pill" href={project.liveUrl} target="_blank" rel="noreferrer">
-                          Live site <span>↗</span>
-                        </a>
-                      )}
-                      {project.repositoryVisibility === "private" ? (
-                        <a
-                          className="dc-pill"
-                          href={`mailto:${portfolio.person.email}?subject=${encodeURIComponent(`Source access request: ${project.title}`)}`}
-                        >
-                          Request source
-                        </a>
-                      ) : (
-                        <a className="dc-pill" href={project.repository} target="_blank" rel="noreferrer">
-                          GitHub <span>↗</span>
-                        </a>
-                      )}
                     </div>
                   </div>
                   <div className="dc-project-media">
@@ -1877,7 +1882,7 @@ export function Portfolio() {
                       </div>
                     </div>
                   </div>
-                </article>
+                </Link>
               ))}
             </div>
           </section>

@@ -5,6 +5,7 @@ import type { WorkCard } from "@/data/workCards";
 import { portfolio } from "@/data/portfolio";
 import { CaseSpotlight } from "@/components/ui/CaseSpotlight";
 import { CaseMagnet } from "@/components/ui/CaseMagnet";
+import { ProjectMedia } from "@/components/ProjectMedia";
 
 type Props = {
   card: WorkCard;
@@ -99,6 +100,13 @@ export function CaseStudy({ card }: Props) {
         <img src={card.image} alt="" loading="eager" decoding="async" />
         <span className="case-image-shade" />
       </figure>
+
+      <ProjectMedia
+        title={card.title}
+        video={card.showcaseVideo}
+        note={card.showcaseNote}
+        gallery={card.gallery}
+      />
 
       {/* Intro */}
       <section className="case-intro">
