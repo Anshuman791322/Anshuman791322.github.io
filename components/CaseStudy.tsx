@@ -49,15 +49,37 @@ export function CaseStudy({ card }: Props) {
         <p className="case-tagline">{card.tagline}</p>
 
         <div className="case-actions">
-          <CaseMagnet
-            href={card.repoUrl}
-            external
-            className="case-button case-button-primary"
-          >
-            <Github size={16} />
-            Open repository
-            <ArrowUpRight size={16} />
-          </CaseMagnet>
+          {card.repositoryVisibility === "private" ? (
+            <a
+              className="case-button case-button-primary"
+              href={`mailto:${portfolio.person.email}?subject=${encodeURIComponent(`Source access request: ${card.title}`)}`}
+            >
+              <Mail size={16} />
+              Request source access
+              <ArrowUpRight size={16} />
+            </a>
+          ) : (
+            <CaseMagnet
+              href={card.repoUrl}
+              external
+              className="case-button case-button-primary"
+            >
+              <Github size={16} />
+              Open repository
+              <ArrowUpRight size={16} />
+            </CaseMagnet>
+          )}
+          {card.liveUrl && (
+            <a
+              className="case-button case-button-secondary"
+              href={card.liveUrl}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Visit live site
+              <ArrowUpRight size={16} />
+            </a>
+          )}
           <Link className="case-button case-button-secondary" href="/">
             <ArrowLeft size={16} />
             Back to portfolio
@@ -135,20 +157,43 @@ export function CaseStudy({ card }: Props) {
       <CaseSpotlight className="case-outro">
         <h2>Want the source?</h2>
         <p>
-          Every line is on GitHub — read the commit log, fork it, file an
-          issue, send a PR. The repo is the canonical home for {card.title}.
+          {card.repositoryVisibility === "private"
+            ? `The source repository for ${card.title} is private. Contact me to request access.`
+            : `The public GitHub repository is the canonical home for ${card.title}. You can read the commit log, fork it, file an issue, or send a PR.`}
         </p>
         <div className="case-actions">
-          <a
-            className="case-button case-button-primary"
-            href={card.repoUrl}
-            target="_blank"
-            rel="noreferrer"
-          >
-            <Github size={16} />
-            Open repository
-            <ArrowUpRight size={16} />
-          </a>
+          {card.repositoryVisibility === "private" ? (
+            <a
+              className="case-button case-button-primary"
+              href={`mailto:${portfolio.person.email}?subject=${encodeURIComponent(`Source access request: ${card.title}`)}`}
+            >
+              <Mail size={16} />
+              Request source access
+              <ArrowUpRight size={16} />
+            </a>
+          ) : (
+            <a
+              className="case-button case-button-primary"
+              href={card.repoUrl}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <Github size={16} />
+              Open repository
+              <ArrowUpRight size={16} />
+            </a>
+          )}
+          {card.liveUrl && (
+            <a
+              className="case-button case-button-secondary"
+              href={card.liveUrl}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Visit live site
+              <ArrowUpRight size={16} />
+            </a>
+          )}
           <a
             className="case-button case-button-secondary"
             href={`mailto:${portfolio.person.email}`}

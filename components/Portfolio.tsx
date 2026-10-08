@@ -1177,7 +1177,8 @@ const projects = [
     subtitle: "Rewrites AI-sounding text into natural, human writing.",
     description:
       "A Next.js app that runs a rewrite pipeline over Gemini models: preflight, diagnosis, fact-lock, rewrite, and final quality check. Built privacy-first, with text processed in-request.",
-    repository: "https://github.com/Anshuman791322/humanify",
+    repository: "https://github.com/Lakshay-13/humanify",
+    repositoryVisibility: "private",
     category: "Web AI",
     status: "Live",
     role: "Solo build - full-stack design and engineering",
@@ -1191,6 +1192,7 @@ const projects = [
     description:
       "A cog-based Discord assistant with AI ask/code workflows, translation mode, database-backed memory, command controls, caching, and Railway deployment readiness.",
     repository: "https://github.com/Lakshay-13/zinging",
+    repositoryVisibility: "private",
     category: "Discord AI",
     status: "Collab",
     role: "Collaboration - AI assistant bot and deployment-ready backend",
@@ -1204,6 +1206,8 @@ const projects = [
     description:
       "A premium artist portfolio with oversized parallax typography, masonry collage galleries, animated lightbox, Supabase contact flow, and a mobile-friendly admin dashboard.",
     repository: "https://github.com/Lakshay-13/artgridx",
+    repositoryVisibility: "private",
+    liveUrl: "https://artgridx.nextgenaischool.in",
     category: "Creative Web",
     status: "Collab",
     role: "Collaboration - portfolio interface and content-management workflow",
@@ -1217,6 +1221,8 @@ const projects = [
     description:
       "A handmade-goods marketplace with product discovery, variants, a persistent cart, Razorpay checkout, Google sign-in, and shop operations tools.",
     repository: "https://github.com/Lakshay-13/hunar",
+    repositoryVisibility: "private",
+    liveUrl: "https://hunar.nextgenaischool.in",
     category: "E-commerce",
     status: "Collab",
     role: "Collaboration · e-commerce platform",
@@ -1230,6 +1236,7 @@ const projects = [
     description:
       "A guided taxonomy explorer with searchable organism profiles, lineage context, and an alternate three-dimensional tree view.",
     repository: "https://github.com/Lakshay-13/phylogenetic-tree",
+    repositoryVisibility: "private",
     category: "Bioinformatics",
     status: "Collab",
     role: "Project collaboration · taxonomy explorer",
@@ -1243,6 +1250,8 @@ const projects = [
     description:
       "A moderated upload and sharing platform with organized files, stable public links, and a backend built around object storage and Redis.",
     repository: "https://github.com/Lakshay-13/host",
+    repositoryVisibility: "private",
+    liveUrl: "https://host.nextgenaischool.in",
     category: "File Hosting",
     status: "Collab",
     role: "Project collaboration · upload and delivery",
@@ -1823,9 +1832,23 @@ export function Portfolio() {
                       <span>Role:</span> {project.role}
                     </div>
                     <div className="dc-project-actions">
-                      <a className="dc-pill" href={project.repository} target="_blank" rel="noreferrer">
-                        GitHub <span>↗</span>
-                      </a>
+                      {project.liveUrl && (
+                        <a className="dc-pill" href={project.liveUrl} target="_blank" rel="noreferrer">
+                          Live site <span>↗</span>
+                        </a>
+                      )}
+                      {project.repositoryVisibility === "private" ? (
+                        <a
+                          className="dc-pill"
+                          href={`mailto:${portfolio.person.email}?subject=${encodeURIComponent(`Source access request: ${project.title}`)}`}
+                        >
+                          Request source
+                        </a>
+                      ) : (
+                        <a className="dc-pill" href={project.repository} target="_blank" rel="noreferrer">
+                          GitHub <span>↗</span>
+                        </a>
+                      )}
                     </div>
                   </div>
                   <div className="dc-project-media">

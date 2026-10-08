@@ -31,6 +31,10 @@ export type WorkCard = {
   image: string;
   /** External link — the actual repo. Shown on the case-study page. */
   repoUrl: string;
+  /** Private repositories cannot be opened by public portfolio visitors. */
+  repositoryVisibility?: "public" | "private";
+  /** Public production URL, when one is available. */
+  liveUrl?: string;
   /** Bento span class. */
   className: "taste-bento-large" | "taste-bento-small";
   /** Accent for the case-study hero glow. Matches the portfolio palette. */
@@ -404,7 +408,8 @@ export const workCards = [
     body:
       "A Next.js app that runs a server-side rewrite pipeline — preflight, diagnosis, fact-lock, rewrite, quality check — over Gemini models without ever persisting your text.",
     image: "/projects/humanify.svg",
-    repoUrl: "https://github.com/Anshuman791322/humanify",
+    repoUrl: "https://github.com/Lakshay-13/humanify",
+    repositoryVisibility: "private",
     className: "taste-bento-small",
     accent: "cyan",
     status: "Shipping",
@@ -475,6 +480,7 @@ export const workCards = [
       "A Python Discord bot with NVIDIA NIM-powered assistant workflows, database-backed memory, aggressive caching, and Railway deployment readiness. Built by Lakshay-13 — included with permission as a featured collaboration.",
     image: "/projects/zinging.svg",
     repoUrl: "https://github.com/Lakshay-13/zinging",
+    repositoryVisibility: "private",
     className: "taste-bento-small",
     accent: "violet",
     status: "Collaboration",
@@ -546,6 +552,8 @@ export const workCards = [
       "A masonry-style collage portfolio with parallax hero, draggable cards, animated lightbox, and a Supabase-backed admin dashboard tuned for mobile uploads. Built by Lakshay-13 — included with permission as a featured collaboration.",
     image: "/projects/artgridx.svg",
     repoUrl: "https://github.com/Lakshay-13/artgridx",
+    repositoryVisibility: "private",
+    liveUrl: "https://artgridx.nextgenaischool.in",
     className: "taste-bento-small",
     accent: "orange",
     status: "Collaboration",
